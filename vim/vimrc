@@ -1,0 +1,22 @@
+execute pathogen#infect()
+syntax on                    " syntax highlighting 
+filetype plugin indent on    " enable loading indent file for filetype
+
+"---------------------- Vim Before -------------------
+
+set nocompatible
+let mapleader = ","
+
+"Windows movements
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+"NERDTree settings
+map <Leader>n :NERDTreeToggle<CR>
+
+
+"------------------------ Vim After -------------------
+
+
