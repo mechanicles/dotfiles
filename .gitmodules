@@ -40,9 +40,6 @@
 [submodule "vim/bundle/vim-rails"]
 	path = vim/bundle/vim-rails
 	url = https://github.com/tpope/vim-rails.git
-[submodule "vim/bundle/snipmate-snippets"]
-	path = vim/bundle/snipmate-snippets
-	url = https://github.com/honza/snipmate-snippets.git
 [submodule "vim/bundle/molokai"]
 	path = vim/bundle/molokai
 	url = https://github.com/tomasr/molokai.git
@@ -142,3 +139,9 @@
 [submodule "vim/tools/multiple-cursors"]
 	path = vim/tools/multiple-cursors
 	url = https://github.com/terryma/vim-multiple-cursors.git
+[submodule "vim/colors/railscasts"]
+	path = vim/colors/railscasts
+	url = https://github.com/jpo/vim-railscasts-theme.git
+[submodule "vim/colors/ir_black"]
+	path = vim/colors/ir_black
+	url = https://github.com/twerth/ir_black.git
