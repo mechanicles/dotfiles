@@ -1,13 +1,15 @@
-execute pathogen#infect()
+execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}')
 syntax on                    " syntax highlighting 
 filetype plugin indent on    " enable loading indent file for filetype
 
-"---------------------- Vim Before -------------------
 
 set nocompatible
-let mapleader = ","
 
-"Windows movements
+let mapleader = ","
+let g:Powerline_symbols = 'fancy'
+let g:Powerline_cache_enabled = 1
+let g:molokai_original = 1
+map <Leader>rrt :!ctags --extra=+f -R *<CR><CR>
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
@@ -16,7 +18,12 @@ map <C-l> <C-w>l
 "NERDTree settings
 map <Leader>n :NERDTreeToggle<CR>
 
+colorscheme molokai
 
-"------------------------ Vim After -------------------
+set go-=T
+set go-=l
+set go-=L
+set go-=r
+set go-=R
 
-
+set guifont=Menlo\ Regular\ for\ Powerline:h13

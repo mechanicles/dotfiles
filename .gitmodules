@@ -43,3 +43,102 @@
 [submodule "vim/bundle/snipmate-snippets"]
 	path = vim/bundle/snipmate-snippets
 	url = https://github.com/honza/snipmate-snippets.git
+[submodule "vim/bundle/molokai"]
+	path = vim/bundle/molokai
+	url = https://github.com/tomasr/molokai.git
+[submodule "vim/colors/solarized"]
+	path = vim/colors/solarized
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule "vim/colors/github"]
+	path = vim/colors/github
+	url = https://github.com/telamon/vim-color-github.git
+[submodule "vim/colors/getafe"]
+	path = vim/colors/getafe
+	url = https://github.com/larssmit/vim-getafe.git
+[submodule "vim/langs/haml"]
+	path = vim/langs/haml
+	url = https://github.com/tpope/vim-haml.git
+[submodule "vim/langs/javascript"]
+	path = vim/langs/javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "vim/langs/cucumber"]
+	path = vim/langs/cucumber
+	url = https://github.com/tpope/vim-cucumber.git
+[submodule "vim/langs/markdown"]
+	path = vim/langs/markdown
+	url = https://github.com/tpope/vim-markdown
+[submodule "vim/langs/coffeescript"]
+	path = vim/langs/coffeescript
+	url = https://github.com/kchmck/vim-coffee-script.git
+[submodule "vim/langs/git"]
+	path = vim/langs/git
+	url = https://github.com/tpope/vim-git.git
+[submodule "vim/langs/textile"]
+	path = vim/langs/textile
+	url = https://github.com/timcharper/textile.vim.git
+[submodule "vim/langs/rspec"]
+	path = vim/langs/rspec
+	url = https://github.com/skwp/vim-rspec.git
+[submodule "vim/langs/scss"]
+	path = vim/langs/scss
+	url = https://github.com/cakebaker/scss-syntax.vim.git
+[submodule "vim/langs/csv"]
+	path = vim/langs/csv
+	url = https://github.com/chrisbra/csv.vim.git
+[submodule "vim/langs/nodejs"]
+	path = vim/langs/nodejs
+	url = https://github.com/mmalecki/vim-node.js.git
+[submodule "vim/langs/ruby"]
+	path = vim/langs/ruby
+	url = https://github.com/vim-ruby/vim-ruby.git
+[submodule "vim/langs/less"]
+	path = vim/langs/less
+	url = https://github.com/groenewege/vim-less.git
+[submodule "vim/langs/slim"]
+	path = vim/langs/slim
+	url = https://github.com/slim-template/vim-slim.git
+[submodule "vim/tools/matchit"]
+	path = vim/tools/matchit
+	url = https://github.com/edsono/vim-matchit.git
+[submodule "vim/tools/gundo"]
+	path = vim/tools/gundo
+	url = https://github.com/sjl/gundo.vim.git
+[submodule "vim/tools/surround"]
+	path = vim/tools/surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vim/tools/snipmate"]
+	path = vim/tools/snipmate
+	url = https://github.com/garbas/vim-snipmate.git
+[submodule "vim/tools/tlib"]
+	path = vim/tools/tlib
+	url = https://github.com/tomtom/tlib_vim.git
+[submodule "vim/tools/vim-addon-mw-utils"]
+	path = vim/tools/vim-addon-mw-utils
+	url = https://github.com/MarcWeber/vim-addon-mw-utils.git
+[submodule "vim/tools/indent-object"]
+	path = vim/tools/indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object.git
+[submodule "vim/tools/gist"]
+	path = vim/tools/gist
+	url = https://github.com/mattn/gist-vim.git
+[submodule "vim/tools/css-color"]
+	path = vim/tools/css-color
+	url = https://github.com/ap/vim-css-color.git
+[submodule "vim/tools/buffergator"]
+	path = vim/tools/buffergator
+	url = https://github.com/jeetsukumaran/vim-buffergator.git
+[submodule "vim/tools/vroom"]
+	path = vim/tools/vroom
+	url = https://github.com/skalnik/vim-vroom.git
+[submodule "vim/tools/eunuch"]
+	path = vim/tools/eunuch
+	url = https://github.com/tpope/vim-eunuch.git
+[submodule "vim/tools/repeat"]
+	path = vim/tools/repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule "vim/tools/vim-snippets"]
+	path = vim/tools/vim-snippets
+	url = https://github.com/honza/vim-snippets.git
+[submodule "vim/tools/multiple-cursors"]
+	path = vim/tools/multiple-cursors
+	url = https://github.com/terryma/vim-multiple-cursors.git
