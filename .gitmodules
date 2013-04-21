@@ -97,9 +97,6 @@
 [submodule "vim/tools/matchit"]
 	path = vim/tools/matchit
 	url = https://github.com/edsono/vim-matchit.git
-[submodule "vim/tools/gundo"]
-	path = vim/tools/gundo
-	url = https://github.com/sjl/gundo.vim.git
 [submodule "vim/tools/surround"]
 	path = vim/tools/surround
 	url = https://github.com/tpope/vim-surround.git
@@ -151,3 +148,6 @@
 [submodule "vim/tools/gitgutter"]
 	path = vim/tools/gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
+[submodule "vim/tools/undotree"]
+	path = vim/tools/undotree
+	url = https://github.com/mbbill/undotree.git
