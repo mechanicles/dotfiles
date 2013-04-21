@@ -1,4 +1,4 @@
-"" Thanks:
+
 "  Tim Pope
 "  Mislav Marohnić
 "  Janus
@@ -16,6 +16,8 @@ set history=50
 let mapleader = ","
 let g:Powerline_symbols = 'fancy'
 let g:Powerline_cache_enabled = 1
+set mouse=a                 " Automatically enable mouse usage
+set mousehide               " Hide the mouse cursor while typing
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -33,15 +35,22 @@ if exists("g:enable_mvim_shift_arrow")
   let macvim_hig_shift_movement = 1 " mvim shift-arrow-keys
 endif
 
+
+" General
+highlight clear SignColumn        " SignColumn should match background for
+                                  " things like vim-gitgutter
 set autoindent
 set display=lastline
 set noswapfile
 set laststatus=2 
 set lazyredraw
-set showmatch             " show matching brackets
-set showcmd               " show partial commands below the status line
+set showmatch                   " show matching brackets
+set showcmd                     " show partial commands below the status line
 
+set scrolljump=5                " Lines to scroll when cursor leaves screen
+set scrolloff=3                 " Minimum lines to keep above and below cursor
 set hidden
+set foldenable                  " Auto fold code
 
 " Auto-reload buffers when file changed on disk
 set autoread
