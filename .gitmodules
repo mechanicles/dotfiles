@@ -28,9 +28,6 @@
 [submodule "vim/bundle/vim-easymotion"]
 	path = vim/bundle/vim-easymotion
 	url = https://github.com/Lokaltog/vim-easymotion.git
-[submodule "vim/bundle/ZoomWin"]
-	path = vim/bundle/ZoomWin
-	url = https://github.com/vim-scripts/ZoomWin.git
 [submodule "vim/bundle/vim-powerline"]
 	path = vim/bundle/vim-powerline
 	url = https://github.com/Lokaltog/vim-powerline.git
@@ -151,3 +148,6 @@
 [submodule "vim/tools/undotree"]
 	path = vim/tools/undotree
 	url = https://github.com/mbbill/undotree.git
+[submodule "vim/tools/zoomwin"]
+	path = vim/tools/zoomwin
+	url = https://github.com/regedarek/ZoomWin.git

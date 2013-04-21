@@ -1,8 +1,8 @@
-
+" Thanks: 
 "  Tim Pope
 "  Mislav Marohnić
-"  Janus
-
+"  Janus Vim Distribution
+"  Other
 
 " Basic setup
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}')
@@ -101,6 +101,9 @@ if has("statusline") && !&cp
   set statusline+=\ %v[0x%B]    " current column [hex char]
 endif
 
+" The silver searcher (Faster than the ack)
+" Invoke ag using ack.vim
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
 function s:setupWrapping()
   set wrap
@@ -168,6 +171,9 @@ nmap <leader>hs :set hlsearch! hlsearch?<CR>
 
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
+
+" ZoomWin map
+map <Leader>zw :ZoomWin<cr>
 
 " disable cursor keys in normal mode
 map <Left>  :echo "no!"<cr>
