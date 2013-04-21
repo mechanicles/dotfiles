@@ -145,3 +145,9 @@
 [submodule "vim/colors/ir_black"]
 	path = vim/colors/ir_black
 	url = https://github.com/twerth/ir_black.git
+[submodule "vim/tools/nerdtree-tabs"]
+	path = vim/tools/nerdtree-tabs
+	url = https://github.com/jistr/vim-nerdtree-tabs.git
+[submodule "vim/tools/gitgutter"]
+	path = vim/tools/gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git

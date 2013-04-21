@@ -12,10 +12,12 @@ filetype plugin indent on    " enable loading indent file for filetype
 set nocompatible
 set encoding=utf-8
 
+set noswapfile
+set history=50
+
 set autoindent
 set number
 set ruler                 " show the cursor position all the time
-set cursorline            " highlight the line of the cursor
 set shiftround            " always indent/outdent to the nearest tabstop
 set expandtab             " use spaces instead of tabs
 set smarttab              " use tabs at the start of a line, spaces elsewhere
@@ -80,17 +82,17 @@ if has("autocmd")
   " Treat JSON files like JavaScript
   au BufNewFile,BufRead *.json set ft=javascript
 
+  " Start with nerdtree
+  au vimenter * if !argc() | NERDTree | endif
+
+  " Set cursorline to only current active buffer/window
+  "au VimEnter,WinEnter,BufWinEnter,BufEnter * setlocal cursorline
+  "au WinLeave,BufLeave * setlocal nocursorline
+
 endif
 
-
-" don't use Ex mode, use Q for formatting
-map Q gq
-
-" clear the search buffer when hitting return
-:nnoremap <CR> :nohlsearch<cr>
-
 " toggle the current fold
-:nnoremap <Space> za
+":nnoremap <Space> za
 
 
 let mapleader = ","
