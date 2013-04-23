@@ -4,29 +4,33 @@
 "  Janus Vim Distribution
 "  Other
 
-" Basic setup
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}')
+
+" Basic setup ---------------------------------------------
+
+" Use Vim settings, rather then Vi settings (much better!).
 set nocompatible
-set number
-set ruler                    " show the cursor position all the time
-syntax enable                " syntax highlighting 
-filetype plugin indent on    " enable loading indent file for filetype
-set encoding=utf-8           " set default encoding to UTF-8
-set history=50
+
+set number                        " enable line numbers
+set ruler                         " show the cursor position all the time
+syntax enable                     " syntax highlighting
+filetype plugin indent on         " enable loading indent file for filetype
+set encoding=utf-8                " set default encoding to UTF-8
+set history=50                    " keep 50 lines of command line history
 let mapleader = ","
 let g:Powerline_symbols = 'fancy'
 let g:Powerline_cache_enabled = 1
-set mouse=a                 " Automatically enable mouse usage
-set mousehide               " Hide the mouse cursor while typing
+set mouse=a                       " automatically enable mouse usage
+set mousehide                     " hide the mouse cursor while typing
 
-" Whitespace
+" Whitespace -----------------------------------------------
 set nowrap                        " don't wrap text
 set tabstop=2                     " tab spacing
-set expandtab                     " use spaces instead of tabs
-set smarttab                      " use tabs at the start of a line, spaces elsewhere
-set backspace=indent,eol,start   " backspace through everything in insert mode
 set softtabstop=2                 " unify
 set shiftwidth=2                  " indent/outdent by 2 columns
+set expandtab                     " use spaces instead of tabs
+set smarttab                      " use tabs at the start of a line, spaces elsewhere
+set backspace=indent,eol,start    " backspace through everything in insert mode
 set list                          " show invisible characters
 set nojoinspaces                  " Use only 1 space after "." when joining lines, not 2
 
@@ -36,21 +40,19 @@ if exists("g:enable_mvim_shift_arrow")
 endif
 
 
-" General
-highlight clear SignColumn        " SignColumn should match background for
-                                  " things like vim-gitgutter
-set autoindent
+" Misc ---------------------------------------------------- 
+highlight clear SignColumn        " SignColumn should match background for things like vim-gitgutter
+set autoindent                    " always  set auto indenting on
 set display=lastline
 set noswapfile
-set laststatus=2 
 set lazyredraw
-set showmatch                   " show matching brackets
-set showcmd                     " show partial commands below the status line
+set showmatch                     " show matching brackets
+set showcmd                       " show partial commands below the status line
 
-set scrolljump=5                " Lines to scroll when cursor leaves screen
-set scrolloff=3                 " Minimum lines to keep above and below cursor
+set scrolljump=5                  " lines to scroll when cursor leaves screen
+set scrolloff=3                   " minimum lines to keep above and below cursor
 set hidden
-set foldenable                  " Auto fold code
+set foldenable                    " auto fold code
 
 " Auto-reload buffers when file changed on disk
 set autoread
@@ -60,14 +62,14 @@ set updatecount=0
 
 " Indicator chars
 set listchars=tab:▸\ ,trail:•,extends:❯,precedes:❮
-set showbreak=↪\ 
+set showbreak=↪\
 
 
-" Searching
+" Searching -----------------------------------------------
 set hlsearch                      " highlight matches
 set incsearch                     " incremental searching
 set ignorecase                    " searches are case insensitive...
-set smartcase                     " ... unless they contain at least one capital letter
+set smartcase                     " unless they contain at least one capital letter
 set gdefault                      " have :s///g flag by default on
 
 
@@ -83,15 +85,18 @@ set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
-""
-"" Backup and swap files
-""
 
+" Backup and swap files ------------------------------------
 set backupdir^=~/.vim/_backup//    " where to put backup files.
 set directory^=~/.vim/_temp//      " where to put swap files.
 
+
 set splitright
 set splitbelow
+
+" Easy edit/open commands ----------------------------------
+command EditVim  :edit   ~/.vimrc
+command EditBash :edit   ~/.bashrc
 
 if has("statusline") && !&cp
   set laststatus=2              " always show the status bar
@@ -145,6 +150,8 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+map <c-a> ggVG
+
 "NERDTree settings
 map <Leader>n :NERDTreeToggle<CR>
 
@@ -174,6 +181,9 @@ map <Leader>= <C-w>=
 
 " ZoomWin map
 map <Leader>zw :ZoomWin<cr>
+
+" TagbarToggle
+map <Leader>rt :TagbarToggle<cr>
 
 " disable cursor keys in normal mode
 map <Left>  :echo "no!"<cr>

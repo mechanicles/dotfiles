@@ -151,3 +151,9 @@
 [submodule "vim/tools/zoomwin"]
 	path = vim/tools/zoomwin
 	url = https://github.com/regedarek/ZoomWin.git
+[submodule "vim/tools/calendar"]
+	path = vim/tools/calendar
+	url = https://github.com/mattn/calendar-vim.git
+[submodule "vim/colors/twilight"]
+	path = vim/colors/twilight
+	url = https://github.com/matthewtodd/vim-twilight
