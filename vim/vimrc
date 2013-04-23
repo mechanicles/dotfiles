@@ -4,6 +4,7 @@
 "  Janus Vim Distribution
 "  Other
 
+let g:pathogen_disabled = ['vim-powerline']
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}')
 
 " Basic setup ---------------------------------------------
@@ -13,6 +14,7 @@ set nocompatible
 
 set number                        " enable line numbers
 set ruler                         " show the cursor position all the time
+set title                         " show file in titlebar
 syntax enable                     " syntax highlighting
 filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
@@ -22,6 +24,7 @@ let g:Powerline_symbols = 'fancy'
 let g:Powerline_cache_enabled = 1
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
+set textwidth=80
 
 " Whitespace -----------------------------------------------
 set nowrap                        " don't wrap text
@@ -44,8 +47,7 @@ endif
 highlight clear SignColumn        " SignColumn should match background for things like vim-gitgutter
 set autoindent                    " always  set auto indenting on
 set display=lastline
-set noswapfile
-set lazyredraw
+set lazyredraw                    " don't redraw while executing macros (good performance config)
 set showmatch                     " show matching brackets
 set showcmd                       " show partial commands below the status line
 
@@ -87,10 +89,12 @@ set wildignore+=*.swp,*~,._*
 
 
 " Backup and swap files ------------------------------------
-set backupdir^=~/.vim/_backup//    " where to put backup files.
-set directory^=~/.vim/_temp//      " where to put swap files.
+set nobackup                      " turn backup off, since most stuff is in SVN, git etc anyway...
+set nowb
+set noswapfile
 
 
+" Open new split panes to right and bottom, which feels more natural
 set splitright
 set splitbelow
 
@@ -152,6 +156,10 @@ map <C-l> <C-w>l
 
 map <c-a> ggVG
 
+" Treat long lines as break lines (useful when moving around in them)
+map j gj
+map k gk
+
 "NERDTree settings
 map <Leader>n :NERDTreeToggle<CR>
 
@@ -186,10 +194,10 @@ map <Leader>zw :ZoomWin<cr>
 map <Leader>rt :TagbarToggle<cr>
 
 " disable cursor keys in normal mode
-map <Left>  :echo "no!"<cr>
-map <Right> :echo "no!"<cr>
-map <Up>    :echo "no!"<cr>
-map <Down>  :echo "no!"<cr>
+map <Left>  :echoe "Use h (Real programmers use Vim!)"<cr>
+map <Right> :echoe "Use l (Real programmers use Vim!)"<cr>
+map <Up>    :echoe "Use k (Real programmers use Vim!)"<cr>
+map <Down>  :echoe "Use j (Real programmers use Vim!)"<cr>
 
 if has("gui_macvim") && has("gui_running")
   " Map command-[ and command-] to indenting or outdenting
@@ -298,3 +306,8 @@ noremap <F5> :UndotreeToggle<cr>
 " In command-line mode, C-a jumps to beginning (to match C-e)
 cnoremap <C-a> <Home>
 
+
+" Local config
+if filereadable($HOME . "/.vimrc.local")
+  source ~/.vimrc.local
+endif
