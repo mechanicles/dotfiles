@@ -20,8 +20,6 @@ filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
 set history=50                    " keep 50 lines of command line history
 let mapleader = ","
-let g:Powerline_symbols = 'fancy'
-let g:Powerline_cache_enabled = 1
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=80
@@ -45,7 +43,7 @@ endif
 
 " Misc ---------------------------------------------------- 
 highlight clear SignColumn        " SignColumn should match background for things like vim-gitgutter
-set autoindent                    " always  set auto indenting on
+set autoindent                    " always set auto indenting on
 set display=lastline
 set lazyredraw                    " don't redraw while executing macros (good performance config)
 set showmatch                     " show matching brackets
@@ -114,6 +112,8 @@ endif
 " Invoke ag using ack.vim
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
+let g:NERDTreeHijackNetrw=0
+
 function s:setupWrapping()
   set wrap
   set wrapmargin=2
@@ -135,7 +135,7 @@ if has("autocmd")
   au BufNewFile,BufRead *.json set ft=javascript
 
   " Start with nerdtree
-  au vimenter * if !argc() | NERDTree | endif
+  "au vimenter * if !argc() | NERDTree | endif
 
   " Set cursorline to only current active buffer/window
   "au VimEnter,WinEnter,BufWinEnter,BufEnter * setlocal cursorline
