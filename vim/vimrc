@@ -137,17 +137,15 @@ if has("autocmd")
   " Start with nerdtree
   "au vimenter * if !argc() | NERDTree | endif
 
-  " Set cursorline to only current active buffer/window
-  "au VimEnter,WinEnter,BufWinEnter,BufEnter * setlocal cursorline
-  "au WinLeave,BufLeave * setlocal nocursorline
+  " Only show cursorline in the current window and in normal mode.
+  "au WinLeave,InsertEnter * set nocursorline
+  "au WinEnter,InsertLeave * set cursorline
 
 endif
 
 
 " Mappings
-
 map <Leader>rrt :!ctags --extra=+f -R *<CR><CR>
-
 
 map <C-h> <C-w>h
 map <C-j> <C-w>j
