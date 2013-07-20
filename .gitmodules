@@ -163,3 +163,6 @@
 [submodule "vim/colors/topfunkylight"]
 	path = vim/colors/topfunkylight
 	url = https://github.com/dotnetguyuk/vim-topfunkylight.git
+[submodule "vim/tools/vim-airline"]
+	path = vim/tools/vim-airline
+	url = git@github.com:bling/vim-airline.git

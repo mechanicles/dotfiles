@@ -11,6 +11,7 @@ execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}')
 
 " Use Vim settings, rather then Vi settings (much better!).
 set nocompatible
+colors molokai
 
 set number                        " enable line numbers
 set ruler                         " show the cursor position all the time
