@@ -11,7 +11,7 @@ execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}')
 
 " Use Vim settings, rather then Vi settings (much better!).
 set nocompatible
-colors molokai
+colorscheme molokai
 
 set number                        " enable line numbers
 set ruler                         " show the cursor position all the time
@@ -113,7 +113,7 @@ endif
 " Invoke ag using ack.vim
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
-let g:NERDTreeHijackNetrw=0
+let g:NERDTreeHijackNetrw = 0
 
 function s:setupWrapping()
   set wrap
@@ -122,6 +122,9 @@ function s:setupWrapping()
 endfunction
 
 if has("autocmd")
+  " Start with nerdtree
+  au vimenter * if !argc() | NERDTree | endif
+
   " Avoid showing trailing whitespace when in insert mode
   au InsertEnter * :set listchars-=trail:•
   au InsertLeave * :set listchars+=trail:•
@@ -135,13 +138,9 @@ if has("autocmd")
   " Treat JSON files like JavaScript
   au BufNewFile,BufRead *.json set ft=javascript
 
-  " Start with nerdtree
-  "au vimenter * if !argc() | NERDTree | endif
-
   " Only show cursorline in the current window and in normal mode.
   "au WinLeave,InsertEnter * set nocursorline
   "au WinEnter,InsertLeave * set cursorline
-
 endif
 
 
@@ -304,7 +303,6 @@ noremap <F5> :UndotreeToggle<cr>
 
 " In command-line mode, C-a jumps to beginning (to match C-e)
 cnoremap <C-a> <Home>
-
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
