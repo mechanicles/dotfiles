@@ -4,8 +4,10 @@
 "  Janus Vim Distribution
 "  Other
 
-let g:pathogen_disabled = ['vim-powerline']
-execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}')
+let g:pathogen_disabled = ['vim-powerline', 'vim-airline']
+execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}', '/Users/santoshwadghule/local_vim_plugins')
+call pathogen#helptags()
+
 
 " Basic setup ---------------------------------------------
 
@@ -113,7 +115,8 @@ endif
 " Invoke ag using ack.vim
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
-let g:NERDTreeHijackNetrw = 0
+let g:NERDTreeHijackNetrw=0
+let g:nerdtree_tabs_open_on_console_startup=1
 
 function s:setupWrapping()
   set wrap
@@ -303,6 +306,10 @@ noremap <F5> :UndotreeToggle<cr>
 
 " In command-line mode, C-a jumps to beginning (to match C-e)
 cnoremap <C-a> <Home>
+
+if $TMUX == ''
+  set clipboard+=unnamed
+endif
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
