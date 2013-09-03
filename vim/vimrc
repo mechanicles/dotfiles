@@ -6,13 +6,15 @@
 
 let g:pathogen_disabled = ['vim-powerline', 'vim-airline']
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}', '/Users/santoshwadghule/local_vim_plugins')
-call pathogen#helptags()
+"call pathogen#helptags()
 
 
 " Basic setup ---------------------------------------------
 
 " Use Vim settings, rather then Vi settings (much better!).
 set nocompatible
+
+" Colorscheme
 colorscheme molokai
 
 set number                        " enable line numbers
@@ -88,9 +90,8 @@ set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
-
 " Backup and swap files ------------------------------------
-set nobackup                      " turn backup off, since most stuff is in SVN, git etc anyway...
+set nobackup                      " turn backup off, since most stuff is in SVN, Git etc anyway...
 set nowb
 set noswapfile
 
@@ -115,8 +116,10 @@ endif
 " Invoke ag using ack.vim
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
+" NERDTree settings
 let g:NERDTreeHijackNetrw=0
 let g:nerdtree_tabs_open_on_console_startup=1
+map <Leader>n :NERDTreeToggle<CR>
 
 function s:setupWrapping()
   set wrap
@@ -141,11 +144,9 @@ if has("autocmd")
   " Treat JSON files like JavaScript
   au BufNewFile,BufRead *.json set ft=javascript
 
-  " Only show cursorline in the current window and in normal mode.
-  "au WinLeave,InsertEnter * set nocursorline
-  "au WinEnter,InsertLeave * set cursorline
+  " Better commit message
+  au Filetype gitcommit setlocal spell textwidth=72
 endif
-
 
 " Mappings
 map <Leader>rrt :!ctags --extra=+f -R *<CR><CR>
@@ -156,13 +157,6 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 map <c-a> ggVG
-
-" Treat long lines as break lines (useful when moving around in them)
-map j gj
-map k gk
-
-"NERDTree settings
-map <Leader>n :NERDTreeToggle<CR>
 
 " format the entire file
 nmap <leader>fef ggVG=
@@ -177,10 +171,6 @@ nmap <leader>L mQgewvu`Q
 
 " find merge conflict markers
 nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-
-" Map the arrow keys to be based on display lines, not physical lines
-map <Down> gj
-map <Up> gk
 
 " Toggle hlsearch with <leader>hs
 nmap <leader>hs :set hlsearch! hlsearch?<CR>
@@ -307,6 +297,11 @@ noremap <F5> :UndotreeToggle<cr>
 " In command-line mode, C-a jumps to beginning (to match C-e)
 cnoremap <C-a> <Home>
 
+
+" paste lines from unnamed register and fix indentation
+nmap <leader>p pV`]=
+nmap <leader>P PV`]=
+
 if $TMUX == ''
   set clipboard+=unnamed
 endif
@@ -315,3 +310,4 @@ endif
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
