@@ -36,6 +36,9 @@ alias gsf='git submodule foreach git pull' # update submodules
 alias tmux="TERM=screen-256color-bce tmux"
 alias tpob="tmux new -s opbuilder"
 
+# Vim
+alias vime="vim ~/.vimrc"
+
 # Show git branch name to your shell prompt
 function parse_git_branch_and_add_brackets {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\ \[\1\]/'
