@@ -1,4 +1,4 @@
-" Thanks: 
+" Thanks:
 "  Tim Pope
 "  Mislav Marohnić
 "  Janus Vim Distribution
@@ -6,7 +6,7 @@
 
 let g:pathogen_disabled = ['vim-powerline', 'vim-airline', 'YouCompleteMe']
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}', '/Users/santoshwadghule/local_vim_plugins')
-"call pathogen#helptags()
+call pathogen#helptags()
 
 
 " Basic setup ---------------------------------------------
@@ -45,7 +45,7 @@ set nojoinspaces                  " Use only 1 space after "." when joining line
   "let macvim_hig_shift_movement = 1 " mvim shift-arrow-keys
 "endif
 
-" Misc ---------------------------------------------------- 
+" Misc ----------------------------------------------------
 highlight clear SignColumn        " SignColumn should match background for things like vim-gitgutter
 set autoindent                    " always set auto indenting on
 set display=lastline
@@ -86,6 +86,9 @@ set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 " Ignore bundler and sass cache
 set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 
+" Ignore rails temporary asset caches
+set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
+
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
@@ -119,6 +122,10 @@ let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:NERDTreeHijackNetrw=0
 let g:nerdtree_tabs_open_on_console_startup=1
 map <Leader>n :NERDTreeToggle<CR>
+
+
+" Disable 'Entering Ex mode'
+map Q <Nop>
 
 function s:setupWrapping()
   set wrap
@@ -231,6 +238,23 @@ cnoremap <C-a> <Home>
 " paste lines from unnamed register and fix indentation
 nmap <leader>p pV`]=
 nmap <leader>P PV`]=
+
+" Fix constant spelling mistakes
+iab Acheive    Achieve
+iab acheive    achieve
+iab Alos       Also
+iab alos       also
+iab Aslo       Also
+iab aslo       also
+iab Becuase    Because
+iab becuase    because
+iab Bianries   Binaries
+iab Charcter   Character
+iab charcter   character
+iab Charcters  Characters
+iab charcters  characters
+iab Seperate   Separate
+iab seperate   separate
 
 if $TMUX == ''
   set clipboard+=unnamed
