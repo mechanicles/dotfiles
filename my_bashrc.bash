@@ -1,6 +1,7 @@
 # Commands
 alias solr_start='rake sunspot:solr:start'
 alias solr_stop='rake sunspot:solr:stop'
+alias solr_reindex='rake sunspot:solr:reindex'
 alias test_solr_start='RAILS_ENV=test rake sunspot:solr:start'
 alias test_solr_stop='RAILS_ENV=test rake sunspot:solr:stop'
 alias dj_start='script/delayed_job start'
