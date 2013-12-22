@@ -15,6 +15,7 @@ alias paux='ps aux| grep'
 
 # Bundler
 alias b="bundle"
+alias be="bundle exec"
 
 # Rubygems
 alias gi="gem install"

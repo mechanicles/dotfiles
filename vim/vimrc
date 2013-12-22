@@ -16,14 +16,15 @@ syntax enable                     " syntax highlighting
 set nocompatible
 
 " Colorscheme
-colorscheme molokai
+colo seoul256
+
 
 set number                        " enable line numbers
 set ruler                         " show the cursor position all the time
 set title                         " show file in titlebar
 filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
-set history=1000                    " keep 50 lines of command line history
+set history=1000                  " keep 1000 lines of command line history
 let mapleader = ","
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
@@ -41,8 +42,8 @@ set list                          " show invisible characters
 set nojoinspaces                  " Use only 1 space after "." when joining lines, not 2
 
 " Misc ----------------------------------------------------
-highlight clear SignColumn        " SignColumn should match background for things like vim-gitgutter
-autocmd ColorScheme * highlight link SignColumn LineNr
+"highlight clear SignColumn        " SignColumn should match background for things like vim-gitgutter
+"autocmd ColorScheme * highlight link SignColumn LineNr
 
 set autoindent                    " always set auto indenting on
 set display=lastline
@@ -185,7 +186,7 @@ nmap <leader>hs :set hlsearch! hlsearch?<CR>
 map <Leader>= <C-w>=
 
 " ZoomWin map
-map <Leader>zw :ZoomWin<cr>
+"map <Leader>zw :ZoomWin<cr>
 
 " TagbarToggle
 map <Leader>rt :TagbarToggle<cr>
@@ -255,6 +256,11 @@ iab Charcters  Characters
 iab charcters  characters
 iab Seperate   Separate
 iab seperate   separate
+
+" Vim-CtrlSpace settings
+hi CtrlSpaceSelected term=reverse ctermfg=187  ctermbg=23  cterm=bold
+hi CtrlSpaceNormal   term=NONE    ctermfg=244  ctermbg=232 cterm=NONE
+hi CtrlSpaceFound    ctermfg=220  ctermbg=NONE cterm=bold
 
 if $TMUX == ''
   set clipboard+=unnamed

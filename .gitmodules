@@ -139,18 +139,12 @@
 [submodule "vim/colors/ir_black"]
 	path = vim/colors/ir_black
 	url = https://github.com/twerth/ir_black.git
-[submodule "vim/tools/nerdtree-tabs"]
-	path = vim/tools/nerdtree-tabs
-	url = https://github.com/jistr/vim-nerdtree-tabs.git
 [submodule "vim/tools/gitgutter"]
 	path = vim/tools/gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "vim/tools/undotree"]
 	path = vim/tools/undotree
 	url = https://github.com/mbbill/undotree.git
-[submodule "vim/tools/zoomwin"]
-	path = vim/tools/zoomwin
-	url = https://github.com/regedarek/ZoomWin.git
 [submodule "vim/tools/calendar"]
 	path = vim/tools/calendar
 	url = https://github.com/mattn/calendar-vim.git
