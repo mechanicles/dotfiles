@@ -4,10 +4,8 @@
 "  Janus Vim Distribution
 "  Other
 
-let g:pathogen_disabled = ['vim-powerline', 'vim-airline', 'YouCompleteMe']
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}', '/Users/santoshwadghule/local_vim_plugins/{}')
 call pathogen#helptags()
-
 
 " Basic setup ---------------------------------------------
 syntax enable                     " syntax highlighting
@@ -17,7 +15,6 @@ set nocompatible
 
 " Colorscheme
 colo seoul256
-
 
 set number                        " enable line numbers
 set ruler                         " show the cursor position all the time

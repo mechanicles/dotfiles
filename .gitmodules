@@ -130,3 +130,6 @@
 [submodule "vim/tools/vim-addon-mw-utils"]
 	path = vim/tools/vim-addon-mw-utils
 	url = git@github.com:MarcWeber/vim-addon-mw-utils.git
+[submodule "vim/colors/seoul256"]
+	path = vim/colors/seoul256
+	url = git@github.com:junegunn/seoul256.vim.git
