@@ -4,7 +4,7 @@
 "  Janus Vim Distribution
 "  Other
 
-let g:pathogen_disabled = ['vim-powerline', 'vim-airline', 'YouCompleteMe', 'indentLine']
+let g:pathogen_disabled = ['vim-powerline', 'vim-airline', 'YouCompleteMe']
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}', '/Users/santoshwadghule/local_vim_plugins/{}')
 call pathogen#helptags()
 
@@ -185,8 +185,10 @@ nmap <leader>hs :set hlsearch! hlsearch?<CR>
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
-" ZoomWin map
-"map <Leader>zw :ZoomWin<cr>
+" vim-maximizer (Zoom)
+noremap <Leader>zw :MaximizerToggle<CR>
+vnoremap <Leader>zw :MaximizerToggle<CR>gv
+inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
 
 " TagbarToggle
 map <Leader>rt :TagbarToggle<cr>
