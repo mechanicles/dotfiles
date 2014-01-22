@@ -4,6 +4,12 @@
 "  Janus Vim Distribution
 "  Other
 
+let g:pathogen_disabled = ['indentLine', 'Calendar']
+
+"if !has('gui_running')
+  "call add(g:pathogen_disabled, 'css-color')
+"endif
+
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}', '/Users/santoshwadghule/local_vim_plugins/{}')
 call pathogen#helptags()
 
@@ -17,11 +23,13 @@ set nocompatible
 colo seoul256
 
 set number                        " enable line numbers
+set numberwidth=5
 set ruler                         " show the cursor position all the time
+set cursorline                    " highlight the line of the cursor
 set title                         " show file in titlebar
 filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
-set history=1000                  " keep 1000 lines of command line history
+set history=200                   " keep 1000 lines of command line history
 let mapleader = ","
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
@@ -60,7 +68,7 @@ set autoread
 set updatecount=0
 
 " Indicator chars
-set listchars=tab:▸\ ,trail:•,extends:❯,precedes:❮
+set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
 set showbreak=↪\
 
 
@@ -71,6 +79,12 @@ set ignorecase                    " searches are case insensitive...
 set smartcase                     " unless they contain at least one capital letter
 set gdefault                      " have :s///g flag by default on
 
+
+" Time out on key codes but not mappings.
+" Basically this makes terminal Vim work sanely.
+set notimeout
+set ttimeout
+set ttimeoutlen=100
 
 " Disable output and VCS files
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
@@ -104,14 +118,35 @@ command EditBash :edit   ~/.bashrc
 if has("statusline") && !&cp
   set laststatus=2              " always show the status bar
   set statusline=%f\ %m\ %r     " filename, modified, readonly
-  set statusline+=%{fugitive#statusline()}
+  set statusline+=%{fugitive#head()}
   set statusline+=\ %l/%L[%p%%] " current line/total lines
   set statusline+=\ %v[0x%B]    " current column [hex char]
 endif
 
 " The silver searcher (Faster than the ack)
 " Invoke ag using ack.vim
-let g:ackprg = 'ag --nogroup --nocolor --column'
+if executable("ag")
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  let g:ackprg = 'ag --nogroup --nocolor --column'
+  let g:agprg="ag --column"
+
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_use_caching = 0
+endif
+
+" Snippets are activated by Shift+Tab
+let g:snippetsEmu_key = "<S-Tab>"
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+
+nnoremap \ :Ack<SPACE>
+
 
 " NERDTree settings
 let g:NERDTreeHijackNetrw=0
@@ -121,6 +156,17 @@ map <Leader>n :NERDTreeToggle<CR>
 
 " Disable 'Entering Ex mode'
 map Q <Nop>
+map gs <Nop>
+
+" yank to system clipboard
+map <leader>y "*y
+
+" paste lines from unnamed register and fix indentation
+nmap <leader>p pV`]=
+nmap <leader>P PV`]=
+
+" expand %% to current directory in command-line mode
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 function s:setupWrapping()
   set wrap
@@ -129,24 +175,27 @@ function s:setupWrapping()
 endfunction
 
 if has("autocmd")
-  " Start with nerdtree
-  au vimenter * if !argc() | NERDTree | endif
-
   " Avoid showing trailing whitespace when in insert mode
-  au InsertEnter * :set listchars-=trail:•
-  au InsertLeave * :set listchars+=trail:•
+  au InsertEnter * :set listchars-=trail:·
+  au InsertLeave * :set listchars+=trail:·
 
   " In Makefiles, use real tabs, not tabs expanded to spaces
-  au FileType make set noexpandtab
+  au FileType {make,gitconfig} set noexpandtab
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
   au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setupWrapping()
 
   " Treat JSON files like JavaScript
-  au BufNewFile,BufRead *.json set ft=javascript
+  au BufNewFile,BufRead *.json setf javascript
 
   " Better commit message
   au Filetype gitcommit setlocal spell textwidth=72
+
+  " For all text files set 'textwidth' to 80 characters.
+  au Filetype text setlocal textwidth=80
+
+  " Enable spellchecking for Markdown
+  au FileType markdown setlocal spell
 
   au FileType javascript,css,ruby,rake,erb nmap <silent> ,; :call cosco#commaOrSemiColon()<CR>
   au FileType javascript,css,ruby,rake,erb inoremap <silent> ,; <ESC>:call cosco#commaOrSemiColon()"<CR>a
@@ -234,10 +283,6 @@ noremap <F5> :UndotreeToggle<cr>
 
 " In command-line mode, C-a jumps to beginning (to match C-e)
 cnoremap <C-a> <Home>
-
-" paste lines from unnamed register and fix indentation
-nmap <leader>p pV`]=
-nmap <leader>P PV`]=
 
 " Fix constant spelling mistakes
 iab Acheive    Achieve
