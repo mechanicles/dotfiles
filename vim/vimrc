@@ -4,7 +4,7 @@
 "  Janus Vim Distribution
 "  Other
 
-let g:pathogen_disabled = ['indentLine', 'Calendar']
+let g:pathogen_disabled = ['indentLine', 'Calendar', 'css-color', 'undotree']
 
 "if !has('gui_running')
   "call add(g:pathogen_disabled, 'css-color')
@@ -13,19 +13,18 @@ let g:pathogen_disabled = ['indentLine', 'Calendar']
 execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}', '/Users/santoshwadghule/local_vim_plugins/{}')
 call pathogen#helptags()
 
-" Basic setup ---------------------------------------------
-syntax enable                     " syntax highlighting
+" Colorscheme
+colorscheme seoul256
 
 " Use Vim settings, rather then Vi settings (much better!).
 set nocompatible
 
-" Colorscheme
-colo seoul256
-
-set number                        " enable line numbers
+" Basic setup ---------------------------------------------
+syntax enable                     " syntax highlighting
+set number                        " show line numbers
 set numberwidth=5
 set ruler                         " show the cursor position all the time
-set cursorline                    " highlight the line of the cursor
+set cursorline                    " highlight current line
 set title                         " show file in titlebar
 filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
@@ -34,6 +33,16 @@ let mapleader = ","
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=80
+set showcmd                       " show partial commands below the status line
+set wildmenu                      " visual autocomplete for command menu
+set lazyredraw                    " don't redraw while executing macros (good performance config)
+set showmatch                     " show matching brackets
+set autoindent                    " always set auto indenting on
+set display=lastline
+set scrolljump=5                  " lines to scroll when cursor leaves screen
+set scrolloff=3                   " minimum lines to keep above and below cursor
+set hidden
+set foldenable                    " auto fold code
 
 " Whitespace -----------------------------------------------
 set nowrap                        " don't wrap text
@@ -46,20 +55,12 @@ set backspace=indent,eol,start    " backspace through everything in insert mode
 set list                          " show invisible characters
 set nojoinspaces                  " Use only 1 space after "." when joining lines, not 2
 
-" Misc ----------------------------------------------------
-"highlight clear SignColumn        " SignColumn should match background for things like vim-gitgutter
-"autocmd ColorScheme * highlight link SignColumn LineNr
+" Movement
+nnoremap j gj
+nnoremap k gk
 
-set autoindent                    " always set auto indenting on
-set display=lastline
-set lazyredraw                    " don't redraw while executing macros (good performance config)
-set showmatch                     " show matching brackets
-set showcmd                       " show partial commands below the status line
-
-set scrolljump=5                  " lines to scroll when cursor leaves screen
-set scrolloff=3                   " minimum lines to keep above and below cursor
-set hidden
-set foldenable                    " auto fold code
+" highlight last inserted text
+nnoremap gV `[v`]
 
 " Auto-reload buffers when file changed on disk
 set autoread
@@ -71,14 +72,12 @@ set updatecount=0
 set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
 set showbreak=↪\
 
-
 " Searching -----------------------------------------------
 set hlsearch                      " highlight matches
 set incsearch                     " incremental searching
 set ignorecase                    " searches are case insensitive...
 set smartcase                     " unless they contain at least one capital letter
 set gdefault                      " have :s///g flag by default on
-
 
 " Time out on key codes but not mappings.
 " Basically this makes terminal Vim work sanely.
@@ -106,7 +105,6 @@ set nobackup                      " turn backup off, since most stuff is in SVN,
 set nowb
 set noswapfile
 
-
 " Open new split panes to right and bottom, which feels more natural
 set splitright
 set splitbelow
@@ -133,7 +131,25 @@ if executable("ag")
   let g:agprg="ag --column"
 
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  let g:ctrlp_use_caching = 0
+endif
+
+" CtrlP settings
+let g:ctrlp_use_caching = 0
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path_mode = 0
+
+" Tmux settings
+if $TMUX == ''
+  set clipboard+=unnamed
+endif
+
+" allows cursor change in tmux mode
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
 " Snippets are activated by Shift+Tab
@@ -147,12 +163,10 @@ command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 nnoremap \ :Ack<SPACE>
 
-
 " NERDTree settings
 let g:NERDTreeHijackNetrw=0
 let g:nerdtree_tabs_open_on_console_startup=1
 map <Leader>n :NERDTreeToggle<CR>
-
 
 " Disable 'Entering Ex mode'
 map Q <Nop>
@@ -306,12 +320,8 @@ hi CtrlSpaceSelected term=reverse ctermfg=187  ctermbg=23  cterm=bold
 hi CtrlSpaceNormal   term=NONE    ctermfg=244  ctermbg=232 cterm=NONE
 hi CtrlSpaceFound    ctermfg=220  ctermbg=NONE cterm=bold
 
-if $TMUX == ''
-  set clipboard+=unnamed
-endif
-
 " Local config
-if filereadable($HOME . "/.vimrc.local")
-  source ~/.vimrc.local
-endif
+"if filereadable($HOME . "/.vimrc.local")
+  "source ~/.vimrc.local
+"endif
 
