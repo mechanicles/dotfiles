@@ -1,23 +1,53 @@
 " Thanks:
 "  Tim Pope
+"  Gmarik
 "  Mislav Marohnić
-"  Janus Vim Distribution
 "  Other
+"
 
-let g:pathogen_disabled = ['indentLine', 'Calendar', 'css-color', 'undotree']
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-"if !has('gui_running')
-  "call add(g:pathogen_disabled, 'css-color')
-"endif
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+" alternatively, pass a path where Vundle should install plugins
+" let path = '~/some/path/here'
+" call vundle#rc(path)
 
-execute pathogen#infect('bundle/{}', 'colors/{}', 'tools/{}', '/Users/santoshwadghule/local_vim_plugins/{}')
-call pathogen#helptags()
+" let Vundle manage Vundle, required
+Plugin 'gmarik/vundle'
+
+Plugin 'tpope/vim-fugitive'
+Plugin 'kien/ctrlp.vim'
+Plugin 'ddollar/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'ervandew/supertab'
+Plugin 'scrooloose/syntastic'
+Plugin 'majutsushi/tagbar'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'tpope/vim-rails'
+Plugin 'tomasr/molokai'
+Plugin 'pangloss/vim-javascript'
+Plugin 'tpope/vim-markdown'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-git'
+Plugin 'skwp/vim-rspec'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-surround'
+Plugin 'edsono/vim-matchit'
+Plugin 'tomtom/tlib_vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'mileszs/ack.vim'
+Plugin 'junegunn/seoul256.vim'
+
 
 " Colorscheme
 colorscheme seoul256
-
-" Use Vim settings, rather then Vi settings (much better!).
-set nocompatible
 
 " Basic setup ---------------------------------------------
 syntax enable                     " syntax highlighting
@@ -314,11 +344,6 @@ iab Charcters  Characters
 iab charcters  characters
 iab Seperate   Separate
 iab seperate   separate
-
-" Vim-CtrlSpace settings
-hi CtrlSpaceSelected term=reverse ctermfg=187  ctermbg=23  cterm=bold
-hi CtrlSpaceNormal   term=NONE    ctermfg=244  ctermbg=232 cterm=NONE
-hi CtrlSpaceFound    ctermfg=220  ctermbg=NONE cterm=bold
 
 " Local config
 "if filereadable($HOME . "/.vimrc.local")
