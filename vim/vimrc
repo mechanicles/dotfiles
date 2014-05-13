@@ -44,17 +44,26 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'mileszs/ack.vim'
 Plugin 'junegunn/seoul256.vim'
-
+Plugin 'szw/vim-maximizer'
+Plugin 'justinmk/vim-sneak'
+Plugin 'godlygeek/tabular'
+Plugin 't9md/vim-choosewin'
+Plugin 'mmozuras/vim-whitespace'
+Plugin 'w0ng/vim-hybrid'
+Plugin 'sunaku/vim-ruby-minitest'
+Plugin 'jnwhiteh/vim-golang'
+Plugin 'vim-scripts/SyntaxRange'
+Plugin 'tpope/vim-tbone'
 
 " Colorscheme
-colorscheme seoul256
+colorscheme hybrid
 
 " Basic setup ---------------------------------------------
 syntax enable                     " syntax highlighting
 set number                        " show line numbers
 set numberwidth=5
 set ruler                         " show the cursor position all the time
-set cursorline                    " highlight current line
+"set cursorline                    " highlight current line
 set title                         " show file in titlebar
 filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
@@ -164,9 +173,21 @@ if executable("ag")
 endif
 
 " CtrlP settings
-let g:ctrlp_use_caching = 0
-let g:ctrlp_switch_buffer = 0
+let g:ctrlp_use_caching       = 0
+let g:ctrlp_switch_buffer     = 0
 let g:ctrlp_working_path_mode = 0
+
+" Treat <li> and <p> tags like the block tags they are
+let g:html_indent_tags = 'li\|p'
+
+" configure syntastic syntax checking to check on open as well as save
+let g:syntastic_check_on_open=1
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
 
 " Tmux settings
 if $TMUX == ''
@@ -239,7 +260,7 @@ if has("autocmd")
   au Filetype text setlocal textwidth=80
 
   " Enable spellchecking for Markdown
-  au FileType markdown setlocal spell
+  "au FileType markdown setlocal spell
 
   au FileType javascript,css,ruby,rake,erb nmap <silent> ,; :call cosco#commaOrSemiColon()<CR>
   au FileType javascript,css,ruby,rake,erb inoremap <silent> ,; <ESC>:call cosco#commaOrSemiColon()"<CR>a
@@ -247,11 +268,6 @@ endif
 
 " Mappings
 map <Leader>rrt :!ctags --extra=+f -R *<CR><CR>
-
-"map <C-h> <C-w>h
-"map <C-j> <C-w>j
-"map <C-k> <C-w>k
-"map <C-l> <C-w>l
 
 map <c-a> ggVG
 
@@ -284,18 +300,18 @@ inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
 map <Leader>rt :TagbarToggle<cr>
 
 " disable cursor keys in normal mode
-map <Left>  :echoe "Use h (Real programmers use Vim!)"<cr>
-map <Right> :echoe "Use l (Real programmers use Vim!)"<cr>
-map <Up>    :echoe "Use k (Real programmers use Vim!)"<cr>
-map <Down>  :echoe "Use j (Real programmers use Vim!)"<cr>
+map <Left>  :echoe "Use h"<cr>
+map <Right> :echoe "Use l"<cr>
+map <Up>    :echoe "Use k"<cr>
+map <Down>  :echoe "Use j"<cr>
 
 "Bubble single lines
-nmap <C-k> [e
-nmap <C-j> ]e
+"nmap <C-k> [e
+"nmap <C-j> ]e
 
 "Bubble multiple lines
-vmap <C-k> [egv
-vmap <C-j> ]egv
+"vmap <C-k> [egv
+"vmap <C-j> ]egv
 
 "Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
