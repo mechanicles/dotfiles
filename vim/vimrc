@@ -9,14 +9,14 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-" let path = '~/some/path/here'
-" call vundle#rc(path)
+"call vundle#begin('~/some/path/here')
+
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
 Plugin 'kien/ctrlp.vim'
@@ -54,12 +54,25 @@ Plugin 'sunaku/vim-ruby-minitest'
 Plugin 'jnwhiteh/vim-golang'
 Plugin 'vim-scripts/SyntaxRange'
 Plugin 'tpope/vim-tbone'
+Plugin 'xolox/vim-misc' " Dependency of vim-easytags
+Plugin 'xolox/vim-easytags'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'pbrisbin/vim-mkdir'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
 
 " Colorscheme
 colorscheme hybrid
 
 " Basic setup ---------------------------------------------
-syntax enable                     " syntax highlighting
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
+  syntax on
+endif
+
 set number                        " show line numbers
 set numberwidth=5
 set ruler                         " show the cursor position all the time
@@ -267,7 +280,7 @@ if has("autocmd")
 endif
 
 " Mappings
-map <Leader>rrt :!ctags --extra=+f -R *<CR><CR>
+map <Leader>ct :!ctags -R .<CR>
 
 map <c-a> ggVG
 
@@ -304,6 +317,12 @@ map <Left>  :echoe "Use h"<cr>
 map <Right> :echoe "Use l"<cr>
 map <Up>    :echoe "Use k"<cr>
 map <Down>  :echoe "Use j"<cr>
+
+
+" Git Hunks
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+nmap <Leader>hv <Plug>GitGutterPreviewHunk " Preview hunk
 
 "Bubble single lines
 "nmap <C-k> [e
