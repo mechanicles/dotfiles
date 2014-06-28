@@ -38,6 +38,7 @@ alias gco='git checkout'
 alias gb='git branch'
 alias gs='git status -sb' # upgrade your git if -sb breaks for you. it's fun.
 alias gsf='git submodule foreach git pull' # update submodules
+alias grm='git fetch origin && git rebase -i origin/master'
 
 # Tmux
 alias tmux="TERM=screen-256color-bce tmux"
