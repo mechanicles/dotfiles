@@ -30,7 +30,6 @@ Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'tpope/vim-rails'
-Plugin 'tomasr/molokai'
 Plugin 'pangloss/vim-javascript'
 Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-endwise'
@@ -48,7 +47,6 @@ Plugin 'honza/vim-snippets'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'mileszs/ack.vim'
-Plugin 'junegunn/seoul256.vim'
 Plugin 'szw/vim-maximizer'
 Plugin 'justinmk/vim-sneak'
 Plugin 'godlygeek/tabular'
@@ -56,14 +54,12 @@ Plugin 't9md/vim-choosewin'
 Plugin 'mmozuras/vim-whitespace'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'sunaku/vim-ruby-minitest'
-Plugin 'jnwhiteh/vim-golang'
-Plugin 'vim-scripts/SyntaxRange'
 Plugin 'tpope/vim-tbone'
 Plugin 'xolox/vim-misc' " Dependency of vim-easytags
 Plugin 'xolox/vim-easytags'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'pbrisbin/vim-mkdir'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'maxbrunsfeld/vim-yankstack'
 
 "=== PLUGINS ===}
 
@@ -89,13 +85,7 @@ endif
 
 "{=== BASIC SETUP ===
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
-  syntax on
-endif
-
-
+syntax enable
 set number                        " show line numbers
 set numberwidth=5
 set ruler                         " show the cursor position all the time
@@ -103,7 +93,7 @@ set ruler                         " show the cursor position all the time
 set title                         " show file in titlebar
 filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
-set history=200                   " keep 1000 lines of command line history
+set history=1000                   " keep 1000 lines of command line history
 let mapleader = ","
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
@@ -118,6 +108,7 @@ set scrolljump=5                  " lines to scroll when cursor leaves screen
 set scrolloff=3                   " minimum lines to keep above and below cursor
 set hidden
 set foldenable                    " auto fold code
+set pastetoggle=<F2>
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -177,8 +168,11 @@ set noswapfile
 set splitright
 set splitbelow
 
+" mac's option key for yankring
+set macmeta
+
 if has("statusline") && !&cp
-  set laststatus=2              " always show the status bar
+  set laststatus=2               " always show the status bar
   set statusline=%f\ %m\ %r     " filename, modified, readonly
   set statusline+=%{fugitive#head()}
   set statusline+=\ %l/%L[%p%%] " current line/total lines
