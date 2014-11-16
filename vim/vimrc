@@ -37,6 +37,9 @@ Plugin 'tpope/vim-git'
 Plugin 'skwp/vim-rspec'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-bundler'
+Plugin 'skalnik/vim-vroom'
+Plugin 'tpope/vim-vinegar'
 Plugin 'edsono/vim-matchit'
 " Snipmate && Sippests dependencies
 Plugin 'tomtom/tlib_vim'
@@ -54,12 +57,13 @@ Plugin 't9md/vim-choosewin'
 Plugin 'mmozuras/vim-whitespace'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'sunaku/vim-ruby-minitest'
-Plugin 'tpope/vim-tbone'
-Plugin 'xolox/vim-misc' " Dependency of vim-easytags
-Plugin 'xolox/vim-easytags'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'maxbrunsfeld/vim-yankstack'
+Plugin 'ngmy/vim-rubocop'
+Plugin 'terryma/vim-expand-region'
+Plugin 'tpope/vim-fireplace'
+Plugin 'ap/vim-buftabline'
 
 "=== PLUGINS ===}
 
@@ -93,7 +97,7 @@ set ruler                         " show the cursor position all the time
 set title                         " show file in titlebar
 filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
-set history=1000                   " keep 1000 lines of command line history
+set history=700                   " keep 700 lines of command line history
 let mapleader = ","
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
@@ -102,6 +106,7 @@ set showcmd                       " show partial commands below the status line
 set wildmenu                      " visual autocomplete for command menu
 set lazyredraw                    " don't redraw while executing macros (good performance config)
 set showmatch                     " show matching brackets
+set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
 set display=lastline
 set scrolljump=5                  " lines to scroll when cursor leaves screen
@@ -109,6 +114,7 @@ set scrolloff=3                   " minimum lines to keep above and below cursor
 set hidden
 set foldenable                    " auto fold code
 set pastetoggle=<F2>
+set confirm                       " get a dialog when :q, :w, or :wq fails
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -209,7 +215,6 @@ let g:snippetsEmu_key = "<S-Tab>"
 
 " NERDTree settings
 let g:NERDTreeHijackNetrw=1
-let g:nerdtree_tabs_open_on_console_startup=1
 
 "=== LETTINGS ===}
 
@@ -291,6 +296,8 @@ nmap <leader>hs :set hlsearch! hlsearch?<CR>
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
+map <leader>gf :e <cfile><cr>
+
 " vim-maximizer (Zoom)
 noremap <Leader>zw :MaximizerToggle<CR>
 vnoremap <Leader>zw :MaximizerToggle<CR>gv
@@ -341,17 +348,38 @@ noremap <F5> :UndotreeToggle<cr>
 " In command-line mode, C-a jumps to beginning (to match C-e)
 cnoremap <C-a> <Home>
 
+" vim-expand-region
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+nmap <leader>T :enew<cr>
+
+" Move to the next buffer
+nmap <leader>ll :bnext<CR>
+
+" Move to the previous buffer
+nmap <leader>hh :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
+
 "=== MAPPINGS ===}
 
 
 "{=== COMMANDS ===>
 
 " Easy edit/open commands
-command EditVim  :edit   ~/.vimrc
-command EditBash :edit   ~/.bashrc
+command! EditVim  :edit   ~/.vimrc
+command! EditBash :edit   ~/.bashrc
 
  "bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 "=== COMMANDS ===}
 
@@ -387,6 +415,9 @@ if has("autocmd")
 
   au FileType javascript,css,ruby,rake,erb nmap <silent> ,; :call cosco#commaOrSemiColon()<CR>
   au FileType javascript,css,ruby,rake,erb inoremap <silent> ,; <ESC>:call cosco#commaOrSemiColon()"<CR>a
+
+  au StdinReadPre * let s:std_in=1
+  au VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 endif
 
 
