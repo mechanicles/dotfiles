@@ -54,7 +54,7 @@ Plugin 'szw/vim-maximizer'
 Plugin 'justinmk/vim-sneak'
 Plugin 'godlygeek/tabular'
 Plugin 't9md/vim-choosewin'
-Plugin 'mmozuras/vim-whitespace'
+Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'sunaku/vim-ruby-minitest'
 Plugin 'kchmck/vim-coffee-script'
@@ -64,6 +64,7 @@ Plugin 'ngmy/vim-rubocop'
 Plugin 'terryma/vim-expand-region'
 Plugin 'tpope/vim-fireplace'
 Plugin 'ap/vim-buftabline'
+Plugin 'janko-m/vim-test'
 
 "=== PLUGINS ===}
 
@@ -98,7 +99,7 @@ set title                         " show file in titlebar
 filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
 set history=700                   " keep 700 lines of command line history
-let mapleader = ","
+let g:mapleader = ","
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=80
@@ -391,10 +392,6 @@ function s:setupWrapping()
 endfunction
 
 if has("autocmd")
-  " Avoid showing trailing whitespace when in insert mode
-  au InsertEnter * :set listchars-=trail:·
-  au InsertLeave * :set listchars+=trail:·
-
   " In Makefiles, use real tabs, not tabs expanded to spaces
   au FileType {make,gitconfig} set noexpandtab
 
