@@ -51,7 +51,6 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'mileszs/ack.vim'
 Plugin 'szw/vim-maximizer'
-Plugin 'justinmk/vim-sneak'
 Plugin 'godlygeek/tabular'
 Plugin 't9md/vim-choosewin'
 Plugin 'ntpeters/vim-better-whitespace'
@@ -65,11 +64,14 @@ Plugin 'terryma/vim-expand-region'
 Plugin 'tpope/vim-fireplace'
 Plugin 'ap/vim-buftabline'
 Plugin 'janko-m/vim-test'
-
+Plugin 'Raimondi/delimitMate'
+Plugin 'dhruvasagar/vim-railscasts-theme'
+Plugin 'dkprice/vim-easygrep'
 "=== PLUGINS ===}
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+filetype plugin indent on    " enable loading indent file for filetype
 
 "=== VUNDLE ===}
 
@@ -94,11 +96,9 @@ syntax enable
 set number                        " show line numbers
 set numberwidth=5
 set ruler                         " show the cursor position all the time
-"set cursorline                    " highlight current line
 set title                         " show file in titlebar
-filetype plugin indent on         " enable loading indent file for filetype
 set encoding=utf-8                " set default encoding to UTF-8
-set history=700                   " keep 700 lines of command line history
+set history=50                    " keep 50 lines of command line history
 let g:mapleader = ","
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
@@ -110,12 +110,16 @@ set showmatch                     " show matching brackets
 set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
 set display=lastline
-set scrolljump=5                  " lines to scroll when cursor leaves screen
 set scrolloff=3                   " minimum lines to keep above and below cursor
 set hidden
 set foldenable                    " auto fold code
 set pastetoggle=<F2>
 set confirm                       " get a dialog when :q, :w, or :wq fails
+
+" tenderlove's settings
+set suffixesadd=.rb
+set path+=lib/**,test/**
+let g:ruby_path = &path
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -152,7 +156,7 @@ set ttimeout
 set ttimeoutlen=100
 
 " Disable output and VCS files
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,tags
 
 " Disable archive files
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
@@ -164,7 +168,7 @@ set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*,*/solr/*,*/coverage/*,*/features/*,*/public/uploads/*
 
 " Disable temp and backup files
-set wildignore+=*.swp,*~,._*
+set wildignore+=*.swp,*~,._*,tags
 
 " Backup and swap files ------------------------------------
 set nobackup                      " turn backup off, since most stuff is in SVN, Git etc anyway...
@@ -250,8 +254,6 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 nnoremap \ :Ack<SPACE>
 
-map <Leader>n :NERDTreeToggle<CR>
-
 " Disable 'Entering Ex mode'
 map Q <Nop>
 map gs <Nop>
@@ -274,6 +276,8 @@ nmap <leader>P PV`]=
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 map <Leader>ct :!ctags -R .<CR>
+
+map <Leader>n :NERDTreeToggle<CR>
 
 map <c-a> ggVG
 
@@ -370,6 +374,9 @@ nmap <leader>bq :bp <BAR> bd #<CR>
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR>
 
+" Exit insert mode without using Esc
+inoremap jj <Esc>
+
 "=== MAPPINGS ===}
 
 
@@ -385,7 +392,7 @@ command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 "=== COMMANDS ===}
 
 
-function s:setupWrapping()
+function! s:setWrapping()
   set wrap
   set wrapmargin=2
   set textwidth=80
@@ -396,7 +403,7 @@ if has("autocmd")
   au FileType {make,gitconfig} set noexpandtab
 
   " Make sure all markdown files have the correct filetype set and setup wrapping
-  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setupWrapping()
+  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setWrapping()
 
   " Treat JSON files like JavaScript
   au BufNewFile,BufRead *.json setf javascript
@@ -439,4 +446,3 @@ iab seperate   separate
 "if filereadable($HOME . "/.vimrc.local")
   "source ~/.vimrc.local
 "endif
-
