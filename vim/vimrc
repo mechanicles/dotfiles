@@ -3,21 +3,16 @@
 "  Gmarik
 "  Mislav Marohnić
 "  Other
-"
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-"{=== VUNDLE ===
-
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-"{=== PLUGINS ===
-
+" call vundle#begin('~/some/path/here')
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
@@ -38,14 +33,16 @@ Plugin 'skwp/vim-rspec'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-bundler'
-Plugin 'skalnik/vim-vroom'
 Plugin 'tpope/vim-vinegar'
 Plugin 'edsono/vim-matchit'
+
 " Snipmate && Sippests dependencies
-Plugin 'tomtom/tlib_vim'
 Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
+Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'airblade/vim-gitgutter'
@@ -61,37 +58,36 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'ngmy/vim-rubocop'
 Plugin 'terryma/vim-expand-region'
-Plugin 'tpope/vim-fireplace'
 Plugin 'ap/vim-buftabline'
 Plugin 'janko-m/vim-test'
-Plugin 'Raimondi/delimitMate'
+"Plugin 'Raimondi/delimitMate'
+Plugin 'jiangmiao/auto-pairs'
+
 Plugin 'dhruvasagar/vim-railscasts-theme'
 Plugin 'dkprice/vim-easygrep'
-"=== PLUGINS ===}
+Plugin 'tpope/vim-dispatch'
+Plugin 'rizzatti/dash.vim'
+Plugin 'zefei/vim-colortuner'
+Plugin 'zefei/cake16'
+Plugin 'rhysd/clever-f.vim'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'henrik/vim-indexed-search'
+Plugin 'NLKNguyen/papercolor-theme'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " enable loading indent file for filetype
 
-"=== VUNDLE ===}
-
-
-"{=== COLORSCHEME SETTINGS ===
-
-colorscheme solarized
-
+" Colorsheme settings.
 if has('gui_running')
-  set background=light
-  colorscheme solarized
+  "colorscheme cake16
+  set t_Co=256
+  colorscheme PaperColor
 else
   colorscheme hybrid
 endif
 
-"=== COLORSCHEME SETTINGS ===}
-
-
-"{=== BASIC SETUP ===
-
+"Basic setup
 syntax enable
 set number                        " show line numbers
 set numberwidth=5
@@ -139,7 +135,7 @@ set autoread
 set updatecount=0
 
 " Indicator chars
-set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
+set listchars=tab:▸\ ,trail:·,nbsp:·,extends:❯,precedes:❮
 set showbreak=↪\
 
 " Searching
@@ -182,18 +178,20 @@ set splitbelow
 " mac's option key for yankring
 set macmeta
 
+" Autocomplete with dictionary words when spell check is on
+set complete+=kspell
+
+" Always use vertical diffs
+set diffopt+=vertical
+
 if has("statusline") && !&cp
-  set laststatus=2               " always show the status bar
+  set laststatus=2              " always show the status bar
   set statusline=%f\ %m\ %r     " filename, modified, readonly
-  set statusline+=%{fugitive#head()}
+  set statusline+=%=            " switch to the right side
   set statusline+=\ %l/%L[%p%%] " current line/total lines
   set statusline+=\ %v[0x%B]    " current column [hex char]
+  set statusline+=\ %Y\ [%{fugitive#head()}]
 endif
-
-"=== BASIC SETUP ===}
-
-
-"{=== LETTINGS ===>
 
 " CtrlP settings
 let g:ctrlp_use_caching       = 0
@@ -221,27 +219,43 @@ let g:snippetsEmu_key = "<S-Tab>"
 " NERDTree settings
 let g:NERDTreeHijackNetrw=1
 
-"=== LETTINGS ===}
+"vim-test plugin settings
+let g:test#strategy = 'iterm'
 
+" Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
+let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
-"{=== OTHER SETTINGS ===>
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " The silver searcher (Faster than the ack)
 " Invoke ag using ack.vim
 if executable("ag")
-  " Use ag over grep
+  " Use Ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
 
   let g:ackprg = 'ag --nogroup --nocolor --column'
   let g:agprg="ag --column"
 
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
 endif
 
-"=== OTHER SETTINGS ===}
-
-
-"{=== MAPPINGS ===>
+" Highlight column for 80 characters.
+if exists('+colorcolumn')
+  set colorcolumn=82
+else
+  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+endif
 
 " Quicker window movement
 nnoremap <C-j> <C-w>j
@@ -275,6 +289,7 @@ nmap <leader>P PV`]=
 " expand %% to current directory in command-line mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
+" Index ctags from any project, including those outside Rails
 map <Leader>ct :!ctags -R .<CR>
 
 map <Leader>n :NERDTreeToggle<CR>
@@ -377,10 +392,6 @@ nmap <leader>bl :ls<CR>
 " Exit insert mode without using Esc
 inoremap jj <Esc>
 
-"=== MAPPINGS ===}
-
-
-"{=== COMMANDS ===>
 
 " Easy edit/open commands
 command! EditVim  :edit   ~/.vimrc
@@ -388,9 +399,6 @@ command! EditBash :edit   ~/.bashrc
 
  "bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-
-"=== COMMANDS ===}
-
 
 function! s:setWrapping()
   set wrap
@@ -424,7 +432,6 @@ if has("autocmd")
   au VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 endif
 
-
 " Fix constant spelling mistakes
 iab Acheive    Achieve
 iab acheive    achieve
@@ -441,6 +448,11 @@ iab Charcters  Characters
 iab charcters  characters
 iab Seperate   Separate
 iab seperate   separate
+iab biding     binding
+iab binging    binding
+iab biging     binding
+iab bindng     binding
+iab bindging   binding
 
 " Local config
 "if filereadable($HOME . "/.vimrc.local")
