@@ -49,7 +49,6 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'mileszs/ack.vim'
 Plugin 'szw/vim-maximizer'
 Plugin 'godlygeek/tabular'
-Plugin 't9md/vim-choosewin'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'sunaku/vim-ruby-minitest'
@@ -60,15 +59,11 @@ Plugin 'ngmy/vim-rubocop'
 Plugin 'terryma/vim-expand-region'
 Plugin 'ap/vim-buftabline'
 Plugin 'janko-m/vim-test'
-"Plugin 'Raimondi/delimitMate'
-Plugin 'jiangmiao/auto-pairs'
+Plugin 'Raimondi/delimitMate'
 
-Plugin 'dhruvasagar/vim-railscasts-theme'
 Plugin 'dkprice/vim-easygrep'
 Plugin 'tpope/vim-dispatch'
 Plugin 'rizzatti/dash.vim'
-Plugin 'zefei/vim-colortuner'
-Plugin 'zefei/cake16'
 Plugin 'rhysd/clever-f.vim'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'henrik/vim-indexed-search'
@@ -189,8 +184,8 @@ if has("statusline") && !&cp
   set statusline=%f\ %m\ %r     " filename, modified, readonly
   set statusline+=%=            " switch to the right side
   set statusline+=\ %l/%L[%p%%] " current line/total lines
-  set statusline+=\ %v[0x%B]    " current column [hex char]
-  set statusline+=\ %Y\ [%{fugitive#head()}]
+  set statusline+=\ %3v         " current column
+  set statusline+=\ %Y\ %{fugitive#head()}
 endif
 
 " CtrlP settings
