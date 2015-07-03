@@ -69,6 +69,11 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'henrik/vim-indexed-search'
 Plugin 'NLKNguyen/papercolor-theme'
 
+" Automatically adjusts 'shiftwidth' and 'expandtab' heuristically
+Plugin 'tpope/vim-sleuth'
+Plugin 'wookiehangover/jshint.vim'
+
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " enable loading indent file for filetype
@@ -147,7 +152,7 @@ set ttimeout
 set ttimeoutlen=100
 
 " Disable output and VCS files
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,tags
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,tags,.fugitiveblame
 
 " Disable archive files
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
@@ -193,6 +198,25 @@ let g:ctrlp_use_caching       = 0
 let g:ctrlp_switch_buffer     = 0
 let g:ctrlp_working_path_mode = 0
 
+" Idea from : http://www.charlietanksley.net/blog/blog/2011/10/18/vim-navigation-with-lustyexplorer-and-lustyjuggler/
+" Open CtrlP starting from a particular path, making it much
+" more likely to find the correct thing first. mnemonic 'jump to [something]'
+map ,ja :CtrlP app/assets<CR>
+map ,jm :CtrlP app/models<CR>
+map ,jc :CtrlP app/controllers<CR>
+map ,jv :CtrlP app/views<CR>
+map ,jh :CtrlP app/helpers<CR>
+map ,jl :CtrlP lib<CR>
+map ,jp :CtrlP public<CR>
+map ,js :CtrlP app/services<CR>
+map ,jf :CtrlP test/fixtures<CR>
+map ,jd :CtrlP db<CR>
+map ,jC :CtrlP config<CR>
+map ,je :CtrlP config/environments<CR>
+map ,jV :CtrlP vendor<CR>
+map ,jF :CtrlP factories<CR>
+map ,jT :CtrlP test<CR>
+
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
 
@@ -213,6 +237,9 @@ let g:snippetsEmu_key = "<S-Tab>"
 
 " NERDTree settings
 let g:NERDTreeHijackNetrw=1
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let g:NERDTreeWinSize = 30
 
 "vim-test plugin settings
 let g:test#strategy = 'iterm'
@@ -221,8 +248,8 @@ let g:test#strategy = 'iterm'
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
 " make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " better key bindings for UltiSnipsExpandTrigger
@@ -239,17 +266,45 @@ if executable("ag")
   let g:ackprg = 'ag --nogroup --nocolor --column'
   let g:agprg="ag --column"
 
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_user_command =
+    \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
 
+" Default to filename searches - so that appctrl will find application
+" controller
+let g:ctrlp_by_filename = 1
+
+" Don't jump to already open window. This is annoying if you are maintaining
+" several Tab workspaces and want to open two windows into the same file.
+let g:ctrlp_switch_buffer = 0
+
+" Every time you open a git object using fugitive it creates a new buffer. 
+" This means that your buffer listing can quickly become swamped with 
+" fugitive buffers. This prevents this from becomming an issue:
+
+autocmd BufReadPost fugitive://* set bufhidden=delete
+
+" Turn off default key mappings
+let g:multi_cursor_use_default_mapping=0
+
+" Switch to multicursor mode with ,mc
+let g:multi_cursor_start_key=',mc'
+
+" Ctrl-n, Ctrl-p, Ctrl-x, and <Esc> are mapped in the special multicursor
+" mode once you've added at least one virtual cursor to the buffer
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
 " Highlight column for 80 characters.
 if exists('+colorcolumn')
-  set colorcolumn=82
+  set colorcolumn=81
 else
-  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>81v.\+', -1)
 endif
 
 " Quicker window movement
@@ -319,7 +374,7 @@ vnoremap <Leader>zw :MaximizerToggle<CR>gv
 inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
 
 " TagbarToggle
-map <Leader>rt :TagbarToggle<cr>
+nnoremap <Leader>rt :TagbarToggle<CR>
 
 " disable cursor keys in normal mode
 map <Left>  :echoe "Use h"<cr>
