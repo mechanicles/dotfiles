@@ -5,84 +5,84 @@
 "  Other
 
 set nocompatible              " be iMproved, required
-filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" vim-plug
+call plug#begin('~/.vim/plugged')
 
-" alternatively, pass a path where Vundle should install plugins
-" call vundle#begin('~/some/path/here')
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-Plugin 'tpope/vim-fugitive'
-Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'ervandew/supertab'
-Plugin 'scrooloose/syntastic'
-Plugin 'majutsushi/tagbar'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'tpope/vim-rails'
-Plugin 'pangloss/vim-javascript'
-Plugin 'tpope/vim-markdown'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-git'
-Plugin 'skwp/vim-rspec'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-bundler'
-Plugin 'tpope/vim-vinegar'
-Plugin 'edsono/vim-matchit'
+" Productivity
+Plug 'kien/ctrlp.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'    }
+Plug 'ervandew/supertab'
+Plug 'scrooloose/syntastic'
+Plug 'majutsushi/tagbar',   { 'on': 'TagbarToggle'      }
+Plug 'Lokaltog/vim-easymotion'
+Plug 'edsono/vim-matchit'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'mileszs/ack.vim', { 'on': 'Ack' }
+Plug 'szw/vim-maximizer'
+Plug 'godlygeek/tabular'
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'dkprice/vim-easygrep'
+Plug 'rhysd/clever-f.vim'
 
 " Snipmate && Sippests dependencies
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'Valloric/YouCompleteMe'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'mileszs/ack.vim'
-Plugin 'szw/vim-maximizer'
-Plugin 'godlygeek/tabular'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'w0ng/vim-hybrid'
-Plugin 'sunaku/vim-ruby-minitest'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'maxbrunsfeld/vim-yankstack'
-Plugin 'ngmy/vim-rubocop'
-Plugin 'terryma/vim-expand-region'
-Plugin 'ap/vim-buftabline'
-Plugin 'janko-m/vim-test'
-Plugin 'Raimondi/delimitMate'
+" Ruby
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
+Plug 'skwp/vim-rspec'
+Plug 'sunaku/vim-ruby-minitest'
 
-Plugin 'dkprice/vim-easygrep'
-Plugin 'tpope/vim-dispatch'
-Plugin 'rizzatti/dash.vim'
-Plugin 'rhysd/clever-f.vim'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'henrik/vim-indexed-search'
-Plugin 'NLKNguyen/papercolor-theme'
+" Javascript
+Plug 'pangloss/vim-javascript'
+Plug 'kchmck/vim-coffee-script'
+Plug 'wookiehangover/jshint.vim'
 
-" Automatically adjusts 'shiftwidth' and 'expandtab' heuristically
-Plugin 'tpope/vim-sleuth'
-Plugin 'wookiehangover/jshint.vim'
+" tpope
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-bundler'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-sleuth' " Automatically adjusts 'shiftwidth' and 'expandtab' heuristically
 
+" Colorscheme
+Plug 'altercation/vim-colors-solarized'
+Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'w0ng/vim-hybrid'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'ajh17/Spacegray.vim'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " enable loading indent file for filetype
+" Enhancement
+Plug 'airblade/vim-gitgutter'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'ngmy/vim-rubocop'
+Plug 'terryma/vim-expand-region'
+Plug 'ap/vim-buftabline'
+Plug 'janko-m/vim-test'
+Plug 'Raimondi/delimitMate'
+Plug 'rizzatti/dash.vim',  { 'on': 'Dash' }
+Plug 'henrik/vim-indexed-search'
+Plug 'wincent/terminus'
+
+call plug#end()
 
 " Colorsheme settings.
 if has('gui_running')
   "colorscheme cake16
   set t_Co=256
-  colorscheme PaperColor
+  colorscheme Solarized
+  "colorscheme PaperColor
 else
   colorscheme hybrid
 endif
@@ -281,8 +281,8 @@ let g:ctrlp_by_filename = 1
 " several Tab workspaces and want to open two windows into the same file.
 let g:ctrlp_switch_buffer = 0
 
-" Every time you open a git object using fugitive it creates a new buffer. 
-" This means that your buffer listing can quickly become swamped with 
+" Every time you open a git object using fugitive it creates a new buffer.
+" This means that your buffer listing can quickly become swamped with
 " fugitive buffers. This prevents this from becomming an issue:
 
 autocmd BufReadPost fugitive://* set bufhidden=delete
@@ -293,6 +293,9 @@ let g:multi_cursor_use_default_mapping=0
 " Switch to multicursor mode with ,mc
 let g:multi_cursor_start_key=',mc'
 
+" Time limit of each task in seconds for vim-plug
+let g:plug_timeout = 1000
+
 " Ctrl-n, Ctrl-p, Ctrl-x, and <Esc> are mapped in the special multicursor
 " mode once you've added at least one virtual cursor to the buffer
 let g:multi_cursor_next_key='<C-n>'
@@ -300,7 +303,7 @@ let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 
-" Highlight column for 80 characters.
+ "Highlight column for 80 characters.
 if exists('+colorcolumn')
   set colorcolumn=81
 else
@@ -479,7 +482,6 @@ if has("autocmd")
   au FileType javascript,css,ruby,rake,erb inoremap <silent> ,; <ESC>:call cosco#commaOrSemiColon()"<CR>a
 
   au StdinReadPre * let s:std_in=1
-  au VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 endif
 
 " Fix constant spelling mistakes
