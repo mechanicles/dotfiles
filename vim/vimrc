@@ -9,23 +9,6 @@ set nocompatible              " be iMproved, required
 " vim-plug
 call plug#begin('~/.vim/plugged')
 
-" Productivity
-Plug 'kien/ctrlp.vim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'    }
-Plug 'ervandew/supertab'
-Plug 'scrooloose/syntastic'
-Plug 'majutsushi/tagbar',   { 'on': 'TagbarToggle'      }
-Plug 'Lokaltog/vim-easymotion'
-Plug 'edsono/vim-matchit'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'mileszs/ack.vim', { 'on': 'Ack' }
-Plug 'szw/vim-maximizer'
-Plug 'godlygeek/tabular'
-Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'dkprice/vim-easygrep'
-Plug 'rhysd/clever-f.vim'
-
 " Snipmate && Sippests dependencies
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
@@ -42,6 +25,7 @@ Plug 'sunaku/vim-ruby-minitest'
 Plug 'pangloss/vim-javascript'
 Plug 'kchmck/vim-coffee-script'
 Plug 'wookiehangover/jshint.vim'
+Plug 'mxw/vim-jsx'
 
 " tpope
 Plug 'tpope/vim-rails'
@@ -62,6 +46,9 @@ Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'w0ng/vim-hybrid'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'ajh17/Spacegray.vim'
+Plug 'yosiat/oceanic-next-vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'tomasr/molokai'
 
 " Enhancement
 Plug 'airblade/vim-gitgutter'
@@ -74,6 +61,28 @@ Plug 'Raimondi/delimitMate'
 Plug 'rizzatti/dash.vim',  { 'on': 'Dash' }
 Plug 'henrik/vim-indexed-search'
 Plug 'wincent/terminus'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'jaxbot/semantic-highlight.vim'
+
+" Productivity
+Plug 'kien/ctrlp.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'    }
+Plug 'ervandew/supertab'
+Plug 'scrooloose/syntastic'
+Plug 'majutsushi/tagbar',   { 'on': 'TagbarToggle'      }
+Plug 'Lokaltog/vim-easymotion'
+Plug 'edsono/vim-matchit'
+Plug 'mileszs/ack.vim', { 'on': 'Ack' }
+Plug 'szw/vim-maximizer'
+Plug 'godlygeek/tabular'
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'dkprice/vim-easygrep'
+Plug 'rhysd/clever-f.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -81,8 +90,7 @@ call plug#end()
 if has('gui_running')
   "colorscheme cake16
   set t_Co=256
-  colorscheme Solarized
-  "colorscheme PaperColor
+  colorscheme hybrid
 else
   colorscheme hybrid
 endif
@@ -290,18 +298,17 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Turn off default key mappings
 let g:multi_cursor_use_default_mapping=0
 
-" Switch to multicursor mode with ,mc
-let g:multi_cursor_start_key=',mc'
-
-" Time limit of each task in seconds for vim-plug
-let g:plug_timeout = 1000
-
 " Ctrl-n, Ctrl-p, Ctrl-x, and <Esc> are mapped in the special multicursor
 " mode once you've added at least one virtual cursor to the buffer
 let g:multi_cursor_next_key='<C-n>'
 let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
+
+" Time limit of each task in seconds for vim-plug
+let g:plug_timeout = 1000
+
+let g:syntastic_javascript_checkers = ['eslint']
 
  "Highlight column for 80 characters.
 if exists('+colorcolumn')
@@ -315,6 +322,9 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
+
+" puts the calller (Thanks to @tenderlove)
+nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
