@@ -21,13 +21,9 @@ Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
 Plug 'skwp/vim-rspec'
 Plug 'sunaku/vim-ruby-minitest'
 
-" Crystal
-Plug 'rhysd/vim-crystal'
-
 " Javascript
 Plug 'pangloss/vim-javascript'
 Plug 'kchmck/vim-coffee-script'
-"Plug 'wookiehangover/jshint.vim'
 Plug 'mxw/vim-jsx'
 Plug 'burnettk/vim-angular'
 
@@ -48,7 +44,6 @@ Plug 'tpope/vim-sleuth' " Automatically adjusts 'shiftwidth' and 'expandtab' heu
 Plug 'altercation/vim-colors-solarized'
 Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'w0ng/vim-hybrid'
-Plug 'NLKNguyen/papercolor-theme'
 Plug 'ajh17/Spacegray.vim'
 Plug 'yosiat/oceanic-next-vim'
 Plug 'nanotech/jellybeans.vim'
@@ -63,20 +58,18 @@ Plug 'ap/vim-buftabline'
 Plug 'janko-m/vim-test'
 Plug 'Raimondi/delimitMate'
 Plug 'rizzatti/dash.vim',  { 'on': 'Dash' }
-Plug 'henrik/vim-indexed-search'
-Plug 'wincent/terminus'
+Plug 'henrik/vim-indexed-search' " Keep this. If confusion please check `help`
+Plug 'wincent/terminus' " Good for vim in terminal, it acts like GUI vim.
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'jaxbot/semantic-highlight.vim'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Productivity
-Plug 'https://github.com/ctrlpvim/ctrlp.vim.git'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'    }
 Plug 'ervandew/supertab'
 Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar',   { 'on': 'TagbarToggle'      }
-Plug 'Lokaltog/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
 Plug 'edsono/vim-matchit'
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'szw/vim-maximizer'
@@ -85,11 +78,11 @@ Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'dkprice/vim-easygrep'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'ivalkeen/vim-ctrlp-tjump'
-Plug 'rhysd/vim-grammarous'
+
+" Asynchronous
+Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby code
 
 call plug#end()
 
@@ -234,9 +227,6 @@ map ,jT :CtrlP test<CR>
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
 
-" configure syntastic syntax checking to check on open as well as save
-let g:syntastic_check_on_open=1
-
 " allows cursor change in tmux mode
 if exists('$TMUX')
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
@@ -256,7 +246,7 @@ let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
 
 "vim-test plugin settings
-let g:test#strategy = 'iterm'
+let test#strategy = "iterm"
 
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
@@ -298,7 +288,6 @@ let g:ctrlp_switch_buffer = 0
 " Every time you open a git object using fugitive it creates a new buffer.
 " This means that your buffer listing can quickly become swamped with
 " fugitive buffers. This prevents this from becomming an issue:
-
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " Turn off default key mappings
@@ -313,9 +302,6 @@ let g:multi_cursor_quit_key='<Esc>'
 
 " Time limit of each task in seconds for vim-plug
 let g:plug_timeout = 1000
-
-" Ignore ng directives errors for AngularJS
-let g:syntastic_html_tidy_ignore_errors=['proprietary attribute "ng-']
 
  "Highlight column for 80 characters.
 if exists('+colorcolumn')
@@ -492,6 +478,9 @@ let g:syntastic_error_symbol = '❌'
 let g:syntastic_style_error_symbol = '⁉️'
 let g:syntastic_warning_symbol = '⚠️'
 let g:syntastic_style_warning_symbol = '💩'
+
+" Ignore ng directives errors for AngularJS
+let g:syntastic_html_tidy_ignore_errors=['proprietary attribute "ng-']
 
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
