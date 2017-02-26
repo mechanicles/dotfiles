@@ -26,6 +26,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'kchmck/vim-coffee-script'
 Plug 'mxw/vim-jsx'
 Plug 'burnettk/vim-angular'
+Plug 'mxw/vim-jsx'
 
 " tpope
 Plug 'tpope/vim-rails'
@@ -48,6 +49,8 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'yosiat/oceanic-next-vim'
 Plug 'nanotech/jellybeans.vim'
 Plug 'tomasr/molokai'
+Plug 'KabbAmine/yowish.vim'
+Plug 'rakr/vim-one'
 
 " Enhancement
 Plug 'airblade/vim-gitgutter'
@@ -73,16 +76,20 @@ Plug 'easymotion/vim-easymotion'
 Plug 'edsono/vim-matchit'
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'szw/vim-maximizer'
-Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'dkprice/vim-easygrep'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'sheerun/vim-polyglot'
 Plug 'ivalkeen/vim-ctrlp-tjump'
+Plug 'tpope/vim-repeat'
 
 " Asynchronous
 Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby code
+
+" Extra
+Plug 'lifepillar/vim-cheat40'
 
 call plug#end()
 
@@ -157,6 +164,9 @@ set gdefault                      " have :s///g flag by default on
 set notimeout
 set ttimeout
 set ttimeoutlen=100
+
+" Tab completion
+set wildmode=list:longest,list:full
 
 " Disable output and VCS files
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,tags,.fugitiveblame
@@ -319,8 +329,8 @@ nnoremap <C-l> <C-w>l
 " puts the calller (Thanks to @tenderlove)
 nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 
-" bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" Mapping for debugging in Ruby
+nnoremap <leader>db obinding.pry<esc>
 
 nnoremap \ :Ack<SPACE>
 
@@ -334,6 +344,9 @@ nnoremap k gk
 
 " highlight last inserted text
 nnoremap gV `[v`]
+
+" Ruby hash syntax conversion
+nnoremap <F12> :%s/:\([^ ]*\)\(\s*\)=>/\1:/g<return> 
 
 " yank to system clipboard
 map <leader>y "*y
@@ -368,6 +381,12 @@ nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
 " Toggle hlsearch with <leader>hs
 nmap <leader>hs :set hlsearch! hlsearch?<CR>
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
@@ -536,6 +555,9 @@ iab bindging   binding
 iab bindgin    binding
 iab gindin     binding
 iab bindin     binding
+iab bindign    binding
+iab attachemnts attachments
+iab attachemnt attachment
 
 " Local config
 "if filereadable($HOME . "/.vimrc.local")

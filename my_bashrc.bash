@@ -11,7 +11,7 @@ alias l='ls'
 alias ll='ls -al'
 alias ls='ls -ltrG'
 alias lh='ls -Alh'
-alias paux='ps aux| grep'
+alias psg='ps aux| grep'
 
 # Bundler
 alias b="bundle"
@@ -53,11 +53,11 @@ alias vime="vim ~/.vimrc"
 # JavaScript Console for Max
 alias jsc='/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Resources/jsc'
 
-# Show git branch name to your shell prompt
-function parse_git_branch_and_add_brackets {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\ \[\1\]/'
-}
-PS1="\h:\W \u\[\033[0;32m\]\$(parse_git_branch_and_add_brackets) \[\033[0m\]\$ "
+# https://github.com/magicmonty/bash-git-prompt NOTE: installed through `brew1
+if [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]; then
+  GIT_PROMPT_THEME=Default
+  source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"
+fi
 
 export ACKRC=".agrc"
 export AGRC=".agrc"
