@@ -51,6 +51,7 @@ Plug 'nanotech/jellybeans.vim'
 Plug 'tomasr/molokai'
 Plug 'KabbAmine/yowish.vim'
 Plug 'rakr/vim-one'
+Plug 'chriskempson/base16-vim'
 
 " Enhancement
 Plug 'airblade/vim-gitgutter'
