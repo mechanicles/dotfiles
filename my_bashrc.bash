@@ -62,5 +62,7 @@ fi
 export ACKRC=".agrc"
 export AGRC=".agrc"
 
+export EDITOR="mvim"
+
 # Your local/machine dependent bash scripts
 [[ -s ${HOME}/.local_bashrc.bash ]] && source ${HOME}/.local_bashrc.bash

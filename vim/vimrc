@@ -6,29 +6,29 @@
 
 set nocompatible              " be iMproved, required
 
-" vim-plug
+" VIM-PLUG
 call plug#begin('~/.vim/plugged')
 
-" Snipmate && Sippests dependencies
+" SNIPMATE && SIPPESTS DEPENDENCIES
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
-" Ruby
+" RUBY
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
 Plug 'skwp/vim-rspec'
 Plug 'sunaku/vim-ruby-minitest'
 
-" Javascript
+" JAVASCRIPT
 Plug 'pangloss/vim-javascript'
 Plug 'kchmck/vim-coffee-script'
 Plug 'mxw/vim-jsx'
 Plug 'burnettk/vim-angular'
-Plug 'mxw/vim-jsx'
+Plug 'posva/vim-vue'
 
-" tpope
+" TPOPE
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown'
@@ -41,7 +41,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sleuth' " Automatically adjusts 'shiftwidth' and 'expandtab' heuristically
 
-" Colorscheme
+" COLORSCHEME
 Plug 'altercation/vim-colors-solarized'
 Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'w0ng/vim-hybrid'
@@ -53,7 +53,7 @@ Plug 'KabbAmine/yowish.vim'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 
-" Enhancement
+" ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'ngmy/vim-rubocop'
@@ -66,7 +66,7 @@ Plug 'henrik/vim-indexed-search' " Keep this. If confusion please check `help`
 Plug 'wincent/terminus' " Good for vim in terminal, it acts like GUI vim.
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-" Productivity
+" PRODUCTIVITY
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'    }
@@ -74,7 +74,6 @@ Plug 'ervandew/supertab'
 Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar',   { 'on': 'TagbarToggle'      }
 Plug 'easymotion/vim-easymotion'
-Plug 'edsono/vim-matchit'
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'szw/vim-maximizer'
 Plug 'junegunn/vim-easy-align'
@@ -86,16 +85,20 @@ Plug 'sheerun/vim-polyglot'
 Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'tpope/vim-repeat'
 Plug 'wikitopian/hardmode'
+Plug 'BufOnly.vim'
 
-" Asynchronous
+" ASYNCHRONOUS
 Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby code
 
-" Extra
+" EXTRA
 Plug 'lifepillar/vim-cheat40'
 
 call plug#end()
 
-" Colorsheme settings.
+" VIM HAS ITS VERY OWN'S 'ADD-PACKAGE' FEATURE:
+packadd! matchit " This plugin makes the '%' command jump to matching HTML tags, if/else/endif in Vim scripts, etc.
+
+" COLORSHEME SETTINGS
 if has('gui_running')
   set t_Co=256
   colorscheme molokai
@@ -103,7 +106,7 @@ else
   colorscheme hybrid
 endif
 
-"Basic setup
+" BASIC SETUP
 syntax enable
 set number                        " show line numbers
 set numberwidth=5
@@ -111,7 +114,6 @@ set ruler                         " show the cursor position all the time
 set title                         " show file in titlebar
 set encoding=utf-8                " set default encoding to UTF-8
 set history=50                    " keep 50 lines of command line history
-let g:mapleader = ","
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=80
@@ -128,12 +130,12 @@ set foldenable                    " auto fold code
 set pastetoggle=<F2>
 set confirm                       " get a dialog when :q, :w, or :wq fails
 
-" tenderlove's settings
+" TENDERLOVE'S SETTINGS
 set suffixesadd=.rb
 set path+=lib/**,test/**
 let g:ruby_path = &path
 
-" Whitespace
+" WHITESPACE
 set nowrap                        " don't wrap text
 set tabstop=2                     " tab spacing
 set softtabstop=2                 " unify
@@ -144,63 +146,66 @@ set backspace=indent,eol,start    " backspace through everything in insert mode
 set list                          " show invisible characters
 set nojoinspaces                  " Use only 1 space after "." when joining lines, not 2
 
-" Auto-reload buffers when file changed on disk
+" AUTO-RELOAD BUFFERS WHEN FILE CHANGED ON DISK
 set autoread
 
-" Disable swap files; systems don't crash that often these days
+" DISABLE SWAP FILES; SYSTEMS DON'T CRASH THAT OFTEN THESE DAYS
 set updatecount=0
 
-" Indicator chars
+" INDICATOR CHARS
 set listchars=tab:▸\ ,trail:·,nbsp:·,extends:❯,precedes:❮
 set showbreak=↪\
 
-" Searching
+
+" SEARCHING
 set hlsearch                      " highlight matches
 set incsearch                     " incremental searching
 set ignorecase                    " searches are case insensitive...
 set smartcase                     " unless they contain at least one capital letter
 set gdefault                      " have :s///g flag by default on
 
-" Time out on key codes but not mappings.
-" Basically this makes terminal Vim work sanely.
+
+" TIME OUT ON KEY CODES BUT NOT MAPPINGS. BASICALLY THIS MAKES TERMINAL VIM WORK SANELY.
 set notimeout
 set ttimeout
 set ttimeoutlen=100
 
-" Tab completion
+" TAB COMPLETION
 set wildmode=list:longest,list:full
 
-" Disable output and VCS files
+" DISABLE OUTPUT AND VCS FILES
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,tags,.fugitiveblame
 
-" Disable archive files
+" DISABLE ARCHIVE FILES
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 
-" Ignore bundler and sass cache
+" IGNORE BUNDLER AND SASS CACHE
 set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 
-" Ignore rails temporary asset caches
+" IGNORE RAILS TEMPORARY ASSET CACHES
 set wildignore+=*/tmp/*,*/solr/*,*/coverage/*,*/features/*,*/public/uploads/*
 
-" Disable temp and backup files
+" DISABLE TEMP AND BACKUP FILES
 set wildignore+=*.swp,*~,._*,tags
 
-" Backup and swap files ------------------------------------
+" BACKUP AND SWAP FILES
 set nobackup                      " turn backup off, since most stuff is in SVN, Git etc anyway...
 set nowb                          " no writebackup
 set noswapfile
 
-" Open new split panes to right and bottom, which feels more natural
+" OPEN NEW SPLIT PANES TO RIGHT AND BOTTOM, WHICH FEELS MORE NATURAL
 set splitright
 set splitbelow
 
-" mac's option key for yankring
-set macmeta
+" MAC'S OPTION KEY FOR YANKRING
+if has('gui_running')
+  set macmeta
+endif
 
-" Autocomplete with dictionary words when spell check is on
+" AUTOCOMPLETE WITH DICTIONARY WORDS WHEN SPELL CHECK IS ON
 set complete+=kspell
 
-" Always use vertical diffs
+" ALWAYS USE VERTICAL DIFFS
 set diffopt+=vertical
 
 if has("statusline") && !&cp
@@ -210,9 +215,16 @@ if has("statusline") && !&cp
   set statusline+=\ %l/%L[%p%%] " current line/total lines
   set statusline+=\ %3v         " current column
   set statusline+=\ %Y\ %{fugitive#head()}
+
+" SYNTASTIC SETTINGS (TAKEN FROM HTTP://USEVIM.COM/2016/03/07/LINTING/)
+  set statusline+=%#warningmsg#
+  set statusline+=%{SyntasticStatuslineFlag()}
+  set statusline+=%*
 endif
 
-" CtrlP settings
+let g:mapleader = ","
+
+" CTRLP SETTINGS
 let g:ctrlp_use_caching       = 0
 let g:ctrlp_switch_buffer     = 0
 let g:ctrlp_working_path_mode = 0
@@ -236,10 +248,10 @@ map ,jV :CtrlP vendor<CR>
 map ,jF :CtrlP factories<CR>
 map ,jT :CtrlP test<CR>
 
-" Treat <li> and <p> tags like the block tags they are
+" TREAT <li> AND <p> TAGS LIKE THE BLOCK TAGS THEY ARE
 let g:html_indent_tags = 'li\|p'
 
-" allows cursor change in tmux mode
+" ALLOWS CURSOR CPANGE IN TMUX MODE
 if exists('$TMUX')
   let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
   let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
@@ -248,27 +260,27 @@ else
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
-" Snippets are activated by Shift+Tab
+" SNIPPETS ARE ACTIVATED BY SHIFT+TAB
 let g:snippetsEmu_key = "<S-Tab>"
 
-" NERDTree settings
+" NERDTREE SETTINGS
 let g:NERDTreeHijackNetrw=1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
 
-"vim-test plugin settings
+"VIM-TEST PLUGIN SETTINGS
 let test#strategy = "iterm"
 
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
-" make YCM compatible with UltiSnips (using supertab)
+" MAKE YCM COMPATIBLE WITH ULTISNIPS (USING SUPERTAB)
 let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
-" better key bindings for UltiSnipsExpandTrigger
+" Better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
@@ -340,7 +352,7 @@ nnoremap \ :Ack<SPACE>
 map Q <Nop>
 map gs <Nop>
 
-" Movement
+" MOVEMENT
 nnoremap j gj
 nnoremap k gk
 
@@ -483,17 +495,11 @@ function! s:setWrapping()
   set textwidth=80
 endfunction
 
-" Syntastic settings (Taken from http://usevim.com/2016/03/07/linting/)
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_loc_list_height = 5
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
-"let g:syntastic_javascript_checkers = ['eslint']
 
 let g:syntastic_error_symbol = '❌'
 let g:syntastic_style_error_symbol = '⁉️'
@@ -533,7 +539,7 @@ if has("autocmd")
   au StdinReadPre * let s:std_in=1
 endif
 
-" Fix constant spelling mistakes
+" FIX CONSTANT SPELLING MISTAKES
 iab Acheive    Achieve
 iab acheive    achieve
 iab Alos       Also
