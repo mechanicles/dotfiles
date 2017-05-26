@@ -85,7 +85,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'tpope/vim-repeat'
 Plug 'wikitopian/hardmode'
-Plug 'BufOnly.vim'
+Plug 'vim-ctrlspace/vim-ctrlspace'
 
 " ASYNCHRONOUS
 Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby code
