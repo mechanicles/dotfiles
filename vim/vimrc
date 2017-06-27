@@ -52,6 +52,7 @@ Plug 'tomasr/molokai'
 Plug 'KabbAmine/yowish.vim'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
+Plug 'trevordmiller/nova-vim'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
@@ -101,7 +102,8 @@ packadd! matchit " This plugin makes the '%' command jump to matching HTML tags,
 " COLORSHEME SETTINGS
 if has('gui_running')
   set t_Co=256
-  colorscheme molokai
+  "colorscheme molokai
+  colorscheme nova
 else
   colorscheme hybrid
 endif
@@ -566,6 +568,7 @@ iab bindin     binding
 iab bindign    binding
 iab attachemnts attachments
 iab attachemnt attachment
+iab udpate     update
 
 " Local config
 "if filereadable($HOME . "/.vimrc.local")
