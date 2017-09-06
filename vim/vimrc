@@ -31,6 +31,7 @@ Plug 'posva/vim-vue'
 " TPOPE
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-git'
@@ -52,14 +53,13 @@ Plug 'tomasr/molokai'
 Plug 'KabbAmine/yowish.vim'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
-Plug 'trevordmiller/nova-vim'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'ngmy/vim-rubocop'
 Plug 'terryma/vim-expand-region'
-Plug 'ap/vim-buftabline'
+"Plug 'ap/vim-buftabline'
 Plug 'janko-m/vim-test'
 Plug 'Raimondi/delimitMate'
 Plug 'rizzatti/dash.vim',  { 'on': 'Dash' }
@@ -93,6 +93,7 @@ Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby co
 
 " EXTRA
 Plug 'lifepillar/vim-cheat40'
+Plug 'johngrib/vim-game-code-break'
 
 call plug#end()
 
@@ -102,8 +103,8 @@ packadd! matchit " This plugin makes the '%' command jump to matching HTML tags,
 " COLORSHEME SETTINGS
 if has('gui_running')
   set t_Co=256
-  "colorscheme molokai
-  colorscheme nova
+  let g:one_allow_italics = 1 " I love italic for comments
+  colorscheme molokai
 else
   colorscheme hybrid
 endif
@@ -316,6 +317,8 @@ let g:ctrlp_switch_buffer = 0
 " fugitive buffers. This prevents this from becomming an issue:
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
+let g:github_enterprise_urls = ['https://github.com']
+
 " Turn off default key mappings
 let g:multi_cursor_use_default_mapping=0
 
@@ -467,18 +470,20 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " This replaces :tabnew which I used to bind to this mapping
 nmap <leader>T :enew<cr>
 
+" SETTINGS for 'ap/vim-buftabline' plgin.
 " Move to the next buffer
-nmap <leader>ll :bnext<CR>
+"nmap <leader>ll :bnext<CR>
 
 " Move to the previous buffer
-nmap <leader>hh :bprevious<CR>
+"nmap <leader>hh :bprevious<CR>
 
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
-nmap <leader>bq :bp <BAR> bd #<CR>
+"nmap <leader>bq :bp <BAR> bd #<CR>
 
 " Show all open buffers and their status
-nmap <leader>bl :ls<CR>
+"nmap <leader>bl :ls<CR>
+
 
 " Exit insert mode without using Esc
 inoremap jj <Esc>
@@ -507,6 +512,9 @@ let g:syntastic_error_symbol = '❌'
 let g:syntastic_style_error_symbol = '⁉️'
 let g:syntastic_warning_symbol = '⚠️'
 let g:syntastic_style_warning_symbol = '💩'
+"let g:syntastic_ruby_checkers = ['mri', 'rubocop']
+"let g:syntastic_ruby_exec = '/Users/santosh/.rbenv/shims/ruby'
+"let g:syntastic_ruby_rubocop_exec = '/Users/santosh/.rbenv/shims/rubocop'
 
 " Ignore ng directives errors for AngularJS
 let g:syntastic_html_tidy_ignore_errors=['proprietary attribute "ng-']
