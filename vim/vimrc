@@ -53,6 +53,7 @@ Plug 'tomasr/molokai'
 Plug 'KabbAmine/yowish.vim'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
+Plug 'joshdick/onedark.vim'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
@@ -69,6 +70,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " PRODUCTIVITY
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'    }
 Plug 'ervandew/supertab'
@@ -83,17 +85,23 @@ Plug 'dkprice/vim-easygrep'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'sheerun/vim-polyglot'
-Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'tpope/vim-repeat'
 Plug 'wikitopian/hardmode'
 Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'dbmrq/vim-ditto' " Stop repeating yourself
+Plug 'wellle/targets.vim' " provides additional text objects
+Plug 'editorconfig/editorconfig-vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " ASYNCHRONOUS
 Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby code
+"Plug 'w0rp/ale'
 
 " EXTRA
 Plug 'lifepillar/vim-cheat40'
 Plug 'johngrib/vim-game-code-break'
+Plug 'chrisbra/csv.vim'
 
 call plug#end()
 
@@ -104,7 +112,8 @@ packadd! matchit " This plugin makes the '%' command jump to matching HTML tags,
 if has('gui_running')
   set t_Co=256
   let g:one_allow_italics = 1 " I love italic for comments
-  colorscheme molokai
+  "colorscheme molokai
+  colorscheme onedark
 else
   colorscheme hybrid
 endif
@@ -374,6 +383,16 @@ map <leader>y "*y
 nmap <leader>p pV`]=
 nmap <leader>P PV`]=
 
+" Settings for vim-ditto
+nmap <leader>di <Plug>ToggleDitto      " Turn it on and off
+
+nmap =d <Plug>DittoNext                " Jump to the next word
+nmap -d <Plug>DittoPrev                " Jump to the previous word
+nmap +d <Plug>DittoGood                " Ignore the word under the cursor
+nmap _d <Plug>DittoBad                 " Stop ignoring the word under the cursor
+nmap ]d <Plug>DittoMore                " Show the next matches
+nmap [d <Plug>DittoLess                " Show the previous matches
+
 " expand %% to current directory in command-line mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
@@ -541,12 +560,14 @@ if has("autocmd")
   au Filetype text setlocal textwidth=80
 
   " Enable spellchecking for Markdown
-  "au FileType markdown setlocal spell
+  au FileType markdown setlocal spell
 
   au FileType javascript,css,ruby,rake,erb nmap <silent> ,; :call cosco#commaOrSemiColon()<CR>
   au FileType javascript,css,ruby,rake,erb inoremap <silent> ,; <ESC>:call cosco#commaOrSemiColon()"<CR>a
 
   au StdinReadPre * let s:std_in=1
+
+  au FileType markdown,text,tex,gitcommit DittoOn  " Turn on Ditto's autocmds
 endif
 
 " FIX CONSTANT SPELLING MISTAKES
