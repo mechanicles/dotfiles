@@ -1,3 +1,25 @@
+"                         ███████████████████████████
+"                         ███████▀▀▀░░░░░░░▀▀▀███████
+"                         ████▀░░░░░░░░░░░░░░░░░▀████
+"                         ███│░░░░░░░░░░░░░░░░░░░│███
+"                         ██▌│░░░░░░░░░░░░░░░░░░░│▐██
+"                         ██░└┐░░░░░░░░░░░░░░░░░┌┘░██
+"                         ██░░└┐░░░░░░░░░░░░░░░┌┘░░██
+"                         ██░░┌┘▄▄▄▄▄░░░░░▄▄▄▄▄└┐░░██
+"                         ██▌░│██████▌░░░▐██████│░▐██
+"                         ███░│▐███▀▀░░▄░░▀▀███▌│░███
+"                         ██▀─┘░░░░░░░▐█▌░░░░░░░└─▀██
+"                         ██▄░░░▄▄▄▓░░▀█▀░░▓▄▄▄░░░▄██
+"                         ████▄─┘██▌░░░░░░░▐██└─▄████
+"                         █████░░▐█─┬┬┬┬┬┬┬─█▌░░█████
+"                         ████▌░░░▀┬┼┼┼┼┼┼┼┬▀░░░▐████
+"                         █████▄░░░└┴┴┴┴┴┴┴┘░░░▄█████
+"                         ███████▄░░░░░░░░░░░▄███████
+"                         ██████████▄▄▄▄▄▄▄██████████
+"                         ███████████████████████████
+"
+"                                   Welcome!
+"
 " Thanks:
 "  Tim Pope
 "  Gmarik
@@ -42,6 +64,8 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sleuth' " Automatically adjusts 'shiftwidth' and 'expandtab' heuristically
 
+Plug 'junegunn/gv.vim'
+
 " COLORSCHEME
 Plug 'altercation/vim-colors-solarized'
 Plug 'chriskempson/vim-tomorrow-theme'
@@ -69,6 +93,7 @@ Plug 'wincent/terminus' " Good for vim in terminal, it acts like GUI vim.
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " PRODUCTIVITY
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'scrooloose/nerdcommenter'
@@ -93,6 +118,9 @@ Plug 'wellle/targets.vim' " provides additional text objects
 Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+" FUN
+Plug 'chrisbra/unicode.vim',      { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
 
 " ASYNCHRONOUS
 Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby code
@@ -131,16 +159,22 @@ set mousehide                     " hide the mouse cursor while typing
 set textwidth=80
 set showcmd                       " show partial commands below the status line
 set wildmenu                      " visual autocomplete for command menu
+set ttyfast                       " faster redrawing.
 set lazyredraw                    " don't redraw while executing macros (good performance config)
 set showmatch                     " show matching brackets
+set showmode                      " show current mode in command-line.
 set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
-set display=lastline
+set display=lastline              " show as much as possible of the last line.
 set scrolloff=3                   " minimum lines to keep above and below cursor
-set hidden
+set hidden                        " switch between buffers without having to save first.
 set foldenable                    " auto fold code
 set pastetoggle=<F2>
 set confirm                       " get a dialog when :q, :w, or :wq fails
+set cursorline                    " find the current line quickly.
+set wrapscan                      " searches wrap around end-of-file
+set report=0                      " always report changed lines.
+set synmaxcol=200                 " only highlight the first 200 columns.
 
 " TENDERLOVE'S SETTINGS
 set suffixesadd=.rb
@@ -165,9 +199,13 @@ set autoread
 set updatecount=0
 
 " INDICATOR CHARS
-set listchars=tab:▸\ ,trail:·,nbsp:·,extends:❯,precedes:❮
-set showbreak=↪\
+if has('multi_byte') && &encoding ==# 'utf-8'
+  let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
+else
+  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
+endif
 
+set showbreak=↪\
 
 " SEARCHING
 set hlsearch                      " highlight matches
@@ -374,7 +412,7 @@ nnoremap k gk
 nnoremap gV `[v`]
 
 " Ruby hash syntax conversion
-nnoremap <F12> :%s/:\([^ ]*\)\(\s*\)=>/\1:/g<return> 
+nnoremap <F12> :%s/:\([^ ]*\)\(\s*\)=>/\1:/g<return>
 
 " yank to system clipboard
 map <leader>y "*y
