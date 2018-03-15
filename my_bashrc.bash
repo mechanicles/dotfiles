@@ -45,7 +45,6 @@ alias grm='git fetch origin && git rebase -i origin/master'
 
 # Tmux
 alias tmux="TERM=screen-256color-bce tmux"
-alias tpob="tmux new -s opbuilder"
 
 # Vim
 alias vime="vim ~/.vimrc"

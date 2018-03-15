@@ -47,8 +47,8 @@ Plug 'sunaku/vim-ruby-minitest'
 Plug 'pangloss/vim-javascript'
 Plug 'kchmck/vim-coffee-script'
 Plug 'mxw/vim-jsx'
-Plug 'burnettk/vim-angular'
-Plug 'posva/vim-vue'
+"Plug 'burnettk/vim-angular'
+"Plug 'posva/vim-vue'
 
 " TPOPE
 Plug 'tpope/vim-rails'
@@ -99,7 +99,6 @@ Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'    }
 Plug 'ervandew/supertab'
-Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar',   { 'on': 'TagbarToggle'      }
 Plug 'easymotion/vim-easymotion'
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
@@ -107,6 +106,7 @@ Plug 'szw/vim-maximizer'
 Plug 'junegunn/vim-easy-align'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'dkprice/vim-easygrep'
+Plug 'wsdjeg/FlyGrep.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'sheerun/vim-polyglot'
@@ -118,13 +118,15 @@ Plug 'wellle/targets.vim' " provides additional text objects
 Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'enricobacis/paste.vim'
+Plug 'mbbill/undotree'
 
 " FUN
 Plug 'chrisbra/unicode.vim',      { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
 
 " ASYNCHRONOUS
 Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby code
-"Plug 'w0rp/ale'
+Plug 'w0rp/ale'
 
 " EXTRA
 Plug 'lifepillar/vim-cheat40'
@@ -265,11 +267,6 @@ if has("statusline") && !&cp
   set statusline+=\ %l/%L[%p%%] " current line/total lines
   set statusline+=\ %3v         " current column
   set statusline+=\ %Y\ %{fugitive#head()}
-
-" SYNTASTIC SETTINGS (TAKEN FROM HTTP://USEVIM.COM/2016/03/07/LINTING/)
-  set statusline+=%#warningmsg#
-  set statusline+=%{SyntasticStatuslineFlag()}
-  set statusline+=%*
 endif
 
 let g:mapleader = ","
@@ -278,6 +275,14 @@ let g:mapleader = ","
 let g:ctrlp_use_caching       = 0
 let g:ctrlp_switch_buffer     = 0
 let g:ctrlp_working_path_mode = 0
+
+" Default to filename searches - so that appctrl will find application
+" controller
+let g:ctrlp_by_filename = 1
+
+" Don't jump to already open window. This is annoying if you are maintaining
+" several Tab workspaces and want to open two windows into the same file.
+let g:ctrlp_switch_buffer = 0
 
 " Idea from : http://www.charlietanksley.net/blog/blog/2011/10/18/vim-navigation-with-lustyexplorer-and-lustyjuggler/
 " Open CtrlP starting from a particular path, making it much
@@ -297,6 +302,10 @@ map ,je :CtrlP config/environments<CR>
 map ,jV :CtrlP vendor<CR>
 map ,jF :CtrlP factories<CR>
 map ,jT :CtrlP test<CR>
+
+"Cmd-Shift-(M)ethod - jump to a method (tag in current file)
+"Ctrl-m is not good - it overrides behavior of Enter
+nnoremap <silent> <D-M> :CtrlPBufTag<CR>
 
 " TREAT <li> AND <p> TAGS LIKE THE BLOCK TAGS THEY ARE
 let g:html_indent_tags = 'li\|p'
@@ -341,23 +350,19 @@ if executable("ag")
   " Use Ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
 
-  let g:ackprg = 'ag --nogroup --nocolor --column'
+  let g:ackprg = 'ag --vimgrep'
   let g:agprg="ag --column"
 
   let g:ctrlp_user_command =
-    \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
+        \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
+else
+  " Fall back to using git ls-files if Ag is not available
+  let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others']
 endif
-
-" Default to filename searches - so that appctrl will find application
-" controller
-let g:ctrlp_by_filename = 1
-
-" Don't jump to already open window. This is annoying if you are maintaining
-" several Tab workspaces and want to open two windows into the same file.
-let g:ctrlp_switch_buffer = 0
 
 " Every time you open a git object using fugitive it creates a new buffer.
 " This means that your buffer listing can quickly become swamped with
@@ -377,11 +382,33 @@ let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 
 " Time limit of each task in seconds for vim-plug
-let g:plug_timeout = 1000
+let g:plug_timeout = 100
 
- "Highlight column for 80 characters.
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+set statusline+=\ %{LinterStatus()}
+
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+ "Highlight column for 119 characters.
 if exists('+colorcolumn')
-  set colorcolumn=81
+  set colorcolumn=120
 else
   au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>81v.\+', -1)
 endif
@@ -559,28 +586,6 @@ function! s:setWrapping()
   set textwidth=80
 endfunction
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_loc_list_height = 5
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-
-let g:syntastic_error_symbol = '❌'
-let g:syntastic_style_error_symbol = '⁉️'
-let g:syntastic_warning_symbol = '⚠️'
-let g:syntastic_style_warning_symbol = '💩'
-"let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-"let g:syntastic_ruby_exec = '/Users/santosh/.rbenv/shims/ruby'
-"let g:syntastic_ruby_rubocop_exec = '/Users/santosh/.rbenv/shims/rubocop'
-
-" Ignore ng directives errors for AngularJS
-let g:syntastic_html_tidy_ignore_errors=['proprietary attribute "ng-']
-
-highlight link SyntasticErrorSign SignColumn
-highlight link SyntasticWarningSign SignColumn
-highlight link SyntasticStyleErrorSign SignColumn
-highlight link SyntasticStyleWarningSign SignColumn
-
 if has("autocmd")
   " In Makefiles, use real tabs, not tabs expanded to spaces
   au FileType {make,gitconfig} set noexpandtab
@@ -606,6 +611,8 @@ if has("autocmd")
   au StdinReadPre * let s:std_in=1
 
   au FileType markdown,text,tex,gitcommit DittoOn  " Turn on Ditto's autocmds
+
+  au FileType javascript set formatprg=prettier\ --stdin
 endif
 
 " FIX CONSTANT SPELLING MISTAKES
