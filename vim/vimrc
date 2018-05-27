@@ -26,9 +26,10 @@
 "  Mislav Marohnić
 "  Other
 
-set nocompatible              " be iMproved, required
+set nocompatible  " be iMproved, required
 
 " VIM-PLUG
+
 call plug#begin('~/.vim/plugged')
 
 " SNIPMATE && SIPPESTS DEPENDENCIES
@@ -39,7 +40,7 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
 " RUBY
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby'}
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'skwp/vim-rspec'
 Plug 'sunaku/vim-ruby-minitest'
 
@@ -47,8 +48,6 @@ Plug 'sunaku/vim-ruby-minitest'
 Plug 'pangloss/vim-javascript'
 Plug 'kchmck/vim-coffee-script'
 Plug 'mxw/vim-jsx'
-"Plug 'burnettk/vim-angular'
-"Plug 'posva/vim-vue'
 
 " TPOPE
 Plug 'tpope/vim-rails'
@@ -62,7 +61,7 @@ Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-sleuth' " Automatically adjusts 'shiftwidth' and 'expandtab' heuristically
+Plug 'tpope/vim-sleuth'
 
 Plug 'junegunn/gv.vim'
 
@@ -78,28 +77,30 @@ Plug 'KabbAmine/yowish.vim'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
+Plug 'andreypopp/vim-colors-plain'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'ngmy/vim-rubocop'
 Plug 'terryma/vim-expand-region'
-"Plug 'ap/vim-buftabline'
 Plug 'janko-m/vim-test'
 Plug 'Raimondi/delimitMate'
 Plug 'rizzatti/dash.vim',  { 'on': 'Dash' }
-Plug 'henrik/vim-indexed-search' " Keep this. If confusion please check `help`
-Plug 'wincent/terminus' " Good for vim in terminal, it acts like GUI vim.
+Plug 'henrik/vim-indexed-search'
+Plug 'wincent/terminus'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+"Plug 'itchyny/lightline.vim'
 
 " PRODUCTIVITY
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'jasoncodes/ctrlp-modified.vim'
 Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle'    }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'ervandew/supertab'
-Plug 'majutsushi/tagbar',   { 'on': 'TagbarToggle'      }
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'easymotion/vim-easymotion'
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'szw/vim-maximizer'
@@ -113,8 +114,8 @@ Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-repeat'
 Plug 'wikitopian/hardmode'
 Plug 'vim-ctrlspace/vim-ctrlspace'
-Plug 'dbmrq/vim-ditto' " Stop repeating yourself
-Plug 'wellle/targets.vim' " provides additional text objects
+Plug 'dbmrq/vim-ditto'
+Plug 'wellle/targets.vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -122,10 +123,10 @@ Plug 'enricobacis/paste.vim'
 Plug 'mbbill/undotree'
 
 " FUN
-Plug 'chrisbra/unicode.vim',      { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
+Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
 
 " ASYNCHRONOUS
-Plug 'thinca/vim-quickrun' " Run code using 'quickrun' command. Good for Ruby code
+Plug 'thinca/vim-quickrun' " Ruby
 Plug 'w0rp/ale'
 
 " EXTRA
@@ -136,7 +137,8 @@ Plug 'chrisbra/csv.vim'
 call plug#end()
 
 " VIM HAS ITS VERY OWN'S 'ADD-PACKAGE' FEATURE:
-packadd! matchit " This plugin makes the '%' command jump to matching HTML tags, if/else/endif in Vim scripts, etc.
+" This plugin makes the '%' command jump to matching HTML tags, if/else/endif in Vim scripts, etc.
+packadd! matchit
 
 " COLORSHEME SETTINGS
 if has('gui_running')
@@ -178,11 +180,6 @@ set wrapscan                      " searches wrap around end-of-file
 set report=0                      " always report changed lines.
 set synmaxcol=200                 " only highlight the first 200 columns.
 
-" TENDERLOVE'S SETTINGS
-set suffixesadd=.rb
-set path+=lib/**,test/**
-let g:ruby_path = &path
-
 " WHITESPACE
 set nowrap                        " don't wrap text
 set tabstop=2                     " tab spacing
@@ -199,6 +196,11 @@ set autoread
 
 " DISABLE SWAP FILES; SYSTEMS DON'T CRASH THAT OFTEN THESE DAYS
 set updatecount=0
+
+" TENDERLOVE'S SETTINGS
+set suffixesadd=.rb
+set path+=lib/**,test/**
+let g:ruby_path = &path
 
 " INDICATOR CHARS
 if has('multi_byte') && &encoding ==# 'utf-8'
@@ -424,6 +426,7 @@ nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 
 " Mapping for debugging in Ruby
 nnoremap <leader>db obinding.pry<esc>
+nnoremap <leader>bb obyebug<esc>
 
 nnoremap \ :Ack<SPACE>
 
@@ -441,6 +444,7 @@ nnoremap gV `[v`]
 " Ruby hash syntax conversion
 nnoremap <F12> :%s/:\([^ ]*\)\(\s*\)=>/\1:/g<return>
 
+" EASY COPY AND PASTE
 " yank to system clipboard
 map <leader>y "*y
 

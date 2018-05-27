@@ -88,4 +88,3 @@ if defined? Rails
   rescue LoadError
   end
 end
-
