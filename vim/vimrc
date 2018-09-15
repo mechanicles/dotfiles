@@ -26,6 +26,9 @@
 "  Mislav Marohnić
 "  Other
 
+" IMPORTANT FOR CANCELLING/ABORTING GIT COMMIT
+" Always use `:cq`.
+
 set nocompatible  " be iMproved, required
 
 " VIM-PLUG
@@ -33,21 +36,19 @@ set nocompatible  " be iMproved, required
 call plug#begin('~/.vim/plugged')
 
 " SNIPMATE && SIPPESTS DEPENDENCIES
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
+Plug 'MarcWeber/vim-addon-mw-utils' "Dependency of vim-sinpmate
+Plug 'tomtom/tlib_vim' "Dependency of vim-sinpmate
 Plug 'garbas/vim-snipmate'
+
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 
-" RUBY
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'skwp/vim-rspec'
-Plug 'sunaku/vim-ruby-minitest'
+" LANGUAGES
+Plug 'sheerun/vim-polyglot'
 
-" JAVASCRIPT
-Plug 'pangloss/vim-javascript'
-Plug 'kchmck/vim-coffee-script'
-Plug 'mxw/vim-jsx'
+" RUBY
+Plug 'sunaku/vim-ruby-minitest'
+Plug 'thoughtbot/vim-rspec'
 
 " TPOPE
 Plug 'tpope/vim-rails'
@@ -58,11 +59,11 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sleuth'
 
+" Dependent on 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
 " COLORSCHEME
@@ -77,28 +78,24 @@ Plug 'KabbAmine/yowish.vim'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
-Plug 'andreypopp/vim-colors-plain'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'ngmy/vim-rubocop'
-Plug 'terryma/vim-expand-region'
 Plug 'janko-m/vim-test'
+Plug 'terryma/vim-expand-region'
 Plug 'Raimondi/delimitMate'
-Plug 'rizzatti/dash.vim',  { 'on': 'Dash' }
-Plug 'henrik/vim-indexed-search'
+Plug 'google/vim-searchindex'
 Plug 'wincent/terminus'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-"Plug 'itchyny/lightline.vim'
 
 " PRODUCTIVITY
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'jasoncodes/ctrlp-modified.vim'
 Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ervandew/supertab'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'easymotion/vim-easymotion'
@@ -110,17 +107,14 @@ Plug 'dkprice/vim-easygrep'
 Plug 'wsdjeg/FlyGrep.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-repeat'
-Plug 'wikitopian/hardmode'
-Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'takac/vim-hardtime'
 Plug 'dbmrq/vim-ditto'
 Plug 'wellle/targets.vim'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'enricobacis/paste.vim'
 Plug 'mbbill/undotree'
+Plug 'arthurxavierx/vim-caser'
 
 " FUN
 Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
@@ -131,7 +125,6 @@ Plug 'w0rp/ale'
 
 " EXTRA
 Plug 'lifepillar/vim-cheat40'
-Plug 'johngrib/vim-game-code-break'
 Plug 'chrisbra/csv.vim'
 
 call plug#end()
@@ -273,9 +266,14 @@ endif
 
 let g:mapleader = ","
 
+" HARDTIME SETTINGS
+let g:hardtime_default_on = 1 " Stop repeating jjjjj... Stop repeating kkkk...
+let g:hardtime_showmsg = 1    " Notification about HardTime being enabled
+let g:hardtime_maxcount = 2   " Allow a user to press jj but not jjj.
+let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*" ]
+
 " CTRLP SETTINGS
 let g:ctrlp_use_caching       = 0
-let g:ctrlp_switch_buffer     = 0
 let g:ctrlp_working_path_mode = 0
 
 " Default to filename searches - so that appctrl will find application
@@ -341,10 +339,24 @@ let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,cuda,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
+
 " Better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " The silver searcher (Faster than the ack)
 " Invoke ag using ack.vim
@@ -385,6 +397,15 @@ let g:multi_cursor_quit_key='<Esc>'
 
 " Time limit of each task in seconds for vim-plug
 let g:plug_timeout = 100
+
+" RSpec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+
+let g:rspec_command = "bundle exec rspec {spec}"
+let g:rspec_runner = "os_x_iterm2"
 
 function! LinterStatus() abort
     let l:counts = ale#statusline#Count(bufnr(''))
@@ -558,24 +579,8 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " This replaces :tabnew which I used to bind to this mapping
 nmap <leader>T :enew<cr>
 
-" SETTINGS for 'ap/vim-buftabline' plgin.
-" Move to the next buffer
-"nmap <leader>ll :bnext<CR>
-
-" Move to the previous buffer
-"nmap <leader>hh :bprevious<CR>
-
-" Close the current buffer and move to the previous one
-" This replicates the idea of closing a tab
-"nmap <leader>bq :bp <BAR> bd #<CR>
-
-" Show all open buffers and their status
-"nmap <leader>bl :ls<CR>
-
-
 " Exit insert mode without using Esc
 inoremap jj <Esc>
-
 
 " Easy edit/open commands
 command! EditVim  :edit   ~/.vimrc
