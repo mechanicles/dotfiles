@@ -78,6 +78,8 @@ Plug 'KabbAmine/yowish.vim'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
+Plug 'morhetz/gruvbox'
+Plug 'jnurmine/Zenburn'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
@@ -108,7 +110,6 @@ Plug 'wsdjeg/FlyGrep.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-repeat'
-Plug 'takac/vim-hardtime'
 Plug 'dbmrq/vim-ditto'
 Plug 'wellle/targets.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -135,9 +136,7 @@ packadd! matchit
 
 " COLORSHEME SETTINGS
 if has('gui_running')
-  set t_Co=256
-  let g:one_allow_italics = 1 " I love italic for comments
-  "colorscheme molokai
+  let g:onedark_terminal_italics = 1 " I love italic for comments
   colorscheme onedark
 else
   colorscheme hybrid
@@ -146,7 +145,6 @@ endif
 " BASIC SETUP
 syntax enable
 set number                        " show line numbers
-set numberwidth=5
 set ruler                         " show the cursor position all the time
 set title                         " show file in titlebar
 set encoding=utf-8                " set default encoding to UTF-8
@@ -154,7 +152,7 @@ set history=50                    " keep 50 lines of command line history
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=80
-set showcmd                       " show partial commands below the status line
+set showcmd                       " display incomplete commands
 set wildmenu                      " visual autocomplete for command menu
 set ttyfast                       " faster redrawing.
 set lazyredraw                    " don't redraw while executing macros (good performance config)
@@ -163,22 +161,21 @@ set showmode                      " show current mode in command-line.
 set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
 set display=lastline              " show as much as possible of the last line.
-set scrolloff=3                   " minimum lines to keep above and below cursor
+set scrolloff=2                   " minimum lines to keep above and below cursor
 set hidden                        " switch between buffers without having to save first.
 set foldenable                    " auto fold code
 set pastetoggle=<F2>
 set confirm                       " get a dialog when :q, :w, or :wq fails
 set cursorline                    " find the current line quickly.
 set wrapscan                      " searches wrap around end-of-file
-set report=0                      " always report changed lines.
-set synmaxcol=200                 " only highlight the first 200 columns.
+set synmaxcol=256                 "  This helps to avoid very slow redrawing for long lines
 
 " WHITESPACE
 set nowrap                        " don't wrap text
 set tabstop=2                     " tab spacing
+set expandtab                     " use spaces instead of tabs
 set softtabstop=2                 " unify
 set shiftwidth=2                  " indent/outdent by 2 columns
-set expandtab                     " use spaces instead of tabs
 set smarttab                      " use tabs at the start of a line, spaces elsewhere
 set backspace=indent,eol,start    " backspace through everything in insert mode
 set list                          " show invisible characters
@@ -190,18 +187,6 @@ set autoread
 " DISABLE SWAP FILES; SYSTEMS DON'T CRASH THAT OFTEN THESE DAYS
 set updatecount=0
 
-" TENDERLOVE'S SETTINGS
-set suffixesadd=.rb
-set path+=lib/**,test/**
-let g:ruby_path = &path
-
-" INDICATOR CHARS
-if has('multi_byte') && &encoding ==# 'utf-8'
-  let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
-else
-  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
-endif
-
 set showbreak=↪\
 
 " SEARCHING
@@ -210,7 +195,6 @@ set incsearch                     " incremental searching
 set ignorecase                    " searches are case insensitive...
 set smartcase                     " unless they contain at least one capital letter
 set gdefault                      " have :s///g flag by default on
-
 
 " TIME OUT ON KEY CODES BUT NOT MAPPINGS. BASICALLY THIS MAKES TERMINAL VIM WORK SANELY.
 set notimeout
@@ -255,6 +239,34 @@ set complete+=kspell
 " ALWAYS USE VERTICAL DIFFS
 set diffopt+=vertical
 
+" TENDERLOVE'S SETTINGS
+set suffixesadd=.rb
+set path+=lib/**,test/**
+set kp=ri " Use ri for help
+set exrc
+set secure
+
+" TENDERLOVE'S SETTINGS
+" Add stdlib of environment's ruby to path
+let g:stdlib = system('ruby --disable-gems -rrbconfig -e"print RbConfig::CONFIG[\"rubylibdir\"]"')
+let &path .= "," . stdlib
+let g:ruby_path = &path
+
+" TENDERLOVE'S SETTINGS
+if has("terminal")
+  map <Leader>tt :terminal ++close<cr>
+  tnoremap <Esc> <C-W>N
+endif
+
+set tags+=.git/tags
+
+" INDICATOR CHARS
+if has('multi_byte') && &encoding ==# 'utf-8'
+  let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
+else
+  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
+endif
+
 if has("statusline") && !&cp
   set laststatus=2              " always show the status bar
   set statusline=%f\ %m\ %r     " filename, modified, readonly
@@ -265,12 +277,6 @@ if has("statusline") && !&cp
 endif
 
 let g:mapleader = ","
-
-" HARDTIME SETTINGS
-let g:hardtime_default_on = 1 " Stop repeating jjjjj... Stop repeating kkkk...
-let g:hardtime_showmsg = 1    " Notification about HardTime being enabled
-let g:hardtime_maxcount = 2   " Allow a user to press jj but not jjj.
-let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*" ]
 
 " CTRLP SETTINGS
 let g:ctrlp_use_caching       = 0
@@ -431,9 +437,9 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
  "Highlight column for 119 characters.
 if exists('+colorcolumn')
-  set colorcolumn=120
+  set colorcolumn=+1
 else
-  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>81v.\+', -1)
+  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80.\+', -1)
 endif
 
 " Quicker window movement
@@ -487,7 +493,7 @@ nmap [d <Plug>DittoLess                " Show the previous matches
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 " Index ctags from any project, including those outside Rails
-map <Leader>ct :!ctags -R .<CR>
+map <Leader>ct :!ctags --tag-relative=yes --extras=+f -Rf.git/tags --exclude=.git --exclude=pkg --exclude=.ext --languages=-javascript,sql<cr><cr>
 
 map <Leader>n :NERDTreeToggle<CR>
 
