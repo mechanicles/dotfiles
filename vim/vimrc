@@ -29,7 +29,9 @@
 " IMPORTANT FOR CANCELLING/ABORTING GIT COMMIT
 " Always use `:cq`.
 
-set nocompatible  " be iMproved, required
+if has('vim_starting')
+  set nocompatible               " Be iMproved
+endif
 
 " VIM-PLUG
 
@@ -49,9 +51,14 @@ Plug 'sheerun/vim-polyglot'
 " RUBY
 Plug 'sunaku/vim-ruby-minitest'
 Plug 'thoughtbot/vim-rspec'
+Plug 'ecomba/vim-ruby-refactoring'
+
+" JAVASCRIPT
+Plug 'jelera/vim-javascript-syntax'
 
 " TPOPE
 Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rake'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-markdown'
@@ -90,12 +97,15 @@ Plug 'terryma/vim-expand-region'
 Plug 'Raimondi/delimitMate'
 Plug 'google/vim-searchindex'
 Plug 'wincent/terminus'
+Plug 'vim-scripts/CSApprox'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-session'
 
 " PRODUCTIVITY
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ivalkeen/vim-ctrlp-tjump'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ervandew/supertab'
@@ -116,6 +126,14 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'arthurxavierx/vim-caser'
+Plug 'vim-scripts/grep.vim'
+
+let g:make = 'gmake'
+if exists('make')
+  let g:make = 'make'
+endif
+
+Plug 'Shougo/vimproc.vim', { 'do': g:make }
 
 " FUN
 Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
@@ -130,16 +148,34 @@ Plug 'chrisbra/csv.vim'
 
 call plug#end()
 
-" VIM HAS ITS VERY OWN'S 'ADD-PACKAGE' FEATURE:
-" This plugin makes the '%' command jump to matching HTML tags, if/else/endif in Vim scripts, etc.
-packadd! matchit
 
+if has('nvim')
+  runtime! macros/matchit.vim
+else
+  " VIM HAS ITS VERY OWN'S 'ADD-PACKAGE' FEATURE:
+  " This plugin makes the '%' command jump to matching HTML tags, if/else/endif in Vim scripts, etc.
+  packadd! matchit
+endif
+
+let no_buffers_menu=1
 " COLORSHEME SETTINGS
 if has('gui_running')
-  let g:onedark_terminal_italics = 1 " I love italic for comments
-  colorscheme onedark
+  if has("gui_mac") || has("gui_macvim")
+    set guifont=Menlo:h15
+    let g:onedark_terminal_italics = 1 " I love italic for comments
+    colorscheme onedark
+  endif
 else
   colorscheme hybrid
+  let g:CSApprox_loaded = 1
+
+  if $COLORTERM == 'gnome-terminal'
+    set term=gnome-256color
+  else
+    if $TERM == 'xterm'
+      set term=xterm-256color
+    endif
+  endif
 endif
 
 " BASIC SETUP
@@ -168,6 +204,8 @@ set pastetoggle=<F2>
 set confirm                       " get a dialog when :q, :w, or :wq fails
 set cursorline                    " find the current line quickly.
 set wrapscan                      " searches wrap around end-of-file
+set bomb
+set binary
 set synmaxcol=256                 "  This helps to avoid very slow redrawing for long lines
 
 " WHITESPACE
@@ -224,6 +262,8 @@ set nobackup                      " turn backup off, since most stuff is in SVN,
 set nowb                          " no writebackup
 set noswapfile
 
+set fileformats=unix,dos,mac
+
 " OPEN NEW SPLIT PANES TO RIGHT AND BOTTOM, WHICH FEELS MORE NATURAL
 set splitright
 set splitbelow
@@ -245,6 +285,12 @@ set path+=lib/**,test/**
 set kp=ri " Use ri for help
 set exrc
 set secure
+
+" session management
+let g:session_directory = "~/.vim/session"
+let g:session_autoload = "no"
+let g:session_autosave = "no"
+let g:session_command_aliases = 1
 
 " TENDERLOVE'S SETTINGS
 " Add stdlib of environment's ruby to path
@@ -333,6 +379,17 @@ let g:NERDTreeHijackNetrw=1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
+let g:NERDTreeChDirMode=2
+let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
+let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
+let g:NERDTreeShowBookmarks=1
+let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
+
+" grep.vim
+nnoremap <silent> <leader>f :Rgrep<CR>
+let Grep_Default_Options = '-IR'
+let Grep_Skip_Files = '*.log *.db'
+let Grep_Skip_Dirs = '.git node_modules'
 
 "VIM-TEST PLUGIN SETTINGS
 let test#strategy = "iterm"
@@ -346,23 +403,24 @@ let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 let g:ycm_semantic_triggers =  {
-  \   'c' : ['->', '.'],
-  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-  \             're!\[.*\]\s'],
-  \   'ocaml' : ['.', '#'],
-  \   'cpp,cuda,objcpp' : ['->', '.', '::'],
-  \   'perl' : ['->'],
-  \   'php' : ['->', '::'],
-  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-  \   'ruby' : ['.', '::'],
-  \   'lua' : ['.', ':'],
-  \   'erlang' : [':'],
-  \ }
+      \   'c' : ['->', '.'],
+      \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+      \             're!\[.*\]\s'],
+      \   'ocaml' : ['.', '#'],
+      \   'cpp,cuda,objcpp' : ['->', '.', '::'],
+      \   'perl' : ['->'],
+      \   'php' : ['->', '::'],
+      \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+      \   'ruby' : ['.', '::'],
+      \   'lua' : ['.', ':'],
+      \   'erlang' : [':'],
+      \ }
 
 " Better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"
 
 " The silver searcher (Faster than the ack)
 " Invoke ag using ack.vim
@@ -389,6 +447,18 @@ endif
 " fugitive buffers. This prevents this from becomming an issue:
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
+"" The PC is fast enough, do syntax highlight syncing from start unless 200 lines
+augroup vimrc-sync-fromstart
+  autocmd!
+  autocmd BufEnter * :syntax sync maxlines=200
+augroup END
+
+"" Remember cursor position
+augroup vimrc-remember-cursor-position
+  autocmd!
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+augroup END
+
 let g:github_enterprise_urls = ['https://github.com']
 
 " Turn off default key mappings
@@ -414,16 +484,16 @@ let g:rspec_command = "bundle exec rspec {spec}"
 let g:rspec_runner = "os_x_iterm2"
 
 function! LinterStatus() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
+  let l:counts = ale#statusline#Count(bufnr(''))
 
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
 
-    return l:counts.total == 0 ? 'OK' : printf(
-    \   '%dW %dE',
-    \   all_non_errors,
-    \   all_errors
-    \)
+  return l:counts.total == 0 ? 'OK' : printf(
+        \   '%dW %dE',
+        \   all_non_errors,
+        \   all_errors
+        \)
 endfunction
 
 set statusline+=\ %{LinterStatus()}
@@ -435,18 +505,67 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
- "Highlight column for 119 characters.
+" vim-javascript
+augroup vimrc-javascript
+  autocmd!
+  autocmd FileType javascript set tabstop=4|set shiftwidth=4|set expandtab softtabstop=4
+augroup END
+
+" ruby
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
+
+augroup vimrc-ruby
+  autocmd!
+  autocmd BufNewFile,BufRead *.rb,*.rbw,*.gemspec setlocal filetype=ruby
+  autocmd FileType ruby set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
+augroup END
+
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+\ }
+
+" Ruby refactory
+nnoremap <leader>rap  :RAddParameter<cr>
+nnoremap <leader>rcpc :RConvertPostConditional<cr>
+nnoremap <leader>rel  :RExtractLet<cr>
+vnoremap <leader>rec  :RExtractConstant<cr>
+vnoremap <leader>relv :RExtractLocalVariable<cr>
+nnoremap <leader>rit  :RInlineTemp<cr>
+vnoremap <leader>rrlv :RRenameLocalVariable<cr>
+vnoremap <leader>rriv :RRenameInstanceVariable<cr>
+vnoremap <leader>rem  :RExtractMethod<cr>
+
+"Highlight column for 119 characters.
 if exists('+colorcolumn')
   set colorcolumn=+1
 else
   au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80.\+', -1)
 endif
 
+" session management
+nnoremap <leader>so :OpenSession<Space>
+nnoremap <leader>ss :SaveSession<Space>
+nnoremap <leader>sd :DeleteSession<CR>
+nnoremap <leader>sc :CloseSession<CR>
+
 " Quicker window movement
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
+
+cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>e :FZF -m<CR>
 
 " puts the calller (Thanks to @tenderlove)
 nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
@@ -534,6 +653,7 @@ inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
 
 " TagbarToggle
 nnoremap <Leader>rt :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
 
 " disable cursor keys in normal mode
 map <Left>  :echoe "Use h"<cr>
@@ -592,7 +712,7 @@ inoremap jj <Esc>
 command! EditVim  :edit   ~/.vimrc
 command! EditBash :edit   ~/.bashrc
 
- "bind \ (backward slash) to grep shortcut
+"bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 function! s:setWrapping()
@@ -661,5 +781,5 @@ iab udpate     update
 
 " Local config
 "if filereadable($HOME . "/.vimrc.local")
-  "source ~/.vimrc.local
+"source ~/.vimrc.local
 "endif
