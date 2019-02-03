@@ -1,31 +1,3 @@
-"                         ███████████████████████████
-"                         ███████▀▀▀░░░░░░░▀▀▀███████
-"                         ████▀░░░░░░░░░░░░░░░░░▀████
-"                         ███│░░░░░░░░░░░░░░░░░░░│███
-"                         ██▌│░░░░░░░░░░░░░░░░░░░│▐██
-"                         ██░└┐░░░░░░░░░░░░░░░░░┌┘░██
-"                         ██░░└┐░░░░░░░░░░░░░░░┌┘░░██
-"                         ██░░┌┘▄▄▄▄▄░░░░░▄▄▄▄▄└┐░░██
-"                         ██▌░│██████▌░░░▐██████│░▐██
-"                         ███░│▐███▀▀░░▄░░▀▀███▌│░███
-"                         ██▀─┘░░░░░░░▐█▌░░░░░░░└─▀██
-"                         ██▄░░░▄▄▄▓░░▀█▀░░▓▄▄▄░░░▄██
-"                         ████▄─┘██▌░░░░░░░▐██└─▄████
-"                         █████░░▐█─┬┬┬┬┬┬┬─█▌░░█████
-"                         ████▌░░░▀┬┼┼┼┼┼┼┼┬▀░░░▐████
-"                         █████▄░░░└┴┴┴┴┴┴┴┘░░░▄█████
-"                         ███████▄░░░░░░░░░░░▄███████
-"                         ██████████▄▄▄▄▄▄▄██████████
-"                         ███████████████████████████
-"
-"                                   Welcome!
-"
-" Thanks:
-"  Tim Pope
-"  Gmarik
-"  Mislav Marohnić
-"  Other
-
 " IMPORTANT FOR CANCELLING/ABORTING GIT COMMIT
 " Always use `:cq`.
 
@@ -34,7 +6,6 @@ if has('vim_starting')
 endif
 
 " VIM-PLUG
-
 call plug#begin('~/.vim/plugged')
 
 " SNIPMATE && SIPPESTS DEPENDENCIES
@@ -72,6 +43,7 @@ Plug 'tpope/vim-sleuth'
 
 " Dependent on 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
+Plug 'shumphrey/fugitive-gitlab.vim'
 
 " COLORSCHEME
 Plug 'altercation/vim-colors-solarized'
@@ -100,11 +72,11 @@ Plug 'wincent/terminus'
 Plug 'vim-scripts/CSApprox'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
+Plug 'Yggdroot/indentLine'
 
 " PRODUCTIVITY
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -120,13 +92,13 @@ Plug 'wsdjeg/FlyGrep.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-repeat'
-Plug 'dbmrq/vim-ditto'
 Plug 'wellle/targets.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'arthurxavierx/vim-caser'
 Plug 'vim-scripts/grep.vim'
+Plug 'rhysd/committia.vim'
 
 let g:make = 'gmake'
 if exists('make')
@@ -162,8 +134,8 @@ let no_buffers_menu=1
 if has('gui_running')
   if has("gui_mac") || has("gui_macvim")
     set guifont=Menlo:h15
-    let g:onedark_terminal_italics = 1 " I love italic for comments
-    colorscheme onedark
+    " let g:onedark_terminal_italics = 1 " I love italic for comments
+    colorscheme jellybeans
   endif
 else
   colorscheme hybrid
@@ -185,6 +157,7 @@ set ruler                         " show the cursor position all the time
 set title                         " show file in titlebar
 set encoding=utf-8                " set default encoding to UTF-8
 set history=50                    " keep 50 lines of command line history
+set ttymouse=xterm2
 set mouse=a                       " automatically enable mouse usage
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=80
@@ -292,6 +265,13 @@ let g:session_autoload = "no"
 let g:session_autosave = "no"
 let g:session_command_aliases = 1
 
+" indentLine plugin
+let g:indentLine_color_term = 239
+let g:indentLine_char = '¦'
+
+" clever-f.vim plugin
+let g:clever_f_ignore_case = 1
+
 " TENDERLOVE'S SETTINGS
 " Add stdlib of environment's ruby to path
 let g:stdlib = system('ruby --disable-gems -rrbconfig -e"print RbConfig::CONFIG[\"rubylibdir\"]"')
@@ -321,6 +301,9 @@ if has("statusline") && !&cp
   set statusline+=\ %3v         " current column
   set statusline+=\ %Y\ %{fugitive#head()}
 endif
+
+" Plug 'shumphrey/fugitive-gitlab.vim' settings
+let g:fugitive_gitlab_domains = ['https://gitlab.bitzesty.com']
 
 let g:mapleader = ","
 
@@ -505,6 +488,18 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
+" rename current file (thanks Gary Bernhardt)
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+command! RENAME call RenameFile()
+
 " vim-javascript
 augroup vimrc-javascript
   autocmd!
@@ -598,16 +593,6 @@ map <leader>y "*y
 nmap <leader>p pV`]=
 nmap <leader>P PV`]=
 
-" Settings for vim-ditto
-nmap <leader>di <Plug>ToggleDitto      " Turn it on and off
-
-nmap =d <Plug>DittoNext                " Jump to the next word
-nmap -d <Plug>DittoPrev                " Jump to the previous word
-nmap +d <Plug>DittoGood                " Ignore the word under the cursor
-nmap _d <Plug>DittoBad                 " Stop ignoring the word under the cursor
-nmap ]d <Plug>DittoMore                " Show the next matches
-nmap [d <Plug>DittoLess                " Show the previous matches
-
 " expand %% to current directory in command-line mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
@@ -637,7 +622,6 @@ nmap <leader>hs :set hlsearch! hlsearch?<CR>
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
-
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
@@ -666,31 +650,14 @@ nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
 nmap <Leader>hv <Plug>GitGutterPreviewHunk " Preview hunk
 
+" Git Gutter temporary for jellybeans colorsheme (REMOVE IT Later) https://github.com/airblade/vim-gitgutter/commit/afa4f2ddf0fecb37914ec37357636abb18013422
+" highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
+" highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
+" highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
+
 "Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
-
-"Map Control-# to switch tabs
-map  <C-0> 0gt
-imap <C-0> <Esc>0gt
-map  <C-1> 1gt
-imap <C-1> <Esc>1gt
-map  <C-2> 2gt
-imap <C-2> <Esc>2gt
-map  <C-3> 3gt
-imap <C-3> <Esc>3gt
-map  <C-4> 4gt
-imap <C-4> <Esc>4gt
-map  <C-5> 5gt
-imap <C-5> <Esc>5gt
-map  <C-6> 6gt
-imap <C-6> <Esc>6gt
-map  <C-7> 7gt
-imap <C-7> <Esc>7gt
-map  <C-8> 8gt
-imap <C-8> <Esc>8gt
-map  <C-9> 9gt
-imap <C-9> <Esc>9gt
 
 noremap <F5> :UndotreeToggle<cr>
 
@@ -744,8 +711,6 @@ if has("autocmd")
   au FileType javascript,css,ruby,rake,erb inoremap <silent> ,; <ESC>:call cosco#commaOrSemiColon()"<CR>a
 
   au StdinReadPre * let s:std_in=1
-
-  au FileType markdown,text,tex,gitcommit DittoOn  " Turn on Ditto's autocmds
 
   au FileType javascript set formatprg=prettier\ --stdin
 endif
