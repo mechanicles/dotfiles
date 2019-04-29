@@ -14,7 +14,11 @@ Plug 'tomtom/tlib_vim' "Dependency of vim-sinpmate
 Plug 'garbas/vim-snipmate'
 
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+
+" asynchronous completion framework for neovim/Vim8
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 
 " LANGUAGES
 Plug 'sheerun/vim-polyglot'
@@ -59,24 +63,22 @@ Plug 'chriskempson/base16-vim'
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'jnurmine/Zenburn'
+Plug 'fenetikm/falcon'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'ngmy/vim-rubocop'
 Plug 'janko-m/vim-test'
-Plug 'terryma/vim-expand-region'
 Plug 'Raimondi/delimitMate'
 Plug 'google/vim-searchindex'
 Plug 'wincent/terminus'
-Plug 'vim-scripts/CSApprox'
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-session'
 Plug 'Yggdroot/indentLine'
 
 " PRODUCTIVITY
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'srstevenson/vim-picker'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -88,7 +90,6 @@ Plug 'szw/vim-maximizer'
 Plug 'junegunn/vim-easy-align'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'dkprice/vim-easygrep'
-Plug 'wsdjeg/FlyGrep.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-repeat'
@@ -105,7 +106,7 @@ if exists('make')
   let g:make = 'make'
 endif
 
-Plug 'Shougo/vimproc.vim', { 'do': g:make }
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
 " FUN
 Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
@@ -132,15 +133,14 @@ endif
 let no_buffers_menu=1
 " COLORSHEME SETTINGS
 if has('gui_running')
-  if has("gui_mac") || has("gui_macvim")
-    set guifont=Menlo:h15
+  if has("gui_macvim")
+    set macligatures
+    set guifont=Fira\ Code:h16
     " let g:onedark_terminal_italics = 1 " I love italic for comments
     colorscheme jellybeans
   endif
 else
   colorscheme hybrid
-  let g:CSApprox_loaded = 1
-
   if $COLORTERM == 'gnome-terminal'
     set term=gnome-256color
   else
@@ -179,7 +179,8 @@ set cursorline                    " find the current line quickly.
 set wrapscan                      " searches wrap around end-of-file
 set bomb
 set binary
-set synmaxcol=256                 "  This helps to avoid very slow redrawing for long lines
+set synmaxcol=256                 " This helps to avoid very slow redrawing for long lines
+set updatetime=100                " delay time. Useful for showing git signs
 
 " WHITESPACE
 set nowrap                        " don't wrap text
@@ -259,11 +260,8 @@ set kp=ri " Use ri for help
 set exrc
 set secure
 
-" session management
-let g:session_directory = "~/.vim/session"
-let g:session_autoload = "no"
-let g:session_autosave = "no"
-let g:session_command_aliases = 1
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
 
 " indentLine plugin
 let g:indentLine_color_term = 239
@@ -345,15 +343,6 @@ nnoremap <silent> <D-M> :CtrlPBufTag<CR>
 " TREAT <li> AND <p> TAGS LIKE THE BLOCK TAGS THEY ARE
 let g:html_indent_tags = 'li\|p'
 
-" ALLOWS CURSOR CPANGE IN TMUX MODE
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
-
 " SNIPPETS ARE ACTIVATED BY SHIFT+TAB
 let g:snippetsEmu_key = "<S-Tab>"
 
@@ -379,25 +368,6 @@ let test#strategy = "iterm"
 
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
-
-" MAKE YCM COMPATIBLE WITH ULTISNIPS (USING SUPERTAB)
-let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-
-let g:ycm_semantic_triggers =  {
-      \   'c' : ['->', '.'],
-      \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-      \             're!\[.*\]\s'],
-      \   'ocaml' : ['.', '#'],
-      \   'cpp,cuda,objcpp' : ['->', '.', '::'],
-      \   'perl' : ['->'],
-      \   'php' : ['->', '::'],
-      \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-      \   'ruby' : ['.', '::'],
-      \   'lua' : ['.', ':'],
-      \   'erlang' : [':'],
-      \ }
 
 " Better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
@@ -546,12 +516,6 @@ else
   au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80.\+', -1)
 endif
 
-" session management
-nnoremap <leader>so :OpenSession<Space>
-nnoremap <leader>ss :SaveSession<Space>
-nnoremap <leader>sd :DeleteSession<CR>
-nnoremap <leader>sc :CloseSession<CR>
-
 " Quicker window movement
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -651,9 +615,9 @@ nmap [h <Plug>GitGutterPrevHunk
 nmap <Leader>hv <Plug>GitGutterPreviewHunk " Preview hunk
 
 " Git Gutter temporary for jellybeans colorsheme (REMOVE IT Later) https://github.com/airblade/vim-gitgutter/commit/afa4f2ddf0fecb37914ec37357636abb18013422
-" highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
-" highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
-" highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
+highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
+highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
+highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
 
 "Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
@@ -663,10 +627,6 @@ noremap <F5> :UndotreeToggle<cr>
 
 " In command-line mode, C-a jumps to beginning (to match C-e)
 cnoremap <C-a> <Home>
-
-" vim-expand-region
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
 
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
@@ -743,8 +703,3 @@ iab bindign    binding
 iab attachemnts attachments
 iab attachemnt attachment
 iab udpate     update
-
-" Local config
-"if filereadable($HOME . "/.vimrc.local")
-"source ~/.vimrc.local
-"endif
