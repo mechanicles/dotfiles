@@ -20,9 +20,6 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 
-" LANGUAGES
-Plug 'sheerun/vim-polyglot'
-
 " RUBY
 Plug 'sunaku/vim-ruby-minitest'
 Plug 'thoughtbot/vim-rspec'
@@ -67,16 +64,12 @@ Plug 'fenetikm/falcon'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
-Plug 'ntpeters/vim-better-whitespace'
 Plug 'janko-m/vim-test'
 Plug 'Raimondi/delimitMate'
 Plug 'google/vim-searchindex'
-Plug 'wincent/terminus'
-Plug 'xolox/vim-misc'
 Plug 'Yggdroot/indentLine'
 
 " PRODUCTIVITY
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'srstevenson/vim-picker'
 Plug 'tpope/vim-commentary'
@@ -89,7 +82,6 @@ Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'szw/vim-maximizer'
 Plug 'junegunn/vim-easy-align'
 Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'dkprice/vim-easygrep'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-repeat'
@@ -97,8 +89,6 @@ Plug 'wellle/targets.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
-Plug 'arthurxavierx/vim-caser'
-Plug 'vim-scripts/grep.vim'
 Plug 'rhysd/committia.vim'
 
 let g:make = 'gmake'
@@ -356,12 +346,6 @@ let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycach
 let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
 let g:NERDTreeShowBookmarks=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-
-" grep.vim
-nnoremap <silent> <leader>f :Rgrep<CR>
-let Grep_Default_Options = '-IR'
-let Grep_Skip_Files = '*.log *.db'
-let Grep_Skip_Dirs = '.git node_modules'
 
 "VIM-TEST PLUGIN SETTINGS
 let test#strategy = "iterm"
