@@ -45,6 +45,7 @@ Plug 'tpope/vim-sleuth'
 " Dependent on 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'shumphrey/fugitive-gitlab.vim'
+Plug 'sodapopcan/vim-twiggy'
 
 " COLORSCHEME
 Plug 'altercation/vim-colors-solarized'
@@ -68,6 +69,7 @@ Plug 'janko-m/vim-test'
 Plug 'Raimondi/delimitMate'
 Plug 'google/vim-searchindex'
 Plug 'Yggdroot/indentLine'
+Plug 'airblade/vim-rooter'
 
 " PRODUCTIVITY
 Plug 'ctrlpvim/ctrlp.vim'
@@ -125,7 +127,7 @@ let no_buffers_menu=1
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=Fira\ Code:h16
+    set guifont=SF\ Mono:h16
     " let g:onedark_terminal_italics = 1 " I love italic for comments
     colorscheme jellybeans
   endif
