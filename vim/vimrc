@@ -8,25 +8,26 @@ endif
 " VIM-PLUG
 call plug#begin('~/.vim/plugged')
 
-" SNIPMATE && SIPPESTS DEPENDENCIES
-Plug 'MarcWeber/vim-addon-mw-utils' "Dependency of vim-sinpmate
-Plug 'tomtom/tlib_vim' "Dependency of vim-sinpmate
-Plug 'garbas/vim-snipmate'
-
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " asynchronous completion framework for neovim/Vim8
 Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'roxma/nvim-yarp'            " for deoplete
+Plug 'roxma/vim-hug-neovim-rpc'   " for deoplete
 
 " RUBY
 Plug 'sunaku/vim-ruby-minitest'
 Plug 'thoughtbot/vim-rspec'
-Plug 'ecomba/vim-ruby-refactoring'
+
+" Elixir
+Plug 'elixir-editors/vim-elixir'
 
 " JAVASCRIPT
 Plug 'jelera/vim-javascript-syntax'
+Plug 'posva/vim-vue'
+
+" TEMPLATES
+Plug 'slim-template/vim-slim'
 
 " TPOPE
 Plug 'tpope/vim-rails'
@@ -70,17 +71,15 @@ Plug 'Raimondi/delimitMate'
 Plug 'google/vim-searchindex'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-rooter'
+Plug 'wincent/terminus'
 
 " PRODUCTIVITY
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'srstevenson/vim-picker'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ervandew/supertab'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'easymotion/vim-easymotion'
-Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'szw/vim-maximizer'
 Plug 'junegunn/vim-easy-align'
 Plug 'maxbrunsfeld/vim-yankstack'
@@ -150,7 +149,7 @@ set title                         " show file in titlebar
 set encoding=utf-8                " set default encoding to UTF-8
 set history=50                    " keep 50 lines of command line history
 set ttymouse=xterm2
-set mouse=a                       " automatically enable mouse usage
+set mouse=a                       " automatically enable mouse usage in normal mode.
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=80
 set showcmd                       " display incomplete commands
@@ -162,7 +161,7 @@ set showmode                      " show current mode in command-line.
 set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
 set display=lastline              " show as much as possible of the last line.
-set scrolloff=2                   " minimum lines to keep above and below cursor
+set scrolloff=1                   " minimum lines to keep above and below cursor
 set hidden                        " switch between buffers without having to save first.
 set foldenable                    " auto fold code
 set pastetoggle=<F2>
@@ -297,46 +296,8 @@ let g:fugitive_gitlab_domains = ['https://gitlab.bitzesty.com']
 
 let g:mapleader = ","
 
-" CTRLP SETTINGS
-let g:ctrlp_use_caching       = 0
-let g:ctrlp_working_path_mode = 0
-
-" Default to filename searches - so that appctrl will find application
-" controller
-let g:ctrlp_by_filename = 1
-
-" Don't jump to already open window. This is annoying if you are maintaining
-" several Tab workspaces and want to open two windows into the same file.
-let g:ctrlp_switch_buffer = 0
-
-" Idea from : http://www.charlietanksley.net/blog/blog/2011/10/18/vim-navigation-with-lustyexplorer-and-lustyjuggler/
-" Open CtrlP starting from a particular path, making it much
-" more likely to find the correct thing first. mnemonic 'jump to [something]'
-map ,ja :CtrlP app/assets<CR>
-map ,jm :CtrlP app/models<CR>
-map ,jc :CtrlP app/controllers<CR>
-map ,jv :CtrlP app/views<CR>
-map ,jh :CtrlP app/helpers<CR>
-map ,jl :CtrlP lib<CR>
-map ,jp :CtrlP public<CR>
-map ,js :CtrlP app/services<CR>
-map ,jf :CtrlP test/fixtures<CR>
-map ,jd :CtrlP db<CR>
-map ,jC :CtrlP config<CR>
-map ,je :CtrlP config/environments<CR>
-map ,jV :CtrlP vendor<CR>
-map ,jF :CtrlP factories<CR>
-map ,jT :CtrlP test<CR>
-
-"Cmd-Shift-(M)ethod - jump to a method (tag in current file)
-"Ctrl-m is not good - it overrides behavior of Enter
-nnoremap <silent> <D-M> :CtrlPBufTag<CR>
-
 " TREAT <li> AND <p> TAGS LIKE THE BLOCK TAGS THEY ARE
 let g:html_indent_tags = 'li\|p'
-
-" SNIPPETS ARE ACTIVATED BY SHIFT+TAB
-let g:snippetsEmu_key = "<S-Tab>"
 
 " NERDTREE SETTINGS
 let g:NERDTreeHijackNetrw=1
@@ -360,26 +321,6 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
-
-" The silver searcher (Faster than the ack)
-" Invoke ag using ack.vim
-if executable("ag")
-  " Use Ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  let g:ackprg = 'ag --vimgrep'
-  let g:agprg="ag --column"
-
-  let g:ctrlp_user_command =
-        \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-else
-  " Fall back to using git ls-files if Ag is not available
-  let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
-  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others']
-endif
 
 " Every time you open a git object using fugitive it creates a new buffer.
 " This means that your buffer listing can quickly become swamped with
@@ -484,17 +425,6 @@ let g:tagbar_type_ruby = {
     \ ]
 \ }
 
-" Ruby refactory
-nnoremap <leader>rap  :RAddParameter<cr>
-nnoremap <leader>rcpc :RConvertPostConditional<cr>
-nnoremap <leader>rel  :RExtractLet<cr>
-vnoremap <leader>rec  :RExtractConstant<cr>
-vnoremap <leader>relv :RExtractLocalVariable<cr>
-nnoremap <leader>rit  :RInlineTemp<cr>
-vnoremap <leader>rrlv :RRenameLocalVariable<cr>
-vnoremap <leader>rriv :RRenameInstanceVariable<cr>
-vnoremap <leader>rem  :RExtractMethod<cr>
-
 "Highlight column for 119 characters.
 if exists('+colorcolumn')
   set colorcolumn=+1
@@ -518,8 +448,6 @@ nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 " Mapping for debugging in Ruby
 nnoremap <leader>db obinding.pry<esc>
 nnoremap <leader>bb obyebug<esc>
-
-nnoremap \ :Ack<SPACE>
 
 " Disable 'Entering Ex mode'
 map Q <Nop>
@@ -659,6 +587,9 @@ if has("autocmd")
   au StdinReadPre * let s:std_in=1
 
   au FileType javascript set formatprg=prettier\ --stdin
+
+  " https://github.com/posva/vim-vue: This fixes 'syntax highlighting stops working randomly' issue
+  autocmd FileType vue syntax sync fromstart
 endif
 
 " FIX CONSTANT SPELLING MISTAKES
