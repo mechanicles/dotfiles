@@ -10,10 +10,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
-" asynchronous completion framework for neovim/Vim8
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'            " for deoplete
-Plug 'roxma/vim-hug-neovim-rpc'   " for deoplete
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " RUBY
 Plug 'sunaku/vim-ruby-minitest'
@@ -24,7 +21,7 @@ Plug 'elixir-editors/vim-elixir'
 
 " JAVASCRIPT
 Plug 'jelera/vim-javascript-syntax'
-Plug 'posva/vim-vue'
+Plug 'leafoftree/vim-vue-plugin'
 
 " TEMPLATES
 Plug 'slim-template/vim-slim'
@@ -42,6 +39,7 @@ Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-dadbod'
 
 " Dependent on 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
@@ -63,6 +61,8 @@ Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'jnurmine/Zenburn'
 Plug 'fenetikm/falcon'
+Plug 'arcticicestudio/nord-vim'
+Plug 'danilo-augusto/vim-afterglow'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
@@ -72,16 +72,18 @@ Plug 'google/vim-searchindex'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-rooter'
 Plug 'wincent/terminus'
+" Plug 'machakann/vim-highlightedyank'
 
 " PRODUCTIVITY
 Plug 'tpope/vim-commentary'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ervandew/supertab'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'easymotion/vim-easymotion'
 Plug 'szw/vim-maximizer'
 Plug 'junegunn/vim-easy-align'
+Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'rhysd/clever-f.vim'
 Plug 'terryma/vim-multiple-cursors'
@@ -91,27 +93,27 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'rhysd/committia.vim'
-
-let g:make = 'gmake'
-if exists('make')
-  let g:make = 'make'
-endif
-
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'AndrewRadev/tagalong.vim'
 
 " FUN
 Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
 
 " ASYNCHRONOUS
 Plug 'thinca/vim-quickrun' " Ruby
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 " EXTRA
 Plug 'lifepillar/vim-cheat40'
 Plug 'chrisbra/csv.vim'
+Plug 'AndrewRadev/quickpeek.vim'
 
 call plug#end()
 
+let g:make = 'gmake'
+if exists('make')
+  let g:make = 'make'
+endif
 
 if has('nvim')
   runtime! macros/matchit.vim
@@ -127,8 +129,12 @@ if has('gui_running')
   if has("gui_macvim")
     set macligatures
     set guifont=SF\ Mono:h16
-    " let g:onedark_terminal_italics = 1 " I love italic for comments
-    colorscheme jellybeans
+    let g:onedark_terminal_italics = 1 " I love italic for comments
+    colorscheme onedark
+    " colorscheme jellybeans
+    " colorscheme gruvbox
+    " colorscheme molokai
+    " colorscheme afterglow
   endif
 else
   colorscheme hybrid
@@ -171,7 +177,7 @@ set wrapscan                      " searches wrap around end-of-file
 set bomb
 set binary
 set synmaxcol=256                 " This helps to avoid very slow redrawing for long lines
-set updatetime=100                " delay time. Useful for showing git signs
+set updatetime=300                " delay time. Useful for showing git signs
 
 " WHITESPACE
 set nowrap                        " don't wrap text
@@ -184,8 +190,8 @@ set backspace=indent,eol,start    " backspace through everything in insert mode
 set list                          " show invisible characters
 set nojoinspaces                  " Use only 1 space after "." when joining lines, not 2
 
-" AUTO-RELOAD BUFFERS WHEN FILE CHANGED ON DISK
-set autoread
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
 
 " DISABLE SWAP FILES; SYSTEMS DON'T CRASH THAT OFTEN THESE DAYS
 set updatecount=0
@@ -251,9 +257,6 @@ set kp=ri " Use ri for help
 set exrc
 set secure
 
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-
 " indentLine plugin
 let g:indentLine_color_term = 239
 let g:indentLine_char = '¦'
@@ -266,6 +269,9 @@ let g:clever_f_ignore_case = 1
 let g:stdlib = system('ruby --disable-gems -rrbconfig -e"print RbConfig::CONFIG[\"rubylibdir\"]"')
 let &path .= "," . stdlib
 let g:ruby_path = &path
+
+" For leafoftree/vim-vue-plugin
+let g:vim_vue_plugin_load_full_syntax = 1
 
 " TENDERLOVE'S SETTINGS
 if has("terminal")
@@ -289,6 +295,16 @@ if has("statusline") && !&cp
   set statusline+=\ %l/%L[%p%%] " current line/total lines
   set statusline+=\ %3v         " current column
   set statusline+=\ %Y\ %{fugitive#head()}
+endif
+
+" The silver searcher (Faster than the ack)
+" Invoke ag using ack.vim
+if executable("ag")
+  " Use Ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  let g:ackprg = 'ag --vimgrep'
+  let g:agprg="ag --column"
 endif
 
 " Plug 'shumphrey/fugitive-gitlab.vim' settings
@@ -327,18 +343,6 @@ let g:UltiSnipsEditSplit="vertical"
 " fugitive buffers. This prevents this from becomming an issue:
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
-"" The PC is fast enough, do syntax highlight syncing from start unless 200 lines
-augroup vimrc-sync-fromstart
-  autocmd!
-  autocmd BufEnter * :syntax sync maxlines=200
-augroup END
-
-"" Remember cursor position
-augroup vimrc-remember-cursor-position
-  autocmd!
-  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-augroup END
-
 let g:github_enterprise_urls = ['https://github.com']
 
 " Turn off default key mappings
@@ -363,14 +367,24 @@ map <Leader>a :call RunAllSpecs()<CR>
 let g:rspec_command = "bundle exec rspec {spec}"
 let g:rspec_runner = "os_x_iterm2"
 
+let g:ale_linters = {
+      \   'ruby': ['rubocop'],
+      \   'javascript': ['eslint'],
+      \}
+
+let g:ale_fixers = {
+      \    'ruby': ['rubocop'],
+      \}
+let g:ale_fix_on_save = 1
+
 function! LinterStatus() abort
   let l:counts = ale#statusline#Count(bufnr(''))
 
   let l:all_errors = l:counts.error + l:counts.style_error
   let l:all_non_errors = l:counts.total - l:all_errors
 
-  return l:counts.total == 0 ? 'OK' : printf(
-        \   '%dW %dE',
+  return l:counts.total == 0 ? '✨ all good ✨' : printf(
+        \   '😞 %dW %dE',
         \   all_non_errors,
         \   all_errors
         \)
@@ -438,16 +452,18 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
-cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <leader>e :FZF -m<CR>
+" Show next matched string at the center of screen
+nnoremap n nzz
+nnoremap N Nzz
+
+" FZF mappings
+nnoremap <c-b> :Buffers<cr>
+nnoremap <c-p> :GFiles<cr>
 
 " puts the calller (Thanks to @tenderlove)
 nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 
-" Mapping for debugging in Ruby
-nnoremap <leader>db obinding.pry<esc>
-nnoremap <leader>bb obyebug<esc>
+nnoremap \ :Ack<SPACE>
 
 " Disable 'Entering Ex mode'
 map Q <Nop>
@@ -470,9 +486,6 @@ map <leader>y "*y
 " paste lines from unnamed register and fix indentation
 nmap <leader>p pV`]=
 nmap <leader>P PV`]=
-
-" expand %% to current directory in command-line mode
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 " Index ctags from any project, including those outside Rails
 map <Leader>ct :!ctags --tag-relative=yes --extras=+f -Rf.git/tags --exclude=.git --exclude=pkg --exclude=.ext --languages=-javascript,sql<cr><cr>
@@ -506,8 +519,6 @@ nmap ga <Plug>(EasyAlign)
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
-map <leader>gf :e <cfile><cr>
-
 " vim-maximizer (Zoom)
 noremap <Leader>zw :MaximizerToggle<CR>
 vnoremap <Leader>zw :MaximizerToggle<CR>gv
@@ -524,27 +535,21 @@ map <Up>    :echoe "Use k"<cr>
 map <Down>  :echoe "Use j"<cr>
 
 " Git Hunks
-nmap ]h <Plug>GitGutterNextHunk
-nmap [h <Plug>GitGutterPrevHunk
-nmap <Leader>hv <Plug>GitGutterPreviewHunk " Preview hunk
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
+nmap <Leader>hv <Plug>(GitGutterPreviewHunk) " Preview hunk
 
 " Git Gutter temporary for jellybeans colorsheme (REMOVE IT Later) https://github.com/airblade/vim-gitgutter/commit/afa4f2ddf0fecb37914ec37357636abb18013422
-highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
-highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
-highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
+" highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
+" highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
+" highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
 
 "Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
 
-noremap <F5> :UndotreeToggle<cr>
-
 " In command-line mode, C-a jumps to beginning (to match C-e)
 cnoremap <C-a> <Home>
-
-" To open a new empty buffer
-" This replaces :tabnew which I used to bind to this mapping
-nmap <leader>T :enew<cr>
 
 " Exit insert mode without using Esc
 inoremap jj <Esc>
@@ -552,9 +557,6 @@ inoremap jj <Esc>
 " Easy edit/open commands
 command! EditVim  :edit   ~/.vimrc
 command! EditBash :edit   ~/.bashrc
-
-"bind \ (backward slash) to grep shortcut
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 function! s:setWrapping()
   set wrap
@@ -581,15 +583,11 @@ if has("autocmd")
   " Enable spellchecking for Markdown
   au FileType markdown setlocal spell
 
-  au FileType javascript,css,ruby,rake,erb nmap <silent> ,; :call cosco#commaOrSemiColon()<CR>
-  au FileType javascript,css,ruby,rake,erb inoremap <silent> ,; <ESC>:call cosco#commaOrSemiColon()"<CR>a
-
-  au StdinReadPre * let s:std_in=1
+  " Opnes NERDTree automatically when vim starts up if no files were specified
+  autocmd StdinReadPre * let s:std_in=1
+  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
   au FileType javascript set formatprg=prettier\ --stdin
-
-  " https://github.com/posva/vim-vue: This fixes 'syntax highlighting stops working randomly' issue
-  autocmd FileType vue syntax sync fromstart
 endif
 
 " FIX CONSTANT SPELLING MISTAKES
