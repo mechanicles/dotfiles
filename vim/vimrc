@@ -94,13 +94,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'rhysd/committia.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'AndrewRadev/tagalong.vim'
+" Plug 'AndrewRadev/tagalong.vim' " Enable it once this issue gets resolved https://github.com/AndrewRadev/tagalong.vim/issues/4
+" Plug 'liuchengxu/vim-clap'
+Plug 'liuchengxu/vista.vim'
 
 " FUN
 Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
 
 " ASYNCHRONOUS
-Plug 'thinca/vim-quickrun' " Ruby
+" Plug 'thinca/vim-quickrun' " Ruby
 Plug 'dense-analysis/ale'
 
 " EXTRA
@@ -128,8 +130,8 @@ let no_buffers_menu=1
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=SF\ Mono:h16
-    let g:onedark_terminal_italics = 1 " I love italic for comments
+    set guifont=Cascadia\ Code:h16
+    " let g:onedark_terminal_italics = 1 " I love italic for comments
     colorscheme onedark
     " colorscheme jellybeans
     " colorscheme gruvbox
@@ -193,6 +195,9 @@ set nojoinspaces                  " Use only 1 space after "." when joining line
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
 
+" always show signcolumns
+set signcolumn=yes
+
 " DISABLE SWAP FILES; SYSTEMS DON'T CRASH THAT OFTEN THESE DAYS
 set updatecount=0
 
@@ -232,6 +237,9 @@ set wildignore+=*.swp,*~,._*,tags
 set nobackup                      " turn backup off, since most stuff is in SVN, Git etc anyway...
 set nowb                          " no writebackup
 set noswapfile
+
+" Better display for messages
+set cmdheight=2
 
 set fileformats=unix,dos,mac
 
