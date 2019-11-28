@@ -49,14 +49,8 @@ alias tmux="TERM=screen-256color-bce tmux"
 # Vim
 alias vime="vim ~/.vimrc"
 
-# JavaScript Console for Max
+# JavaScript Console for Mac
 alias jsc='/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Resources/jsc'
-
-# https://github.com/magicmonty/bash-git-prompt NOTE: installed through `brew1
-if [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]; then
-  GIT_PROMPT_THEME=Default
-  source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"
-fi
 
 export ACKRC=".agrc"
 export AGRC=".agrc"
@@ -64,4 +58,4 @@ export AGRC=".agrc"
 export EDITOR="mvim"
 
 # Your local/machine dependent bash scripts
-[[ -s ${HOME}/.local_bashrc.bash ]] && source ${HOME}/.local_bashrc.bash
+[[ -s ${HOME}/.local_zshrc ]] && source ${HOME}/.local_zshrc
