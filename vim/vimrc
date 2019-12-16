@@ -72,7 +72,6 @@ Plug 'google/vim-searchindex'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-rooter'
 Plug 'wincent/terminus'
-" Plug 'machakann/vim-highlightedyank'
 
 " PRODUCTIVITY
 Plug 'tpope/vim-commentary'
@@ -94,12 +93,14 @@ Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'rhysd/committia.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-" Plug 'AndrewRadev/tagalong.vim' " Enable it once this issue gets resolved https://github.com/AndrewRadev/tagalong.vim/issues/4
-" Plug 'liuchengxu/vim-clap'
+Plug 'AndrewRadev/tagalong.vim' 
+Plug 'liuchengxu/vim-clap'
 Plug 'liuchengxu/vista.vim'
+Plug 'AaronLasseigne/yank-code'
 
 " FUN
 Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
+Plug 'vim/killersheep'
 
 " ASYNCHRONOUS
 " Plug 'thinca/vim-quickrun' " Ruby
@@ -125,13 +126,13 @@ else
   packadd! matchit
 endif
 
-let no_buffers_menu=1
+let no_buffers_menu = 1
 " COLORSHEME SETTINGS
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
     set guifont=Cascadia\ Code:h16
-    " let g:onedark_terminal_italics = 1 " I love italic for comments
+    let g:onedark_terminal_italics = 1 " I love italic for comments
     colorscheme onedark
     " colorscheme jellybeans
     " colorscheme gruvbox
@@ -281,6 +282,15 @@ let g:ruby_path = &path
 " For leafoftree/vim-vue-plugin
 let g:vim_vue_plugin_load_full_syntax = 1
 
+" For AndrewRadev/tagalong.vim
+let g:tagalong_mappings = [{'c': '<leader>c'}, {'C': '<leader>C'}, 'v', 'i', 'a']
+
+" make test commands execute using dispatch.vim
+let test#strategy = "iterm"
+
+" Setting for AndrewRadev/quickpeek.vim
+let g:quickpeek_auto = v:true
+
 " TENDERLOVE'S SETTINGS
 if has("terminal")
   map <Leader>tt :terminal ++close<cr>
@@ -333,9 +343,6 @@ let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycach
 let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
 let g:NERDTreeShowBookmarks=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-
-"VIM-TEST PLUGIN SETTINGS
-let test#strategy = "iterm"
 
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
