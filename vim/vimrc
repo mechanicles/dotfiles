@@ -64,6 +64,7 @@ Plug 'fenetikm/falcon'
 Plug 'arcticicestudio/nord-vim'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'smallwat3r/vim-simplicity'
+Plug 'jaywilliams/vim-vwilight'
 
 " ENHANCEMENT
 Plug 'airblade/vim-gitgutter'
@@ -99,14 +100,13 @@ Plug 'liuchengxu/vim-clap'
 Plug 'liuchengxu/vista.vim'
 Plug 'AaronLasseigne/yank-code'
 Plug 'rhysd/vim-grammarous'
-Plug 'kamykn/spelunker.vim'
 
 " FUN
 Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
 Plug 'vim/killersheep'
 
 " ASYNCHRONOUS
-" Plug 'thinca/vim-quickrun' " Ruby
+Plug 'thinca/vim-quickrun' " Ruby
 Plug 'dense-analysis/ale'
 
 " EXTRA
@@ -134,10 +134,10 @@ let no_buffers_menu = 1
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=Cascadia\ Code:h16
+    set guifont=JetBrains\ Mono:h15
     let g:onedark_terminal_italics = 1 " I love italic for comments
-    colorscheme onedark
-    " colorscheme jellybeans
+    " colorscheme onedark
+    colorscheme jellybeans
     " colorscheme gruvbox
     " colorscheme molokai
     " colorscheme afterglow
@@ -393,6 +393,7 @@ let g:ale_linters = {
 let g:ale_fixers = {
       \    'ruby': ['rubocop'],
       \}
+
 let g:ale_fix_on_save = 1
 
 function! LinterStatus() abort
@@ -558,9 +559,9 @@ nmap [h <Plug>(GitGutterPrevHunk)
 nmap <Leader>hv <Plug>(GitGutterPreviewHunk) " Preview hunk
 
 " Git Gutter temporary for jellybeans colorsheme (REMOVE IT Later) https://github.com/airblade/vim-gitgutter/commit/afa4f2ddf0fecb37914ec37357636abb18013422
-" highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
-" highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
-" highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
+highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
+highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
+highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
 
 "Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
