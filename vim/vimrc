@@ -136,8 +136,8 @@ if has('gui_running')
     set macligatures
     set guifont=JetBrains\ Mono:h15
     let g:onedark_terminal_italics = 1 " I love italic for comments
-    " colorscheme onedark
-    colorscheme jellybeans
+    colorscheme onedark
+    " colorscheme jellybeans
     " colorscheme gruvbox
     " colorscheme molokai
     " colorscheme afterglow
@@ -183,7 +183,7 @@ set wrapscan                      " searches wrap around end-of-file
 set bomb
 set binary
 set synmaxcol=256                 " This helps to avoid very slow redrawing for long lines
-set updatetime=300                " delay time. Useful for showing git signs
+set updatetime=250                " delay time. Useful for showing git signs
 
 " WHITESPACE
 set nowrap                        " don't wrap text
@@ -315,8 +315,14 @@ if has("statusline") && !&cp
   set statusline+=%=            " switch to the right side
   set statusline+=\ %l/%L[%p%%] " current line/total lines
   set statusline+=\ %3v         " current column
-  set statusline+=\ %Y\ %{fugitive#head()}
+  set statusline+=\ %Y\ %{FugitiveStatusline()}
 endif
+
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+set statusline+=\ %{GitStatus()}
 
 " The silver searcher (Faster than the ack)
 " Invoke ag using ack.vim
@@ -559,9 +565,9 @@ nmap [h <Plug>(GitGutterPrevHunk)
 nmap <Leader>hv <Plug>(GitGutterPreviewHunk) " Preview hunk
 
 " Git Gutter temporary for jellybeans colorsheme (REMOVE IT Later) https://github.com/airblade/vim-gitgutter/commit/afa4f2ddf0fecb37914ec37357636abb18013422
-highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
-highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
-highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
+" highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
+" highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
+" highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
 
 "Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
