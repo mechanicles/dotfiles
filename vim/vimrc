@@ -74,6 +74,8 @@ Plug 'google/vim-searchindex'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-rooter'
 Plug 'wincent/terminus'
+Plug 'bagrat/vim-buffet'
+Plug 'ryanoasis/vim-devicons'
 
 " PRODUCTIVITY
 Plug 'tpope/vim-commentary'
@@ -134,7 +136,7 @@ let no_buffers_menu = 1
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=JetBrains\ Mono:h15
+    set guifont=JetBrainsMono\ Nerd\ Font:h15
     let g:onedark_terminal_italics = 1 " I love italic for comments
     colorscheme onedark
     " colorscheme jellybeans
@@ -143,6 +145,7 @@ if has('gui_running')
     " colorscheme afterglow
   endif
 else
+  set termguicolors
   colorscheme hybrid
   if $COLORTERM == 'gnome-terminal'
     set term=gnome-256color
@@ -626,6 +629,20 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+nmap <leader>1 <Plug>BuffetSwitch(1)
+nmap <leader>2 <Plug>BuffetSwitch(2)
+nmap <leader>3 <Plug>BuffetSwitch(3)
+nmap <leader>4 <Plug>BuffetSwitch(4)
+nmap <leader>5 <Plug>BuffetSwitch(5)
+nmap <leader>6 <Plug>BuffetSwitch(6)
+nmap <leader>7 <Plug>BuffetSwitch(7)
+nmap <leader>8 <Plug>BuffetSwitch(8)
+nmap <leader>9 <Plug>BuffetSwitch(9)
+nmap <leader>0 <Plug>BuffetSwitch(10)
+let g:buffet_show_index = 1
+let g:buffet_always_show_tabline = 0
+let g:buffet_powerline_separators = 1
 
 " FIX CONSTANT SPELLING MISTAKES
 " Copy content from https://raw.githubusercontent.com/moshahmed/vim/master/thesaurus/thesaurii.txt
