@@ -16,22 +16,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sunaku/vim-ruby-minitest'
 Plug 'thoughtbot/vim-rspec'
 
-" Elixir
-Plug 'elixir-editors/vim-elixir'
-
-" JAVASCRIPT
-Plug 'jelera/vim-javascript-syntax'
-Plug 'leafoftree/vim-vue-plugin'
-
-" TEMPLATES
-Plug 'slim-template/vim-slim'
-
-" TPOPE
+" TPOPE's must have plugins
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-surround'
@@ -43,8 +31,17 @@ Plug 'tpope/vim-dadbod'
 
 " Dependent on 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'sodapopcan/vim-twiggy'
+
+" JAVASCRIPT
+Plug 'jelera/vim-javascript-syntax'
+Plug 'leafoftree/vim-vue-plugin'
+
+" TEMPLATES
+Plug 'slim-template/vim-slim'
+
+" Elixir
+Plug 'elixir-editors/vim-elixir'
 
 " COLORSCHEME
 Plug 'altercation/vim-colors-solarized'
@@ -70,18 +67,14 @@ Plug 'jaywilliams/vim-vwilight'
 Plug 'airblade/vim-gitgutter'
 Plug 'janko-m/vim-test'
 Plug 'Raimondi/delimitMate'
-Plug 'google/vim-searchindex'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-rooter'
 Plug 'wincent/terminus'
-Plug 'bagrat/vim-buffet'
-Plug 'ryanoasis/vim-devicons'
 
 " PRODUCTIVITY
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ervandew/supertab'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'easymotion/vim-easymotion'
 Plug 'szw/vim-maximizer'
@@ -99,13 +92,11 @@ Plug 'rhysd/committia.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'AndrewRadev/tagalong.vim' 
 Plug 'liuchengxu/vim-clap'
-Plug 'liuchengxu/vista.vim'
 Plug 'AaronLasseigne/yank-code'
 Plug 'rhysd/vim-grammarous'
 
 " FUN
 Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
-Plug 'vim/killersheep'
 
 " ASYNCHRONOUS
 Plug 'thinca/vim-quickrun' " Ruby
@@ -136,13 +127,9 @@ let no_buffers_menu = 1
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=JetBrainsMono\ Nerd\ Font:h15
+    set guifont=JetBrains\ Mono:h15
     let g:onedark_terminal_italics = 1 " I love italic for comments
     colorscheme onedark
-    " colorscheme jellybeans
-    " colorscheme gruvbox
-    " colorscheme molokai
-    " colorscheme afterglow
   endif
 else
   set termguicolors
@@ -216,6 +203,7 @@ set incsearch                     " incremental searching
 set ignorecase                    " searches are case insensitive...
 set smartcase                     " unless they contain at least one capital letter
 set gdefault                      " have :s///g flag by default on
+set shortmess-=S
 
 " TIME OUT ON KEY CODES BUT NOT MAPPINGS. BASICALLY THIS MAKES TERMINAL VIM WORK SANELY.
 set notimeout
@@ -337,9 +325,6 @@ if executable("ag")
   let g:agprg="ag --column"
 endif
 
-" Plug 'shumphrey/fugitive-gitlab.vim' settings
-let g:fugitive_gitlab_domains = ['https://gitlab.bitzesty.com']
-
 let g:mapleader = ","
 
 " TREAT <li> AND <p> TAGS LIKE THE BLOCK TAGS THEY ARE
@@ -347,12 +332,9 @@ let g:html_indent_tags = 'li\|p'
 
 " NERDTREE SETTINGS
 let g:NERDTreeHijackNetrw=1
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let g:NERDTreeWinSize = 30
+let NERDTreeMinimalUI=1
 let g:NERDTreeChDirMode=2
 let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
 let g:NERDTreeShowBookmarks=1
 let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 
@@ -629,20 +611,6 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
-
-nmap <leader>1 <Plug>BuffetSwitch(1)
-nmap <leader>2 <Plug>BuffetSwitch(2)
-nmap <leader>3 <Plug>BuffetSwitch(3)
-nmap <leader>4 <Plug>BuffetSwitch(4)
-nmap <leader>5 <Plug>BuffetSwitch(5)
-nmap <leader>6 <Plug>BuffetSwitch(6)
-nmap <leader>7 <Plug>BuffetSwitch(7)
-nmap <leader>8 <Plug>BuffetSwitch(8)
-nmap <leader>9 <Plug>BuffetSwitch(9)
-nmap <leader>0 <Plug>BuffetSwitch(10)
-let g:buffet_show_index = 1
-let g:buffet_always_show_tabline = 0
-let g:buffet_powerline_separators = 1
 
 " FIX CONSTANT SPELLING MISTAKES
 " Copy content from https://raw.githubusercontent.com/moshahmed/vim/master/thesaurus/thesaurii.txt
