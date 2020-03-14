@@ -7,106 +7,116 @@ endif
 
 " VIM-PLUG
 call plug#begin('~/.vim/plugged')
+  " PRODUCTIVITY {{
+    Plug 'Yggdroot/indentLine'
+    Plug 'scrooloose/nerdtree'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+    Plug 'easymotion/vim-easymotion'
+    Plug 'szw/vim-maximizer'
+    Plug 'junegunn/vim-easy-align'
+    Plug 'mileszs/ack.vim', { 'on': 'Ack' }
+    Plug 'maxbrunsfeld/vim-yankstack'
+    Plug 'rhysd/clever-f.vim'
+    Plug 'terryma/vim-multiple-cursors'
+    Plug 'wellle/targets.vim'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'mbbill/undotree'
+    Plug 'rhysd/committia.vim'
+    Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+    Plug 'AndrewRadev/tagalong.vim' 
+    Plug 'liuchengxu/vim-clap'
+    Plug 'AaronLasseigne/yank-code'
+    Plug 'rhysd/vim-grammarous'
+    Plug 'rizzatti/dash.vim'
+  " }}
 
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+  " Method lookup/snippets {{
+    Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  " }}
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  " RUBY {{
+    Plug 'sunaku/vim-ruby-minitest'
+    Plug 'thoughtbot/vim-rspec'
+  " }}
 
-" RUBY
-Plug 'sunaku/vim-ruby-minitest'
-Plug 'thoughtbot/vim-rspec'
+  " TPOPE's must have plugins {{
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-endwise'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-git'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-bundler'
+    Plug 'tpope/vim-rake'
+    Plug 'tpope/vim-rails'
+    Plug 'tpope/vim-dispatch'
+    Plug 'tpope/vim-sleuth'
+    Plug 'tpope/vim-dadbod'
+  " }}
 
-" TPOPE's must have plugins
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-rake'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-git'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-dadbod'
+  " More git plugins dependent on 'tpope/vim-fugitive' {{
+    Plug 'junegunn/gv.vim'
+    Plug 'sodapopcan/vim-twiggy'
+  " }}
 
-" Dependent on 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
-Plug 'sodapopcan/vim-twiggy'
+  " JAVASCRIPT {{
+    Plug 'pangloss/vim-javascript'
+    Plug 'leafoftree/vim-vue-plugin'
+  " }}
 
-" JAVASCRIPT
-Plug 'jelera/vim-javascript-syntax'
-Plug 'leafoftree/vim-vue-plugin'
+  " TEMPLATES {{
+    Plug 'slim-template/vim-slim'
+  " }}
 
-" TEMPLATES
-Plug 'slim-template/vim-slim'
+  " COLORSCHEME {{
+    Plug 'w0ng/vim-hybrid'
+    Plug 'nanotech/jellybeans.vim'
+    Plug 'tomasr/molokai'
+    Plug 'KabbAmine/yowish.vim'
+    Plug 'joshdick/onedark.vim'
+    Plug 'chriskempson/base16-vim'
+    Plug 'morhetz/gruvbox'
+    Plug 'danilo-augusto/vim-afterglow'
+    Plug 'wadackel/vim-dogrun'
+    Plug 'bluz71/vim-nightfly-guicolors'
+    Plug 'gkapfham/vim-vitamin-onec'
+    Plug 'rakr/vim-two-firewatch'
+    Plug 'deathlyfrantic/vim-distill'
+    Plug 'kreeger/benlight'
+    Plug 'cocopon/iceberg.vim'
+  " }}
 
-" Elixir
-Plug 'elixir-editors/vim-elixir'
+  " ENHANCEMENT {{
+    Plug 'pechorin/any-jump.vim'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'janko-m/vim-test'
+    Plug 'Raimondi/delimitMate'
+    Plug 'airblade/vim-rooter'
+    Plug 'wincent/terminus'
+    if !has('nvim')
+      Plug 'rhysd/vim-healthcheck'
+    endif
+    Plug 'JamshedVesuna/vim-markdown-preview'
+  " }}
 
-" COLORSCHEME
-Plug 'altercation/vim-colors-solarized'
-Plug 'chriskempson/vim-tomorrow-theme'
-Plug 'w0ng/vim-hybrid'
-Plug 'ajh17/Spacegray.vim'
-Plug 'yosiat/oceanic-next-vim'
-Plug 'nanotech/jellybeans.vim'
-Plug 'tomasr/molokai'
-Plug 'KabbAmine/yowish.vim'
-Plug 'rakr/vim-one'
-Plug 'chriskempson/base16-vim'
-Plug 'joshdick/onedark.vim'
-Plug 'morhetz/gruvbox'
-Plug 'jnurmine/Zenburn'
-Plug 'fenetikm/falcon'
-Plug 'arcticicestudio/nord-vim'
-Plug 'danilo-augusto/vim-afterglow'
-Plug 'smallwat3r/vim-simplicity'
-Plug 'jaywilliams/vim-vwilight'
+  " FUN {{
+    Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
+  " }}
 
-" ENHANCEMENT
-Plug 'airblade/vim-gitgutter'
-Plug 'janko-m/vim-test'
-Plug 'Raimondi/delimitMate'
-Plug 'Yggdroot/indentLine'
-Plug 'airblade/vim-rooter'
-Plug 'wincent/terminus'
+  " ASYNCHRONOUS {{
+    Plug 'thinca/vim-quickrun' " Ruby code runnner
+    Plug 'dense-analysis/ale'
+  " }}
 
-" PRODUCTIVITY
-Plug 'tpope/vim-commentary'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-Plug 'easymotion/vim-easymotion'
-Plug 'szw/vim-maximizer'
-Plug 'junegunn/vim-easy-align'
-Plug 'mileszs/ack.vim', { 'on': 'Ack' }
-Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'rhysd/clever-f.vim'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-repeat'
-Plug 'wellle/targets.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'mbbill/undotree'
-Plug 'rhysd/committia.vim'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'AndrewRadev/tagalong.vim' 
-Plug 'liuchengxu/vim-clap'
-Plug 'AaronLasseigne/yank-code'
-Plug 'rhysd/vim-grammarous'
-
-" FUN
-Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
-
-" ASYNCHRONOUS
-Plug 'thinca/vim-quickrun' " Ruby
-Plug 'dense-analysis/ale'
-
-" EXTRA
-Plug 'lifepillar/vim-cheat40'
-Plug 'chrisbra/csv.vim'
-Plug 'AndrewRadev/quickpeek.vim'
-
+  " EXTRA {{
+    Plug 'lifepillar/vim-cheat40'
+    Plug 'chrisbra/csv.vim'
+    Plug 'AndrewRadev/quickpeek.vim'
+  " }}
 call plug#end()
 
 let g:make = 'gmake'
@@ -128,8 +138,8 @@ if has('gui_running')
   if has("gui_macvim")
     set macligatures
     set guifont=JetBrains\ Mono:h15
-    let g:onedark_terminal_italics = 1 " I love italic for comments
-    colorscheme onedark
+    " let g:onedark_terminal_italics = 1 " I love italic for comments
+    colorscheme iceberg
   endif
 else
   set termguicolors
@@ -188,9 +198,6 @@ set nojoinspaces                  " Use only 1 space after "." when joining line
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
 
 " DISABLE SWAP FILES; SYSTEMS DON'T CRASH THAT OFTEN THESE DAYS
 set updatecount=0
@@ -260,9 +267,14 @@ set kp=ri " Use ri for help
 set exrc
 set secure
 
-" indentLine plugin
-let g:indentLine_color_term = 239
-let g:indentLine_char = '¦'
+" IndentLine {{
+let g:indentLine_char = '┊'
+" }}
+
+
+" vim-markdown-preview {{
+let vim_markdown_preview_github=1
+" }}
 
 " clever-f.vim plugin
 let g:clever_f_ignore_case = 1
