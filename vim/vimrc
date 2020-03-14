@@ -115,7 +115,9 @@ call plug#begin('~/.vim/plugged')
   " EXTRA {{
     Plug 'lifepillar/vim-cheat40'
     Plug 'chrisbra/csv.vim'
+    Plug 'elzr/vim-json'
     Plug 'AndrewRadev/quickpeek.vim'
+    Plug 'wakatime/vim-wakatime'
   " }}
 call plug#end()
 
@@ -155,6 +157,7 @@ endif
 
 " BASIC SETUP
 syntax enable
+set clipboard=unnamed
 set number                        " show line numbers
 set ruler                         " show the cursor position all the time
 set title                         " show file in titlebar
@@ -172,6 +175,7 @@ set showmatch                     " show matching brackets
 set showmode                      " show current mode in command-line.
 set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
+set smartindent
 set display=lastline              " show as much as possible of the last line.
 set scrolloff=1                   " minimum lines to keep above and below cursor
 set hidden                        " switch between buffers without having to save first.
@@ -494,6 +498,12 @@ map gs <Nop>
 " MOVEMENT
 nnoremap j gj
 nnoremap k gk
+vnoremap j gj
+vnoremap k gk
+nnoremap gj j
+nnoremap gk k
+vnoremap gj j
+vnoremap gk k
 
 " highlight last inserted text
 nnoremap gV `[v`]
@@ -612,17 +622,28 @@ if has("autocmd")
   au FileType javascript set formatprg=prettier\ --stdin
 endif
 
-" coc settings.
-nmap <silent> gd <Plug>(coc-definition)
+" coc vim settings {{
+  " Always show the signcolumn, otherwise it would shift the text each time
+  " diagnostics appear/become resolved.
+  set signcolumn=yes
 
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+  nmap <silent> gd <Plug>(coc-definition)
+
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+  function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+" }}
+
+" any-jump.vim {{
+  let g:any_jump_search_prefered_engine = 'ag'
+  let g:any_jump_preview_lines_count = 10
+  let g:any_jump_ignored_files = ['*.tmp', '*.temp', '*.log']
+" }}
 
 " FIX CONSTANT SPELLING MISTAKES
 " Copy content from https://raw.githubusercontent.com/moshahmed/vim/master/thesaurus/thesaurii.txt
