@@ -62,7 +62,6 @@ call plug#begin('~/.vim/plugged')
 
   " More git plugins dependent on 'tpope/vim-fugitive' {{
     Plug 'junegunn/gv.vim'
-    Plug 'sodapopcan/vim-twiggy'
   " }}
 
   " JAVASCRIPT {{
@@ -140,8 +139,8 @@ if has('gui_running')
     " let g:onedark_terminal_italics = 1 " I love italic for comments
     
     " space-vim-dark {{
-      colorscheme space-vim-dark
-      hi Comment cterm=italic
+    let g:space_vim_dark_background = 234
+    colorscheme space-vim-dark
     " }}
   endif
 else
@@ -201,7 +200,7 @@ set backspace=indent,eol,start    " backspace through everything in insert mode
 set list                          " show invisible characters
 set nojoinspaces                  " Use only 1 space after "." when joining lines, not 2
 
-" don't give |ins-completion-menu| messages.
+" Don't give |ins-completion-menu| messages.
 set shortmess+=c
 
 " Disable swap files; systems don't crash that often these days
@@ -215,7 +214,6 @@ set incsearch                     " incremental searching
 set ignorecase                    " searches are case insensitive...
 set smartcase                     " unless they contain at least one capital letter
 set gdefault                      " have :s///g flag by default on
-set shortmess-=S
 
 " Time out on key codes but not mappings. basically this makes terminal vim work sanely.
 set notimeout
@@ -245,7 +243,7 @@ set nobackup                      " turn backup off, since most stuff is in SVN,
 set nowb                          " no writebackup
 set noswapfile
 
-" Better display for messages
+" Better display for messages.
 set cmdheight=2
 
 set fileformats=unix,dos,mac
@@ -606,6 +604,13 @@ endif
   let g:any_jump_search_prefered_engine = 'ag'
   let g:any_jump_preview_lines_count = 10
   let g:any_jump_ignored_files = ['*.tmp', '*.temp', '*.log']
+" }}
+
+" space-vim-dark {{
+  hi Normal     ctermbg=NONE guibg=NONE
+  hi LineNr     ctermbg=NONE guibg=NONE
+  hi SignColumn ctermbg=NONE guibg=NONE
+  hi Comment guifg=#5C6370 ctermfg=59
 " }}
 
 " FIX CONSTANT SPELLING MISTAKES
