@@ -24,12 +24,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf.vim'
     Plug 'mbbill/undotree'
     Plug 'rhysd/committia.vim'
-    Plug 'Shougo/vimproc.vim', {'do' : 'make'}
     Plug 'AndrewRadev/tagalong.vim' 
     Plug 'liuchengxu/vim-clap'
     Plug 'AaronLasseigne/yank-code'
     Plug 'rhysd/vim-grammarous'
     Plug 'rizzatti/dash.vim'
+    Plug 'janko-m/vim-test'
+    Plug 'dense-analysis/ale'
+    Plug 'ludovicchabant/vim-gutentags'
   " }}
 
   " Method lookup/snippets {{
@@ -76,40 +78,28 @@ call plug#begin('~/.vim/plugged')
     Plug 'w0ng/vim-hybrid'
     Plug 'nanotech/jellybeans.vim'
     Plug 'tomasr/molokai'
-    Plug 'KabbAmine/yowish.vim'
     Plug 'joshdick/onedark.vim'
     Plug 'chriskempson/base16-vim'
     Plug 'morhetz/gruvbox'
     Plug 'danilo-augusto/vim-afterglow'
-    Plug 'wadackel/vim-dogrun'
-    Plug 'bluz71/vim-nightfly-guicolors'
-    Plug 'gkapfham/vim-vitamin-onec'
-    Plug 'rakr/vim-two-firewatch'
-    Plug 'deathlyfrantic/vim-distill'
-    Plug 'kreeger/benlight'
+    Plug 'kreeger/benlight' " Twilight kind of theme
     Plug 'cocopon/iceberg.vim'
+    Plug 'liuchengxu/space-vim-dark'
   " }}
 
   " ENHANCEMENT {{
+    if v:version >= 703
+      Plug 'mhinz/vim-signify'
+    endif
     Plug 'pechorin/any-jump.vim'
-    Plug 'airblade/vim-gitgutter'
-    Plug 'janko-m/vim-test'
-    Plug 'Raimondi/delimitMate'
     Plug 'airblade/vim-rooter'
     Plug 'wincent/terminus'
     if !has('nvim')
       Plug 'rhysd/vim-healthcheck'
     endif
     Plug 'JamshedVesuna/vim-markdown-preview'
-  " }}
-
-  " FUN {{
-    Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
-  " }}
-
-  " ASYNCHRONOUS {{
     Plug 'thinca/vim-quickrun' " Ruby code runnner
-    Plug 'dense-analysis/ale'
+    Plug 'liuchengxu/eleline.vim'
   " }}
 
   " EXTRA {{
@@ -119,7 +109,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'AndrewRadev/quickpeek.vim'
     Plug 'wakatime/vim-wakatime'
   " }}
+  
+  " FUN {{
+    " Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
+  " }}
 call plug#end()
+
+" Time limit of each task in seconds for vim-plug
+let g:plug_timeout = 100
 
 let g:make = 'gmake'
 if exists('make')
@@ -141,7 +138,11 @@ if has('gui_running')
     set macligatures
     set guifont=JetBrains\ Mono:h15
     " let g:onedark_terminal_italics = 1 " I love italic for comments
-    colorscheme iceberg
+    
+    " space-vim-dark {{
+      colorscheme space-vim-dark
+      hi Comment cterm=italic
+    " }}
   endif
 else
   set termguicolors
@@ -155,7 +156,7 @@ else
   endif
 endif
 
-" BASIC SETUP
+" Basic setup
 syntax enable
 set clipboard=unnamed
 set number                        " show line numbers
@@ -187,9 +188,9 @@ set wrapscan                      " searches wrap around end-of-file
 set bomb
 set binary
 set synmaxcol=256                 " This helps to avoid very slow redrawing for long lines
-set updatetime=250                " delay time. Useful for showing git signs
+set updatetime=100                " delay time. Useful for showing git signs
 
-" WHITESPACE
+" Whitespace
 set nowrap                        " don't wrap text
 set tabstop=2                     " tab spacing
 set expandtab                     " use spaces instead of tabs
@@ -203,12 +204,12 @@ set nojoinspaces                  " Use only 1 space after "." when joining line
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
 
-" DISABLE SWAP FILES; SYSTEMS DON'T CRASH THAT OFTEN THESE DAYS
+" Disable swap files; systems don't crash that often these days
 set updatecount=0
 
 set showbreak=↪\
 
-" SEARCHING
+" Searching
 set hlsearch                      " highlight matches
 set incsearch                     " incremental searching
 set ignorecase                    " searches are case insensitive...
@@ -216,30 +217,30 @@ set smartcase                     " unless they contain at least one capital let
 set gdefault                      " have :s///g flag by default on
 set shortmess-=S
 
-" TIME OUT ON KEY CODES BUT NOT MAPPINGS. BASICALLY THIS MAKES TERMINAL VIM WORK SANELY.
+" Time out on key codes but not mappings. basically this makes terminal vim work sanely.
 set notimeout
 set ttimeout
 set ttimeoutlen=100
 
-" TAB COMPLETION
+" Tab completion
 set wildmode=list:longest,list:full
 
-" DISABLE OUTPUT AND VCS FILES
+" Disable output and vcs files
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,tags,.fugitiveblame
 
-" DISABLE ARCHIVE FILES
+" Disable archive files
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 
-" IGNORE BUNDLER AND SASS CACHE
+" Ignore bundler and sass cache
 set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 
-" IGNORE RAILS TEMPORARY ASSET CACHES
+" Ignore rails temporary asset caches
 set wildignore+=*/tmp/*,*/solr/*,*/coverage/*,*/features/*,*/public/uploads/*
 
-" DISABLE TEMP AND BACKUP FILES
+" Disable temp and backup files
 set wildignore+=*.swp,*~,._*,tags
 
-" BACKUP AND SWAP FILES
+" Backup and swap files
 set nobackup                      " turn backup off, since most stuff is in SVN, Git etc anyway...
 set nowb                          " no writebackup
 set noswapfile
@@ -249,48 +250,38 @@ set cmdheight=2
 
 set fileformats=unix,dos,mac
 
-" OPEN NEW SPLIT PANES TO RIGHT AND BOTTOM, WHICH FEELS MORE NATURAL
+" Open new split panes to right and bottom, which feels more natural
 set splitright
 set splitbelow
 
-" MAC'S OPTION KEY FOR YANKRING
+" Mac's option key for yankring
 if has('gui_running')
   set macmeta
 endif
 
-" AUTOCOMPLETE WITH DICTIONARY WORDS WHEN SPELL CHECK IS ON
+" Autocomplete with dictionary words when spell check is on
 set complete+=kspell
 
-" ALWAYS USE VERTICAL DIFFS
+" Always use vertical diffs
 set diffopt+=vertical
 
-" TENDERLOVE'S SETTINGS
-set suffixesadd=.rb
-set path+=lib/**,test/**
-set kp=ri " Use ri for help
-set exrc
-set secure
-
 " IndentLine {{
-let g:indentLine_char = '┊'
+  let g:indentLine_char = '┊'
 " }}
 
 
 " vim-markdown-preview {{
-let vim_markdown_preview_github=1
+  let vim_markdown_preview_github=1
 " }}
 
-" clever-f.vim plugin
-let g:clever_f_ignore_case = 1
+" clever-f.vim plugin {{
+  let g:clever_f_ignore_case = 1
+" }}
 
-" TENDERLOVE'S SETTINGS
-" Add stdlib of environment's ruby to path
-let g:stdlib = system('ruby --disable-gems -rrbconfig -e"print RbConfig::CONFIG[\"rubylibdir\"]"')
-let &path .= "," . stdlib
-let g:ruby_path = &path
 
-" For leafoftree/vim-vue-plugin
-let g:vim_vue_plugin_load_full_syntax = 1
+" For leafoftree/vim-vue-plugin {{
+  let g:vim_vue_plugin_load_full_syntax = 1
+" }}
 
 " For AndrewRadev/tagalong.vim
 let g:tagalong_mappings = [{'c': '<leader>c'}, {'C': '<leader>C'}, 'v', 'i', 'a']
@@ -318,18 +309,14 @@ endif
 
 if has("statusline") && !&cp
   set laststatus=2              " always show the status bar
-  set statusline=%f\ %m\ %r     " filename, modified, readonly
-  set statusline+=%=            " switch to the right side
-  set statusline+=\ %l/%L[%p%%] " current line/total lines
-  set statusline+=\ %3v         " current column
-  set statusline+=\ %Y\ %{FugitiveStatusline()}
+  " Use it when we don't want to use statusline framework {{
+    " set statusline=%f\ %m\ %r     " filename, modified, readonly
+    " set statusline+=%=            " switch to the right side
+    " set statusline+=\ %l/%L[%p%%] " current line/total lines
+    " set statusline+=\ %3v         " current column
+    " set statusline+=\ %Y\ %{FugitiveStatusline()}
+  " }}
 endif
-
-function! GitStatus()
-  let [a,m,r] = GitGutterGetHunkSummary()
-  return printf('+%d ~%d -%d', a, m, r)
-endfunction
-set statusline+=\ %{GitStatus()}
 
 " The silver searcher (Faster than the ack)
 " Invoke ag using ack.vim
@@ -346,22 +333,15 @@ let g:mapleader = ","
 " TREAT <li> AND <p> TAGS LIKE THE BLOCK TAGS THEY ARE
 let g:html_indent_tags = 'li\|p'
 
-" NERDTREE SETTINGS
-let g:NERDTreeHijackNetrw=1
-let NERDTreeMinimalUI=1
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeShowBookmarks=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
-" Better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-let g:UltiSnipsEditSplit="vertical"
+" Better key bindings for UltiSnipsExpandTrigger {{
+  let g:UltiSnipsExpandTrigger = "<tab>"
+  let g:UltiSnipsJumpForwardTrigger="<c-b>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+  let g:UltiSnipsEditSplit="vertical"
+" }}
 
 " Every time you open a git object using fugitive it creates a new buffer.
 " This means that your buffer listing can quickly become swamped with
@@ -370,53 +350,41 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 
 let g:github_enterprise_urls = ['https://github.com']
 
-" Turn off default key mappings
-let g:multi_cursor_use_default_mapping=0
+" vim-multiple-cursors plugin {{
+  " Turn off default key mappings
+  let g:multi_cursor_use_default_mapping=0
 
-" Ctrl-n, Ctrl-p, Ctrl-x, and <Esc> are mapped in the special multicursor
-" mode once you've added at least one virtual cursor to the buffer
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
+  " Ctrl-n, Ctrl-p, Ctrl-x, and <Esc> are mapped in the special multicursor
+  " mode once you've added at least one virtual cursor to the buffer
+  let g:multi_cursor_next_key='<C-n>'
+  let g:multi_cursor_prev_key='<C-p>'
+  let g:multi_cursor_skip_key='<C-x>'
+  let g:multi_cursor_quit_key='<Esc>'
+" }}
 
-" Time limit of each task in seconds for vim-plug
-let g:plug_timeout = 100
 
-" RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+" RSpec.vim mappings {{
+  map <Leader>t :call RunCurrentSpecFile()<CR>
+  map <Leader>s :call RunNearestSpec()<CR>
+  map <Leader>l :call RunLastSpec()<CR>
+  map <Leader>a :call RunAllSpecs()<CR>
 
-let g:rspec_command = "bundle exec rspec {spec}"
-let g:rspec_runner = "os_x_iterm2"
+  let g:rspec_command = "bundle exec rspec {spec}"
+  let g:rspec_runner = "os_x_iterm2"
+" }}
 
-let g:ale_linters = {
-      \   'ruby': ['rubocop'],
-      \   'javascript': ['eslint'],
-      \}
+" ale plugin {{
+  let g:ale_linters = {
+        \   'ruby': ['rubocop'],
+        \   'javascript': ['eslint'],
+        \}
 
-let g:ale_fixers = {
-      \    'ruby': ['rubocop'],
-      \}
+  let g:ale_fixers = {
+        \    'ruby': ['rubocop'],
+        \}
+" }}
 
 let g:ale_fix_on_save = 1
-
-function! LinterStatus() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-
-  return l:counts.total == 0 ? '✨ all good ✨' : printf(
-        \   '😞 %dW %dE',
-        \   all_non_errors,
-        \   all_errors
-        \)
-endfunction
-
-set statusline+=\ %{LinterStatus()}
 
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
@@ -437,33 +405,18 @@ function! RenameFile()
 endfunction
 command! RENAME call RenameFile()
 
-" vim-javascript
-augroup vimrc-javascript
-  autocmd!
-  autocmd FileType javascript set tabstop=4|set shiftwidth=4|set expandtab softtabstop=4
-augroup END
-
-" ruby
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-
-augroup vimrc-ruby
-  autocmd!
-  autocmd BufNewFile,BufRead *.rb,*.rbw,*.gemspec setlocal filetype=ruby
-  autocmd FileType ruby set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
-augroup END
-
-let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-        \ 'm:modules',
-        \ 'c:classes',
-        \ 'd:describes',
-        \ 'C:contexts',
-        \ 'f:methods',
-        \ 'F:singleton methods'
-    \ ]
-\ }
+" Tagbar {{
+  let g:tagbar_type_ruby = {
+      \ 'kinds' : [
+          \ 'm:modules',
+          \ 'c:classes',
+          \ 'd:describes',
+          \ 'C:contexts',
+          \ 'f:methods',
+          \ 'F:singleton methods'
+      \ ]
+  \ }
+" }}
 
 "Highlight column for 119 characters.
 if exists('+colorcolumn')
@@ -482,11 +435,12 @@ nnoremap <C-l> <C-w>l
 nnoremap n nzz
 nnoremap N Nzz
 
-" FZF mappings
-nnoremap <c-b> :Buffers<cr>
-nnoremap <c-p> :GFiles<cr>
+" FZF mappings {{
+  nnoremap <c-b> :Buffers<cr>
+  nnoremap <c-p> :GFiles<cr>
+" }}
 
-" puts the calller (Thanks to @tenderlove)
+" Puts the calller (Thanks to @tenderlove)
 nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
 
 nnoremap \ :Ack<SPACE>
@@ -522,7 +476,15 @@ nmap <leader>P PV`]=
 " Index ctags from any project, including those outside Rails
 map <Leader>ct :!ctags --tag-relative=yes --extras=+f -Rf.git/tags --exclude=.git --exclude=pkg --exclude=.ext --languages=-javascript,sql<cr><cr>
 
-map <Leader>n :NERDTreeToggle<CR>
+" NERDTree {{
+  let g:NERDTreeHijackNetrw=1
+  let NERDTreeMinimalUI=1
+  let g:NERDTreeChDirMode=2
+  let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
+  let g:NERDTreeShowBookmarks=1
+  let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
+  map <Leader>n :NERDTreeToggle<CR>
+" }}
 
 map <c-a> ggVG
 
@@ -543,38 +505,32 @@ nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 " Toggle hlsearch with <leader>hs
 nmap <leader>hs :set hlsearch! hlsearch?<CR>
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+" EasyAlign {{
+  " Start interactive EasyAlign in visual mode (e.g. vipga)
+  xmap ga <Plug>(EasyAlign)
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap ga <Plug>(EasyAlign)
+" }}
 
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
-" vim-maximizer (Zoom)
-noremap <Leader>zw :MaximizerToggle<CR>
-vnoremap <Leader>zw :MaximizerToggle<CR>gv
-inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
+" vim-maximizer (Zoom) {{
+  noremap <Leader>zw :MaximizerToggle<CR>
+  vnoremap <Leader>zw :MaximizerToggle<CR>gv
+  inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
+" }}
 
-" TagbarToggle
-nnoremap <Leader>rt :TagbarToggle<CR>
-let g:tagbar_autofocus = 1
+" TagbarToggle {{
+  nnoremap <Leader>rt :TagbarToggle<CR>
+  let g:tagbar_autofocus = 1
+" }}
 
 " disable cursor keys in normal mode
 map <Left>  :echoe "Use h"<cr>
 map <Right> :echoe "Use l"<cr>
 map <Up>    :echoe "Use k"<cr>
 map <Down>  :echoe "Use j"<cr>
-
-" Git Hunks
-nmap ]h <Plug>(GitGutterNextHunk)
-nmap [h <Plug>(GitGutterPrevHunk)
-nmap <Leader>hv <Plug>(GitGutterPreviewHunk) " Preview hunk
-
-" Git Gutter temporary for jellybeans colorsheme (REMOVE IT Later) https://github.com/airblade/vim-gitgutter/commit/afa4f2ddf0fecb37914ec37357636abb18013422
-" highlight GitGutterAdd    guifg=#009900 guibg=#151515 ctermfg=2 ctermbg=2
-" highlight GitGutterChange guifg=#bbbb00 guibg=#151515 ctermfg=3 ctermbg=3
-" highlight GitGutterDelete guifg=#ff2222 guibg=#151515 ctermfg=1 ctermbg=1
 
 "Make shift-insert work like in Xterm
 map <S-Insert> <MiddleMouse>
@@ -622,10 +578,17 @@ if has("autocmd")
   au FileType javascript set formatprg=prettier\ --stdin
 endif
 
-" coc vim settings {{
-  " Always show the signcolumn, otherwise it would shift the text each time
-  " diagnostics appear/become resolved.
-  set signcolumn=yes
+" Coc.nvim settings {{
+  let g:coc_global_extensions = [
+    \ 'coc-pairs',
+    \ 'coc-emoji',
+    \ 'coc-snippets',
+    \ 'coc-ultisnips',
+    \ 'coc-solargraph',
+    \ 'coc-json',
+    \ 'coc-css',
+    \ 'coc-explorer',
+    \ ]
 
   nmap <silent> gd <Plug>(coc-definition)
 
