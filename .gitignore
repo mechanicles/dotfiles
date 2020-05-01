@@ -12,3 +12,4 @@ mustache.vim
 
 # Mac related files
 *.DS_Store
+vim/undodir

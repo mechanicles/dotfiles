@@ -1,5 +1,8 @@
 " IMPORTANT FOR CANCELLING/ABORTING GIT COMMIT
-" Always use `:cq`.
+" ALWAYS USE `:cq`.
+
+" IMPORTANT FOR WRAPPING THE TEXT IN MARKDWON
+" ALWAYS USE `gq`.
 
 if has('vim_starting')
   set nocompatible               " Be iMproved
@@ -31,7 +34,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'rizzatti/dash.vim'
     Plug 'janko-m/vim-test'
     Plug 'dense-analysis/ale'
-    Plug 'ludovicchabant/vim-gutentags'
   " }}
 
   " Method lookup/snippets {{
@@ -42,6 +44,11 @@ call plug#begin('~/.vim/plugged')
   " RUBY {{
     Plug 'sunaku/vim-ruby-minitest'
     Plug 'thoughtbot/vim-rspec'
+  " }}
+
+  " ELIXIR {{
+    Plug 'elixir-editors/vim-elixir'
+    Plug 'slashmili/alchemist.vim'
   " }}
 
   " TPOPE's must have plugins {{
@@ -166,7 +173,7 @@ set history=50                    " keep 50 lines of command line history
 set ttymouse=xterm2
 set mouse=a                       " automatically enable mouse usage in normal mode.
 set mousehide                     " hide the mouse cursor while typing
-set textwidth=80
+set textwidth=120
 set showcmd                       " display incomplete commands
 set wildmenu                      " visual autocomplete for command menu
 set ttyfast                       " faster redrawing.
@@ -188,6 +195,9 @@ set bomb
 set binary
 set synmaxcol=256                 " This helps to avoid very slow redrawing for long lines
 set updatetime=100                " delay time. Useful for showing git signs
+
+set undodir=~/.vim/undodir
+set undofile
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -373,7 +383,7 @@ let g:github_enterprise_urls = ['https://github.com']
 
 " ale plugin {{
   let g:ale_linters = {
-        \   'ruby': ['rubocop'],
+        \   'ruby': ['rubocop', 'standardrb'],
         \   'javascript': ['eslint'],
         \}
 
