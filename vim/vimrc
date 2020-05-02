@@ -106,6 +106,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'JamshedVesuna/vim-markdown-preview'
     Plug 'thinca/vim-quickrun' " Ruby code runnner
     Plug 'liuchengxu/eleline.vim'
+    Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
   " }}
 
   " EXTRA {{
@@ -649,6 +650,8 @@ endif
   hi SignColumn ctermbg=NONE guibg=NONE
   hi Comment guifg=#5C6370 ctermfg=59
 " }}
+
+source ~/.local_vimrc
 
 " FIX CONSTANT SPELLING MISTAKES
 " Copy content from https://raw.githubusercontent.com/moshahmed/vim/master/thesaurus/thesaurii.txt
