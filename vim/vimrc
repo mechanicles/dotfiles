@@ -37,7 +37,7 @@ call plug#begin('~/.vim/plugged')
   " }}
 
   " Method lookup/snippets {{
-    Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+    Plug 'honza/vim-snippets'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
   " }}
 
@@ -171,7 +171,11 @@ set ruler                         " show the cursor position all the time
 set title                         " show file in titlebar
 set encoding=utf-8                " set default encoding to UTF-8
 set history=50                    " keep 50 lines of command line history
-set ttymouse=xterm2
+
+if !has('nvim')
+  set ttymouse=xterm2
+endif
+
 set mouse=a                       " automatically enable mouse usage in normal mode.
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=120
@@ -346,10 +350,10 @@ let g:html_indent_tags = 'li\|p'
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
 " Better key bindings for UltiSnipsExpandTrigger {{
-  let g:UltiSnipsExpandTrigger = "<nop>"
-  let g:UltiSnipsJumpForwardTrigger="<c-b>"
-  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-  let g:UltiSnipsEditSplit="vertical"
+  " let g:UltiSnipsExpandTrigger = "<nop>"
+  " let g:UltiSnipsJumpForwardTrigger="<c-b>"
+  " let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+  " let g:UltiSnipsEditSplit="vertical"
 " }}
 
 " Every time you open a git object using fugitive it creates a new buffer.
@@ -592,14 +596,16 @@ endif
     \ 'coc-pairs',
     \ 'coc-emoji',
     \ 'coc-snippets',
-    \ 'coc-ultisnips',
     \ 'coc-solargraph',
     \ 'coc-json',
     \ 'coc-css',
     \ 'coc-explorer',
     \ ]
 
+  " space + g + d => definition
+  " space + g + r => references
   nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gr <Plug>(coc-references)
 
   nnoremap <silent> K :call <SID>show_documentation()<CR>
   function! s:show_documentation()
@@ -649,6 +655,11 @@ endif
   hi LineNr     ctermbg=NONE guibg=NONE
   hi SignColumn ctermbg=NONE guibg=NONE
   hi Comment guifg=#5C6370 ctermfg=59
+" }}
+
+" coc-explorer {{
+  " nmap <space>e :CocCommand explorer<CR>
+  " nmap <Leader>n :CocCommand explorer<CR>
 " }}
 
 source ~/.local_vimrc
