@@ -34,6 +34,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'rizzatti/dash.vim'
     Plug 'janko-m/vim-test'
     Plug 'dense-analysis/ale'
+    Plug 'bignimbus/you-are-here.vim'
   " }}
 
   " Method lookup/snippets {{
@@ -89,12 +90,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'nanotech/jellybeans.vim'
     Plug 'tomasr/molokai'
     Plug 'joshdick/onedark.vim'
-    Plug 'chriskempson/base16-vim'
+    Plug 'rafi/awesome-vim-colorschemes'
     Plug 'morhetz/gruvbox'
     Plug 'danilo-augusto/vim-afterglow'
     Plug 'kreeger/benlight' " Twilight kind of theme
     Plug 'cocopon/iceberg.vim'
-    Plug 'liuchengxu/space-vim-dark'
   " }}
 
   " ENHANCEMENT {{
@@ -109,20 +109,16 @@ call plug#begin('~/.vim/plugged')
     endif
     Plug 'JamshedVesuna/vim-markdown-preview'
     Plug 'thinca/vim-quickrun' " Ruby code runnner
-    Plug 'liuchengxu/eleline.vim'
+    Plug 'vim-airline/vim-airline'
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
   " }}
 
   " EXTRA {{
     Plug 'lifepillar/vim-cheat40'
     Plug 'chrisbra/csv.vim'
-    " Plug 'elzr/vim-json'
     Plug 'AndrewRadev/quickpeek.vim'
     Plug 'wakatime/vim-wakatime'
-  " }}
-  
-  " FUN {{
-    " Plug 'chrisbra/unicode.vim', { 'on': ['<plug>(UnicodeComplete)', '<plug>(UnicodeGA)', 'UnicodeTable'] }
+    Plug 'kristijanhusak/vim-carbon-now-sh'
   " }}
 call plug#end()
 
@@ -147,13 +143,10 @@ let no_buffers_menu = 1
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=JetBrains\ Mono:h15
+    set guifont=JetBrains\ Mono:h16
     " let g:onedark_terminal_italics = 1 " I love italic for comments
-    
-    " space-vim-dark {{
-    let g:space_vim_dark_background = 234
-    colorscheme space-vim-dark
-    " }}
+    let g:gruvbox_sign_column = 'bg0'
+    colorscheme gruvbox
   endif
 else
   set termguicolors
@@ -399,13 +392,14 @@ let g:github_enterprise_urls = ['https://github.com']
   let g:ale_fixers = {
         \    'ruby': ['rubocop'],
         \}
+
+
+  " let g:ale_fix_on_save = 1
+
+  let g:ale_echo_msg_error_str = 'E'
+  let g:ale_echo_msg_warning_str = 'W'
+  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " }}
-
-let g:ale_fix_on_save = 1
-
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
@@ -604,6 +598,7 @@ endif
     \ 'coc-json',
     \ 'coc-css',
     \ 'coc-explorer',
+    \ 'coc-elixir',
     \ ]
 
   " space + g + d => definition
@@ -654,13 +649,6 @@ endif
   let g:any_jump_ignored_files = ['*.tmp', '*.temp', '*.log']
 " }}
 
-" space-vim-dark {{
-  hi Normal     ctermbg=NONE guibg=NONE
-  hi LineNr     ctermbg=NONE guibg=NONE
-  hi SignColumn ctermbg=NONE guibg=NONE
-  hi Comment guifg=#5C6370 ctermfg=59
-" }}
-
 " coc-explorer {{
   " nmap <space>e :CocCommand explorer<CR>
   " nmap <Leader>n :CocCommand explorer<CR>
@@ -668,6 +656,10 @@ endif
 
 " coc-yank {{
   nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+" }}
+
+" bignimbus/you-are-here.vim {{
+  nnoremap <silent> <leader>here :call you_are_here#Toggle()<CR>
 " }}
 
 source ~/.local_vimrc
