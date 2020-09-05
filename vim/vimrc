@@ -18,7 +18,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'easymotion/vim-easymotion'
     Plug 'szw/vim-maximizer'
     Plug 'junegunn/vim-easy-align'
-    Plug 'mileszs/ack.vim', { 'on': 'Ack' }
     Plug 'maxbrunsfeld/vim-yankstack'
     Plug 'rhysd/clever-f.vim'
     Plug 'terryma/vim-multiple-cursors'
@@ -30,7 +29,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'AndrewRadev/tagalong.vim' 
     Plug 'liuchengxu/vim-clap'
     Plug 'AaronLasseigne/yank-code'
-    Plug 'rhysd/vim-grammarous'
     Plug 'rizzatti/dash.vim'
     Plug 'janko-m/vim-test'
     Plug 'dense-analysis/ale'
@@ -48,8 +46,8 @@ call plug#begin('~/.vim/plugged')
   " }}
 
   " ELIXIR {{
-    Plug 'elixir-editors/vim-elixir'
-    Plug 'slashmili/alchemist.vim'
+    " Plug 'elixir-editors/vim-elixir'
+    " Plug 'slashmili/alchemist.vim'
   " }}
 
   " TPOPE's must have plugins {{
@@ -90,7 +88,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'nanotech/jellybeans.vim'
     Plug 'tomasr/molokai'
     Plug 'joshdick/onedark.vim'
-    Plug 'rafi/awesome-vim-colorschemes'
     Plug 'morhetz/gruvbox'
     Plug 'danilo-augusto/vim-afterglow'
     Plug 'kreeger/benlight' " Twilight kind of theme
@@ -102,12 +99,11 @@ call plug#begin('~/.vim/plugged')
       Plug 'mhinz/vim-signify'
     endif
     Plug 'pechorin/any-jump.vim'
-    Plug 'airblade/vim-rooter'
+    " Plug 'airblade/vim-rooter'
     Plug 'wincent/terminus'
     if !has('nvim')
       Plug 'rhysd/vim-healthcheck'
     endif
-    Plug 'JamshedVesuna/vim-markdown-preview'
     Plug 'thinca/vim-quickrun' " Ruby code runnner
     Plug 'vim-airline/vim-airline'
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
@@ -279,28 +275,25 @@ set diffopt+=vertical
   let g:indentLine_char = '┊'
 " }}
 
-
-" vim-markdown-preview {{
-  let vim_markdown_preview_github=1
-" }}
-
 " clever-f.vim plugin {{
   let g:clever_f_ignore_case = 1
 " }}
-
 
 " For leafoftree/vim-vue-plugin {{
   let g:vim_vue_plugin_load_full_syntax = 1
 " }}
 
-" For AndrewRadev/tagalong.vim
-let g:tagalong_mappings = [{'c': '<leader>c'}, {'C': '<leader>C'}, 'v', 'i', 'a']
+" For AndrewRadev/tagalong.vim {{
+  let g:tagalong_mappings = [{'c': '<leader>c'}, {'C': '<leader>C'}, 'v', 'i', 'a']
+}}
 
-" make test commands execute using dispatch.vim
-let test#strategy = "iterm"
+" make test commands execute using dispatch.vim {{
+  let test#strategy = "iterm"
+" }}
 
-" Setting for AndrewRadev/quickpeek.vim
-let g:quickpeek_auto = v:true
+" Setting for AndrewRadev/quickpeek.vim {{
+  let g:quickpeek_auto = v:true
+" }}
 
 " TENDERLOVE'S SETTINGS
 if has("terminal")
@@ -326,16 +319,6 @@ if has("statusline") && !&cp
     " set statusline+=\ %3v         " current column
     " set statusline+=\ %Y\ %{FugitiveStatusline()}
   " }}
-endif
-
-" The silver searcher (Faster than the ack)
-" Invoke ag using ack.vim
-if executable("ag")
-  " Use Ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  let g:ackprg = 'ag --vimgrep'
-  let g:agprg="ag --column"
 endif
 
 let g:mapleader = ","
@@ -394,7 +377,7 @@ let g:github_enterprise_urls = ['https://github.com']
         \}
 
 
-  " let g:ale_fix_on_save = 1
+  let g:ale_fix_on_save = 1
 
   let g:ale_echo_msg_error_str = 'E'
   let g:ale_echo_msg_warning_str = 'W'
@@ -453,8 +436,6 @@ nnoremap N Nzz
 
 " Puts the calller (Thanks to @tenderlove)
 nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
-
-nnoremap \ :Ack<SPACE>
 
 " Disable 'Entering Ex mode'
 map Q <Nop>
@@ -598,7 +579,6 @@ endif
     \ 'coc-json',
     \ 'coc-css',
     \ 'coc-explorer',
-    \ 'coc-elixir',
     \ ]
 
   " space + g + d => definition
