@@ -20,7 +20,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'rhysd/clever-f.vim'
     Plug 'terryma/vim-multiple-cursors'
     Plug 'wellle/targets.vim'
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'mbbill/undotree'
     Plug 'rhysd/committia.vim'
@@ -86,7 +86,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'nanotech/jellybeans.vim'
     Plug 'tomasr/molokai'
     Plug 'joshdick/onedark.vim'
-    Plug 'morhetz/gruvbox'
+    Plug 'gruvbox-community/gruvbox'
     Plug 'danilo-augusto/vim-afterglow'
     Plug 'kreeger/benlight' " Twilight kind of theme
     Plug 'cocopon/iceberg.vim'
@@ -137,14 +137,15 @@ let no_buffers_menu = 1
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=JetBrains\ Mono:h16
+    set guifont=JetBrains\ Mono:h18
     " let g:onedark_terminal_italics = 1 " I love italic for comments
     let g:gruvbox_sign_column = 'bg0'
     colorscheme gruvbox
   endif
 else
   set termguicolors
-  colorscheme hybrid
+  let g:gruvbox_sign_column = 'bg0'
+  colorscheme gruvbox
   if $COLORTERM == 'gnome-terminal'
     set term=gnome-256color
   else
@@ -599,6 +600,9 @@ endif
 
   " use <cr> to confirm completion
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+  " Coc explorer
+  :nmap <Leader>n :CocCommand explorer<CR>
 " }}
 
 " tpope/vim-endwise {{
