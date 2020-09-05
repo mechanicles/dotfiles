@@ -12,8 +12,6 @@ endif
 call plug#begin('~/.vim/plugged')
   " PRODUCTIVITY {{
     Plug 'Yggdroot/indentLine'
-    Plug 'scrooloose/nerdtree'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
     Plug 'easymotion/vim-easymotion'
     Plug 'szw/vim-maximizer'
@@ -285,7 +283,7 @@ set diffopt+=vertical
 
 " For AndrewRadev/tagalong.vim {{
   let g:tagalong_mappings = [{'c': '<leader>c'}, {'C': '<leader>C'}, 'v', 'i', 'a']
-}}
+" }}
 
 " make test commands execute using dispatch.vim {{
   let test#strategy = "iterm"
@@ -468,16 +466,6 @@ nmap <leader>P PV`]=
 " Index ctags from any project, including those outside Rails
 map <Leader>ct :!ctags --tag-relative=yes --extras=+f -Rf.git/tags --exclude=.git --exclude=pkg --exclude=.ext --languages=-javascript,sql<cr><cr>
 
-" NERDTree {{
-  let g:NERDTreeHijackNetrw=1
-  let NERDTreeMinimalUI=1
-  let g:NERDTreeChDirMode=2
-  let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-  let g:NERDTreeShowBookmarks=1
-  let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-  map <Leader>n :NERDTreeToggle<CR>
-" }}
-
 map <c-a> ggVG
 
 " format the entire file
@@ -562,10 +550,6 @@ if has("autocmd")
 
   " Enable spellchecking for Markdown
   au FileType markdown setlocal spell
-
-  " Opnes NERDTree automatically when vim starts up if no files were specified
-  autocmd StdinReadPre * let s:std_in=1
-  autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
   au FileType javascript set formatprg=prettier\ --stdin
 endif
