@@ -144,7 +144,6 @@ if has('gui_running')
     colorscheme gruvbox
   endif
 else
-  set termguicolors
   let g:gruvbox_sign_column = 'bg0'
   colorscheme gruvbox
   if $COLORTERM == 'gnome-terminal'
@@ -182,7 +181,7 @@ set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
 set smartindent
 set display=lastline              " show as much as possible of the last line.
-set scrolloff=1                   " minimum lines to keep above and below cursor
+set scrolloff=8                   " minimum lines to keep above and below cursor
 set hidden                        " switch between buffers without having to save first.
 set foldenable                    " auto fold code
 set pastetoggle=<F2>
@@ -192,7 +191,8 @@ set wrapscan                      " searches wrap around end-of-file
 set bomb
 set binary
 set synmaxcol=256                 " This helps to avoid very slow redrawing for long lines
-set updatetime=100                " delay time. Useful for showing git signs
+set updatetime=50                " delay time. Useful for showing git signs
+set termguicolors
 
 set undodir=~/.vim/undodir
 set undofile
@@ -432,9 +432,18 @@ nnoremap N Nzz
 " FZF settings {{
   nnoremap <c-b> :Buffers<cr>
   nnoremap <c-p> :GFiles<cr>
+
+  " Project files
+  nnoremap <Leader>pf :Files<CR>
+
   let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
   let $FZF_DEFAULT_OPTS='--reverse'
   noremap <leader>gc :GCheckout<CR>
+" }}
+
+" Searching {{
+  nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
+  nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
 " }}
 
 " Puts the calller (Thanks to @tenderlove)
