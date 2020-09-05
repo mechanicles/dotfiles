@@ -20,8 +20,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'rhysd/clever-f.vim'
     Plug 'terryma/vim-multiple-cursors'
     Plug 'wellle/targets.vim'
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
+    Plug 'stsewd/fzf-checkout.vim'
     Plug 'mbbill/undotree'
     Plug 'rhysd/committia.vim'
     Plug 'AndrewRadev/tagalong.vim' 
@@ -428,9 +429,12 @@ nnoremap <C-l> <C-w>l
 nnoremap n nzz
 nnoremap N Nzz
 
-" FZF mappings {{
+" FZF settings {{
   nnoremap <c-b> :Buffers<cr>
   nnoremap <c-p> :GFiles<cr>
+  let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+  let $FZF_DEFAULT_OPTS='--reverse'
+  noremap <leader>gc :GCheckout<CR>
 " }}
 
 " Puts the calller (Thanks to @tenderlove)
