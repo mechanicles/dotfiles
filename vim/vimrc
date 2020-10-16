@@ -11,114 +11,109 @@ endif
 " VIM-PLUG
 call plug#begin('~/.vim/plugged')
   " PRODUCTIVITY {{
-    " Plug 'Yggdroot/indentLine'
-    " Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-    " Plug 'easymotion/vim-easymotion'
-    " Plug 'szw/vim-maximizer'
-    " Plug 'junegunn/vim-easy-align'
-    " Plug 'maxbrunsfeld/vim-yankstack'
-    " Plug 'rhysd/clever-f.vim'
-    " Plug 'terryma/vim-multiple-cursors'
-    " Plug 'wellle/targets.vim'
-    " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    " Plug 'junegunn/fzf.vim'
-    " Plug 'stsewd/fzf-checkout.vim'
-    " Plug 'mbbill/undotree'
-    " Plug 'rhysd/committia.vim'
-    " Plug 'AndrewRadev/tagalong.vim' 
-    " Plug 'AaronLasseigne/yank-code'
-    " Plug 'rizzatti/dash.vim'
-    " Plug 'janko-m/vim-test'
-    " Plug 'dense-analysis/ale'
-    " Plug 'bignimbus/you-are-here.vim'
-    " Plug 'liuchengxu/vim-which-key'
+    Plug 'Yggdroot/indentLine'
+    Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+    Plug 'easymotion/vim-easymotion'
+    Plug 'szw/vim-maximizer'
+    Plug 'junegunn/vim-easy-align'
+    Plug 'maxbrunsfeld/vim-yankstack'
+    Plug 'rhysd/clever-f.vim'
+    Plug 'terryma/vim-multiple-cursors'
+    Plug 'wellle/targets.vim'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+    Plug 'stsewd/fzf-checkout.vim'
+    Plug 'mbbill/undotree'
+    Plug 'rhysd/committia.vim'
+    Plug 'AndrewRadev/tagalong.vim' 
+    Plug 'AaronLasseigne/yank-code'
+    Plug 'rizzatti/dash.vim'
+    Plug 'janko-m/vim-test'
+    Plug 'dense-analysis/ale'
+    Plug 'bignimbus/you-are-here.vim'
+    Plug 'liuchengxu/vim-which-key'
   " }}
 
   " Method lookup/snippets {{
-    " Plug 'honza/vim-snippets'
-    " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'honza/vim-snippets'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
   " }}
 
   " RUBY {{
-    " Plug 'sunaku/vim-ruby-minitest'
-    " Plug 'thoughtbot/vim-rspec'
-  " }}
-
-  " ELIXIR {{
-    " Plug 'elixir-editors/vim-elixir'
-    " Plug 'slashmili/alchemist.vim'
+    Plug 'sunaku/vim-ruby-minitest'
+    Plug 'thoughtbot/vim-rspec'
   " }}
 
   " TPOPE's must have plugins {{
-    " Plug 'tpope/vim-repeat'
-    " Plug 'tpope/vim-surround'
-    " Plug 'tpope/vim-endwise'
-    " Plug 'tpope/vim-unimpaired'
-    " Plug 'tpope/vim-commentary'
-    " Plug 'tpope/vim-git'
-    " Plug 'tpope/vim-fugitive'
-    " Plug 'tpope/vim-bundler'
-    " Plug 'tpope/vim-rake'
-    " Plug 'tpope/vim-rails'
-    " Plug 'tpope/vim-dispatch'
-    " Plug 'tpope/vim-sleuth'
-    " Plug 'tpope/vim-dadbod'
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-endwise'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-git'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-bundler'
+    Plug 'tpope/vim-rake'
+    Plug 'tpope/vim-rails'
+    Plug 'tpope/vim-dispatch'
+    Plug 'tpope/vim-sleuth'
+    Plug 'tpope/vim-dadbod'
   " }}
 
   " More git plugins dependent on 'tpope/vim-fugitive' {{
-    " Plug 'junegunn/gv.vim'
+    Plug 'junegunn/gv.vim'
   " }}
 
   " JAVASCRIPT {{
-    " Plug 'pangloss/vim-javascript'
-    " Plug 'leafoftree/vim-vue-plugin'
-    " Plug 'kchmck/vim-coffee-script'
-    " Plug 'prettier/vim-prettier', {
-    "       \ 'do': 'yarn install',
-    "       \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+    Plug 'pangloss/vim-javascript'
+    Plug 'leafoftree/vim-vue-plugin'
+    Plug 'kchmck/vim-coffee-script'
+    Plug 'prettier/vim-prettier', {
+          \ 'do': 'yarn install',
+          \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
   " }}
 
   " TEMPLATES {{
-    " Plug 'slim-template/vim-slim'
+    Plug 'slim-template/vim-slim'
   " }}
 
   " COLORSCHEME {{
-    " Plug 'w0ng/vim-hybrid'
-    " Plug 'nanotech/jellybeans.vim'
-    " Plug 'tomasr/molokai'
-    " Plug 'joshdick/onedark.vim'
-    " Plug 'gruvbox-community/gruvbox'
-    " Plug 'danilo-augusto/vim-afterglow'
-    " Plug 'kreeger/benlight' " Twilight kind of theme
-    " Plug 'cocopon/iceberg.vim'
-    " Plug 'doums/darcula'
-    " Plug 'rakr/vim-one'
-    " Plug 'sonph/onehalf'
-    " Plug 'jonathanfilip/vim-lucius'
-    " Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
-    " Plug 'NLKNguyen/papercolor-theme'
+    Plug 'w0ng/vim-hybrid'
+    Plug 'nanotech/jellybeans.vim'
+    Plug 'tomasr/molokai'
+    Plug 'joshdick/onedark.vim'
+    Plug 'gruvbox-community/gruvbox'
+    Plug 'danilo-augusto/vim-afterglow'
+    Plug 'kreeger/benlight' " Twilight kind of theme
+    Plug 'cocopon/iceberg.vim'
+    Plug 'doums/darcula'
+    Plug 'rakr/vim-one'
+    Plug 'sonph/onehalf'
+    Plug 'jonathanfilip/vim-lucius'
+    Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
+    Plug 'NLKNguyen/papercolor-theme'
   " }}
 
   " ENHANCEMENT {{
     if v:version >= 703
-      " Plug 'mhinz/vim-signify'
+      Plug 'mhinz/vim-signify'
     endif
-    " Plug 'pechorin/any-jump.vim'
-    " Plug 'wincent/terminus'
+    Plug 'pechorin/any-jump.vim'
+    Plug 'wincent/terminus'
     if !has('nvim')
-      " Plug 'rhysd/vim-healthcheck'
+      Plug 'rhysd/vim-healthcheck'
     endif
-    " Plug 'thinca/vim-quickrun' " Ruby code runnner
-    " Plug 'vim-airline/vim-airline'
-    " Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
+    Plug 'thinca/vim-quickrun' " Ruby code runnner
+    Plug 'vim-airline/vim-airline'
+    Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
   " }}
 
   " EXTRA {{
-    " Plug 'lifepillar/vim-cheat40'
-    " Plug 'chrisbra/csv.vim'
-    " Plug 'AndrewRadev/quickpeek.vim'
-    " Plug 'wakatime/vim-wakatime'
-    " Plug 'kristijanhusak/vim-carbon-now-sh'
+    Plug 'lifepillar/vim-cheat40'
+    Plug 'chrisbra/csv.vim'
+    Plug 'AndrewRadev/quickpeek.vim'
+    Plug 'wakatime/vim-wakatime'
+    Plug 'kristijanhusak/vim-carbon-now-sh'
   " }}
 call plug#end()
 
