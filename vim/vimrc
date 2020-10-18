@@ -115,7 +115,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'lifepillar/vim-cheat40'
     Plug 'chrisbra/csv.vim'
     Plug 'AndrewRadev/quickpeek.vim'
-    Plug 'wakatime/vim-wakatime'
     Plug 'kristijanhusak/vim-carbon-now-sh'
   " }}
 call plug#end()
