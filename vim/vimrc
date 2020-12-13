@@ -93,9 +93,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'rakr/vim-one'
     Plug 'sonph/onehalf'
     Plug 'jonathanfilip/vim-lucius'
-    Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'romgrk/github-light.vim'
+    Plug 'chriskempson/base16-vim'
   " }}
 
   " ENHANCEMENT {{
@@ -124,6 +124,15 @@ call plug#end()
 " Time limit of each task in seconds for vim-plug
 let g:plug_timeout = 100
 
+if filereadable('/usr/bin/python2')
+  let g:python_host_prog='/usr/bin/python2'
+endif
+
+if filereadable('/usr/local/bin/python3')
+  " Avoid search, speeding up start-up.
+  let g:python3_host_prog='/usr/local/bin/python3'
+endif
+
 let g:make = 'gmake'
 if exists('make')
   let g:make = 'make'
@@ -139,25 +148,18 @@ endif
 
 let no_buffers_menu = 1
 " COLORSHEME SETTINGS
+
+let g:gruvbox_sign_column = 'bg0'
+colorscheme gruvbox
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
     set guifont=IBM\ Plex\ Mono:h18
     " let g:onedark_terminal_italics = 1 " I love italic for comments
-    colorscheme onedark
-    " let g:gruvbox_sign_column = 'bg0'
-    " colorscheme gruvbox
+    " colorscheme onedark
   endif
 else
-  let g:gruvbox_sign_column = 'bg0'
-  colorscheme gruvbox
-  if $COLORTERM == 'gnome-terminal'
-    set term=gnome-256color
-  else
-    if $TERM == 'xterm'
-      set term=xterm-256color
-    endif
-  endif
+  set termguicolors
 endif
 
 " Basic setup
@@ -196,9 +198,7 @@ set wrapscan                      " searches wrap around end-of-file
 set bomb
 set binary
 set synmaxcol=256                 " This helps to avoid very slow redrawing for long lines
-set updatetime=50                " delay time. Useful for showing git signs
-set termguicolors
-
+set updatetime=300                " delay time. Useful for showing git sign
 set undodir=~/.vim/undodir
 set undofile
 
@@ -213,8 +213,17 @@ set backspace=indent,eol,start    " backspace through everything in insert mode
 set list                          " show invisible characters
 set nojoinspaces                  " Use only 1 space after "." when joining lines, not 2
 
-" Don't give |ins-completion-menu| messages.
+" Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
 " Disable swap files; systems don't crash that often these days
 set updatecount=0
