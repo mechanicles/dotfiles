@@ -35,6 +35,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'janko-m/vim-test'
     Plug 'dense-analysis/ale'
     Plug 'bignimbus/you-are-here.vim'
+    Plug 'skywind3000/asyncrun.vim'
+    Plug 'dbeniamine/cheat.sh-vim'
   " }}
 
   " Method lookup/snippets {{
@@ -96,6 +98,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'romgrk/github-light.vim'
     Plug 'chriskempson/base16-vim'
+    Plug 'jaywilliams/vim-vwilight'
+    Plug 'tpope/vim-vividchalk'
+    Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
+    Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
   " }}
 
   " ENHANCEMENT {{
@@ -110,6 +116,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'thinca/vim-quickrun' " Ruby code runnner
     Plug 'vim-airline/vim-airline'
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
+    Plug 'APZelos/blamer.nvim'
   " }}
 
   " EXTRA {{
@@ -118,11 +125,28 @@ call plug#begin('~/.vim/plugged')
     Plug 'AndrewRadev/quickpeek.vim'
     Plug 'kristijanhusak/vim-carbon-now-sh'
     " Plug 'nvim-treesitter/nvim-treesitter'
+    Plug 'airblade/vim-localorie'
   " }}
+
+
+  " Load this as the very last one
+  Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " Time limit of each task in seconds for vim-plug
 let g:plug_timeout = 100
+
+" APZelos/blamer.nvim {{
+  let g:blamer_enabled = 1
+  let g:blamer_date_format = '%d/%m/%y'
+  let g:blamer_show_in_insert_modes = 0
+  let g:blamer_show_in_visual_modes = 0
+" }}
+
+" airblade/vim-localorie {{
+  nnoremap <silent> <leader>lt :call localorie#translate()<CR>
+  nnoremap <silent> <leader>le :echo localorie#expand_key()<CR>
+" }}
 
 if filereadable('/usr/bin/python2')
   let g:python_host_prog='/usr/bin/python2'
@@ -151,12 +175,12 @@ let no_buffers_menu = 1
 
 let g:gruvbox_sign_column = 'bg0'
 colorscheme gruvbox
+" colorscheme onedark
+
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=IBM\ Plex\ Mono:h18
-    " let g:onedark_terminal_italics = 1 " I love italic for comments
-    " colorscheme onedark
+    set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h18
   endif
 else
   set termguicolors
@@ -201,6 +225,7 @@ set synmaxcol=256                 " This helps to avoid very slow redrawing for 
 set updatetime=300                " delay time. Useful for showing git sign
 set undodir=~/.vim/undodir
 set undofile
+set relativenumber
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -286,7 +311,8 @@ set complete+=kspell
 set diffopt+=vertical
 
 " IndentLine {{
-  let g:indentLine_char = '┊'
+  let g:indentLine_char = '┆'
+  let g:indentLine_fileTypeExclude=['coc-explorer']
 " }}
 
 " clever-f.vim plugin {{
@@ -302,7 +328,7 @@ set diffopt+=vertical
 " }}
 
 " make test commands execute using dispatch.vim {{
-  let test#strategy = "dispatch"
+  let test#strategy = "iterm"
 " }}
 
 " Setting for AndrewRadev/quickpeek.vim {{
@@ -635,11 +661,6 @@ endif
   let g:any_jump_search_prefered_engine = 'ag'
   let g:any_jump_preview_lines_count = 10
   let g:any_jump_ignored_files = ['*.tmp', '*.temp', '*.log']
-" }}
-
-" coc-explorer {{
-  " nmap <space>e :CocCommand explorer<CR>
-  " nmap <Leader>n :CocCommand explorer<CR>
 " }}
 
 " coc-yank {{
