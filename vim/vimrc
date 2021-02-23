@@ -16,7 +16,7 @@ endif
 call plug#begin('~/.vim/plugged')
   " PRODUCTIVITY {{
     Plug 'Yggdroot/indentLine'
-    Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+    Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }
     Plug 'easymotion/vim-easymotion'
     Plug 'szw/vim-maximizer'
     Plug 'junegunn/vim-easy-align'
@@ -173,9 +173,9 @@ endif
 let no_buffers_menu = 1
 " COLORSHEME SETTINGS
 
-let g:gruvbox_sign_column = 'bg0'
-colorscheme gruvbox
-" colorscheme onedark
+" let g:gruvbox_sign_column = 'bg0'
+" colorscheme gruvbox
+colorscheme onedark
 
 if has('gui_running')
   if has("gui_macvim")
@@ -308,7 +308,10 @@ endif
 set complete+=kspell
 
 " Always use vertical diffs
-set diffopt+=vertical
+if &diff
+  set diffopt-=internal
+  set diffopt+=vertical
+endif
 
 " IndentLine {{
   let g:indentLine_char = '┆'
@@ -425,19 +428,6 @@ function! RenameFile()
 endfunction
 command! RENAME call RenameFile()
 
-" Tagbar {{
-  let g:tagbar_type_ruby = {
-      \ 'kinds' : [
-          \ 'm:modules',
-          \ 'c:classes',
-          \ 'd:describes',
-          \ 'C:contexts',
-          \ 'f:methods',
-          \ 'F:singleton methods'
-      \ ]
-  \ }
-" }}
-
 "Highlight column for 119 characters.
 if exists('+colorcolumn')
   set colorcolumn=+1
@@ -547,9 +537,19 @@ map <Leader>= <C-w>=
   inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
 " }}
 
-" TagbarToggle {{
+" Tagbar {{
   nnoremap <Leader>rt :TagbarToggle<CR>
   let g:tagbar_autofocus = 1
+  let g:tagbar_type_ruby = {
+      \ 'kinds' : [
+          \ 'm:modules',
+          \ 'c:classes',
+          \ 'd:describes',
+          \ 'C:contexts',
+          \ 'f:methods',
+          \ 'F:singleton methods'
+      \ ]
+  \ }
 " }}
 
 " disable cursor keys in normal mode
