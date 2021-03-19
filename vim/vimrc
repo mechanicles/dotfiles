@@ -37,6 +37,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'bignimbus/you-are-here.vim'
     Plug 'skywind3000/asyncrun.vim'
     Plug 'dbeniamine/cheat.sh-vim'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
   " }}
 
   " Method lookup/snippets {{
@@ -57,6 +58,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-git'
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-rhubarb'
     Plug 'tpope/vim-bundler'
     Plug 'tpope/vim-rake'
     Plug 'tpope/vim-rails'
@@ -117,6 +119,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline'
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
     Plug 'APZelos/blamer.nvim'
+    Plug 'machakann/vim-highlightedyank'
   " }}
 
   " EXTRA {{
@@ -225,7 +228,7 @@ set synmaxcol=256                 " This helps to avoid very slow redrawing for 
 set updatetime=300                " delay time. Useful for showing git sign
 set undodir=~/.vim/undodir
 set undofile
-set relativenumber
+" set relativenumber
 
 " Whitespace
 set nowrap                        " don't wrap text
