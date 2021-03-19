@@ -37,7 +37,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'bignimbus/you-are-here.vim'
     Plug 'skywind3000/asyncrun.vim'
     Plug 'dbeniamine/cheat.sh-vim'
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+  "  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
   " }}
 
   " Method lookup/snippets {{
