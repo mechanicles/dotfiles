@@ -34,10 +34,13 @@ call plug#begin('~/.vim/plugged')
     Plug 'rizzatti/dash.vim'
     Plug 'janko-m/vim-test'
     Plug 'dense-analysis/ale'
-    Plug 'bignimbus/you-are-here.vim'
     Plug 'skywind3000/asyncrun.vim'
     Plug 'dbeniamine/cheat.sh-vim'
-  "  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+
+    Plug 'nvim-lua/popup.nvim'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim'
   " }}
 
   " Method lookup/snippets {{
@@ -73,7 +76,6 @@ call plug#begin('~/.vim/plugged')
 
   " JAVASCRIPT {{
     Plug 'pangloss/vim-javascript'
-    Plug 'leafoftree/vim-vue-plugin'
     Plug 'kchmck/vim-coffee-script'
     Plug 'prettier/vim-prettier', {
           \ 'do': 'yarn install',
@@ -127,10 +129,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'chrisbra/csv.vim'
     Plug 'AndrewRadev/quickpeek.vim'
     Plug 'kristijanhusak/vim-carbon-now-sh'
-    " Plug 'nvim-treesitter/nvim-treesitter'
+    Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'airblade/vim-localorie'
   " }}
-
 
   " Load this as the very last one
   Plug 'ryanoasis/vim-devicons'
@@ -244,14 +245,7 @@ set nojoinspaces                  " Use only 1 space after "." when joining line
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=number
 
 " Disable swap files; systems don't crash that often these days
 set updatecount=0
@@ -325,27 +319,17 @@ endif
   let g:clever_f_ignore_case = 1
 " }}
 
-" For leafoftree/vim-vue-plugin {{
-  let g:vim_vue_plugin_load_full_syntax = 1
-" }}
-
 " For AndrewRadev/tagalong.vim {{
   let g:tagalong_mappings = [{'c': '<leader>c'}, {'C': '<leader>C'}, 'v', 'i', 'a']
 " }}
 
 " make test commands execute using dispatch.vim {{
-  let test#strategy = "iterm"
+  let test#strategy = "neovim"
 " }}
 
 " Setting for AndrewRadev/quickpeek.vim {{
   let g:quickpeek_auto = v:true
 " }}
-
-" TENDERLOVE'S SETTINGS
-if has("terminal")
-  map <Leader>tt :terminal ++close<cr>
-  tnoremap <Esc> <C-W>N
-endif
 
 set tags+=.git/tags
 
@@ -375,13 +359,6 @@ let g:html_indent_tags = 'li\|p'
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
-" Better key bindings for UltiSnipsExpandTrigger {{
-  " let g:UltiSnipsExpandTrigger = "<nop>"
-  " let g:UltiSnipsJumpForwardTrigger="<c-b>"
-  " let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-  " let g:UltiSnipsEditSplit="vertical"
-" }}
-
 " Every time you open a git object using fugitive it creates a new buffer.
 " This means that your buffer listing can quickly become swamped with
 " fugitive buffers. This prevents this from becomming an issue:
@@ -390,13 +367,13 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 let g:github_enterprise_urls = ['https://github.com']
 
 " RSpec.vim mappings {{
-  map <Leader>t :call RunCurrentSpecFile()<CR>
-  map <Leader>s :call RunNearestSpec()<CR>
-  map <Leader>l :call RunLastSpec()<CR>
-  map <Leader>a :call RunAllSpecs()<CR>
+  " map <Leader>t :call RunCurrentSpecFile()<CR>
+  " map <Leader>s :call RunNearestSpec()<CR>
+  " map <Leader>l :call RunLastSpec()<CR>
+  " map <Leader>a :call RunAllSpecs()<CR>
 
-  let g:rspec_command = "bundle exec rspec {spec}"
-  let g:rspec_runner = "os_x_iterm2"
+  " let g:rspec_command = "bundle exec rspec {spec}"
+  " let g:rspec_runner = "os_x_iterm2"
 " }}
 
 " ale plugin {{
@@ -409,7 +386,6 @@ let g:github_enterprise_urls = ['https://github.com']
         \    'ruby': ['rubocop'],
         \}
 
-
   let g:ale_fix_on_save = 1
   let g:ale_echo_msg_error_str = 'E'
   let g:ale_echo_msg_warning_str = 'W'
@@ -418,18 +394,6 @@ let g:github_enterprise_urls = ['https://github.com']
 
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
-" rename current file (thanks Gary Bernhardt)
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
-endfunction
-command! RENAME call RenameFile()
 
 "Highlight column for 119 characters.
 if exists('+colorcolumn')
@@ -670,11 +634,14 @@ endif
   nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 " }}
 
-" bignimbus/you-are-here.vim {{
-  nnoremap <silent> <leader>here :call you_are_here#Toggle()<CR>
+" nvim-telescope/telescope.nvim {{
+  nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+  nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+  nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+  nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " }}
 
-" source ~/.local_vimrc
+source ~/.local_vimrc
 
 " FIX CONSTANT SPELLING MISTAKES
 " Copy content from https://raw.githubusercontent.com/moshahmed/vim/master/thesaurus/thesaurii.txt
