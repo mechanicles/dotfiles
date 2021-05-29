@@ -37,6 +37,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'skywind3000/asyncrun.vim'
     Plug 'dbeniamine/cheat.sh-vim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+    Plug 'voldikss/vim-floaterm'
 
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
@@ -659,6 +660,18 @@ endif
   nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
   nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
   nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+" }}
+
+" voldikss/vim-floaterm {{
+  let g:floaterm_keymap_new = '<Leader>ft'
+  let g:floaterm_keymap_toggle = '<Leader>tt'
+  let g:floaterm_width = 0.9
+  let g:floaterm_height = 0.9
+
+  " These GUI colors for background and foreground are set based on the
+  " OceanicNext colorscheme. We can change these colors based on the
+  " colorscheme using ':hi Normal' comand in Vim
+  hi FloatermBorder guibg=#1b2b34 guifg=#d8dee9
 " }}
 
 source ~/.local_vimrc
