@@ -108,7 +108,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
     Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
     Plug 'mhartington/oceanic-next'
-    Plug 'wojciechkepka/vim-github-dark'
   " }}
 
   " ENHANCEMENT {{
