@@ -373,6 +373,11 @@ let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 " fugitive buffers. This prevents this from becomming an issue:
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
+" coc-css {{
+  "For scss files, you may need use:
+  autocmd FileType scss setl iskeyword+=@-@
+" }}
+
 let g:github_enterprise_urls = ['https://github.com']
 
 " RSpec.vim mappings {{
@@ -585,7 +590,8 @@ endif
     \ 'coc-json',
     \ 'coc-css',
     \ 'coc-explorer',
-    \ 'coc-tsserver'
+    \ 'coc-tsserver',
+    \ 'coc-html'
     \ ]
 
   " space + g + d => definition
