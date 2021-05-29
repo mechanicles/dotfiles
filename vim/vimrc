@@ -190,6 +190,7 @@ let no_buffers_menu = 1
 " colorscheme gruvbox
 " colorscheme onedark
 colorscheme OceanicNext
+let g:airline_theme='oceanicnext'
 
 if has('gui_running')
   if has("gui_macvim")
