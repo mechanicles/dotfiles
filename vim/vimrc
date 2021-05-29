@@ -139,6 +139,10 @@ call plug#begin('~/.vim/plugged')
   Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
+" keep this at the top {{
+  syntax on
+" }}
+
 " Exit from Terminal {{
   tnoremap <Esc> <C-\><C-n>
 " }}
@@ -197,7 +201,6 @@ else
 endif
 
 " Basic setup
-syntax enable
 set clipboard=unnamed
 set number                        " show line numbers
 set ruler                         " show the cursor position all the time
