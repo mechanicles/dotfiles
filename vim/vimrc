@@ -42,6 +42,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
+    Plug 'ethanholz/nvim-lastplace'
+    Plug 'sindrets/diffview.nvim'
+    Plug 'kyazdani42/nvim-tree.lua'
+    Plug 'kevinhwang91/nvim-bqf' " Important pugin for quickfix
+    Plug 'andymass/vim-matchup'
   " }}
 
   " Method lookup/snippets {{
@@ -109,6 +114,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
     Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
     Plug 'mhartington/oceanic-next'
+    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
   " }}
 
   " ENHANCEMENT {{
@@ -125,6 +131,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
     Plug 'APZelos/blamer.nvim'
     Plug 'machakann/vim-highlightedyank'
+    Plug 'folke/trouble.nvim' " May be we don't need it
   " }}
 
   " EXTRA {{
@@ -134,10 +141,12 @@ call plug#begin('~/.vim/plugged')
     Plug 'kristijanhusak/vim-carbon-now-sh'
     Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'airblade/vim-localorie'
+    Plug 'TimUntersberger/neogit'
   " }}
 
   " Load this as the very last one
   Plug 'ryanoasis/vim-devicons'
+  Plug 'kyazdani42/nvim-web-devicons'
 call plug#end()
 
 " keep this at the top {{
@@ -177,7 +186,8 @@ if exists('make')
 endif
 
 if has('nvim')
-  runtime! macros/matchit.vim
+  " runtime! macros/matchit.vim
+  let g:loaded_matchit = 1 " We use vim-matchup plugin
 else
   " VIM HAS ITS VERY OWN'S 'ADD-PACKAGE' FEATURE:
   " This plugin makes the '%' command jump to matching HTML tags, if/else/endif in Vim scripts, etc.
@@ -189,9 +199,10 @@ let no_buffers_menu = 1
 
 " let g:gruvbox_sign_column = 'bg0'
 " colorscheme gruvbox
-" colorscheme onedark
-colorscheme OceanicNext
-let g:airline_theme='oceanicnext'
+colorscheme onedark
+ " colorscheme tokyonight
+" colorscheme OceanicNext
+" let g:airline_theme='oceanicnext'
 
 if has('gui_running')
   if has("gui_macvim")
@@ -256,7 +267,7 @@ set nojoinspaces                  " Use only 1 space after "." when joining line
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
-set signcolumn=number
+set signcolumn=yes
 
 " Disable swap files; systems don't crash that often these days
 set updatecount=0
@@ -636,7 +647,7 @@ endif
   inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
   " Coc explorer
-  :nmap <Leader>n :CocCommand explorer<CR>
+  :nmap <Leader>n :NvimTreeToggle<CR>
 " }}
 
 " tpope/vim-endwise {{
@@ -675,6 +686,80 @@ endif
 " }}
 
 source ~/.local_vimrc
+
+lua << EOF
+local neogit = require('neogit')
+
+neogit.setup {}
+
+require'nvim-lastplace'.setup {
+  lastplace_ignore_buftype = {"quickfix", "nofile", "help"},
+  lastplace_ignore_filetype = {"gitcommit", "gitrebase", "svn", "hgcommit"},
+  lastplace_open_folds = true
+}
+
+require("trouble").setup {}
+
+local cb = require'diffview.config'.diffview_callback
+
+require'diffview'.setup {
+  diff_binaries = false,    -- Show diffs for binaries
+  file_panel = {
+    width = 35,
+    use_icons = true      -- Requires nvim-web-devicons
+  },
+  key_bindings = {
+    disable_defaults = false,                   -- Disable the default key bindings
+    -- The `view` bindings are active in the diff buffers, only when the current
+    -- tabpage is a Diffview.
+    view = {
+      ["<tab>"]     = cb("select_next_entry"),  -- Open the diff for the next file 
+      ["<s-tab>"]   = cb("select_prev_entry"),  -- Open the diff for the previous file
+      ["<leader>e"] = cb("focus_files"),        -- Bring focus to the files panel
+      ["<leader>b"] = cb("toggle_files"),       -- Toggle the files panel.
+    },
+    file_panel = {
+      ["j"]             = cb("next_entry"),         -- Bring the cursor to the next file entry
+      ["<down>"]        = cb("next_entry"),
+      ["k"]             = cb("prev_entry"),         -- Bring the cursor to the previous file entry.
+      ["<up>"]          = cb("prev_entry"),
+      ["<cr>"]          = cb("select_entry"),       -- Open the diff for the selected entry.
+      ["o"]             = cb("select_entry"),
+      ["<2-LeftMouse>"] = cb("select_entry"),
+      ["-"]             = cb("toggle_stage_entry"), -- Stage / unstage the selected entry.
+      ["S"]             = cb("stage_all"),          -- Stage all entries.
+      ["U"]             = cb("unstage_all"),        -- Unstage all entries.
+      ["X"]             = cb("restore_entry"),      -- Restore entry to the state on the left side.
+      ["R"]             = cb("refresh_files"),      -- Update stats and entries in the file list.
+      ["<tab>"]         = cb("select_next_entry"),
+      ["<s-tab>"]       = cb("select_prev_entry"),
+      ["<leader>e"]     = cb("focus_files"),
+      ["<leader>b"]     = cb("toggle_files"),
+    }
+  }
+}
+
+require'nvim-web-devicons'.setup {
+  -- your personnal icons can go here (to override)
+  -- DevIcon will be appended to `name`
+  override = {
+    zsh = {
+      icon = "",
+      color = "#428850",
+      name = "Zsh"
+      }
+    };
+  -- globally enable default icons (default to false)
+  -- will get overriden by `get_icons` option
+  default = true;
+}
+
+require'nvim-treesitter.configs'.setup {
+  matchup = {
+  enable = true,              -- mandatory, false will disable the whole extension
+  },
+}
+EOF
 
 " FIX CONSTANT SPELLING MISTAKES
 " Copy content from https://raw.githubusercontent.com/moshahmed/vim/master/thesaurus/thesaurii.txt
