@@ -33,25 +33,36 @@ call plug#begin('~/.vim/plugged')
     Plug 'AaronLasseigne/yank-code'
     Plug 'rizzatti/dash.vim'
     Plug 'janko-m/vim-test'
-    Plug 'dense-analysis/ale'
     Plug 'skywind3000/asyncrun.vim'
     Plug 'dbeniamine/cheat.sh-vim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'voldikss/vim-floaterm'
+    Plug 'SirVer/ultisnips'
 
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
     Plug 'ethanholz/nvim-lastplace'
     Plug 'sindrets/diffview.nvim'
     Plug 'kyazdani42/nvim-tree.lua'
     Plug 'kevinhwang91/nvim-bqf' " Important pugin for quickfix
     Plug 'andymass/vim-matchup'
+    Plug 'windwp/nvim-spectre'
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'quangnguyen30192/cmp-nvim-ultisnips'
   " }}
+  
+  " PERFORMANCE {{
+    Plug 'antoinemadec/FixCursorHold.nvim'
+  " }}
+
 
   " Method lookup/snippets {{
     Plug 'honza/vim-snippets'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
   " }}
 
   " RUBY {{
@@ -115,6 +126,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
     Plug 'mhartington/oceanic-next'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+    Plug 'ackyshake/Spacegray.vim'
   " }}
 
   " ENHANCEMENT {{
@@ -123,13 +135,9 @@ call plug#begin('~/.vim/plugged')
     endif
     Plug 'pechorin/any-jump.vim'
     Plug 'wincent/terminus'
-    if !has('nvim')
-      Plug 'rhysd/vim-healthcheck'
-    endif
     Plug 'thinca/vim-quickrun' " Ruby code runnner
     Plug 'vim-airline/vim-airline'
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
-    Plug 'APZelos/blamer.nvim'
     Plug 'machakann/vim-highlightedyank'
     Plug 'folke/trouble.nvim' " May be we don't need it
   " }}
@@ -141,13 +149,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'kristijanhusak/vim-carbon-now-sh'
     Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'airblade/vim-localorie'
-    Plug 'TimUntersberger/neogit'
+    Plug 'rhysd/git-messenger.vim'
+    Plug 'ruifm/gitlinker.nvim'
   " }}
 
   " Load this as the very last one
   Plug 'ryanoasis/vim-devicons'
   Plug 'kyazdani42/nvim-web-devicons'
 call plug#end()
+
+set completeopt=menu,menuone,noselect
 
 " keep this at the top {{
   syntax on
@@ -159,13 +170,6 @@ call plug#end()
 
 " Time limit of each task in seconds for vim-plug
 let g:plug_timeout = 100
-
-" APZelos/blamer.nvim {{
-  let g:blamer_enabled = 1
-  let g:blamer_date_format = '%d/%m/%y'
-  let g:blamer_show_in_insert_modes = 0
-  let g:blamer_show_in_visual_modes = 0
-" }}
 
 " airblade/vim-localorie {{
   nnoremap <silent> <leader>lt :call localorie#translate()<CR>
@@ -195,14 +199,6 @@ else
 endif
 
 let no_buffers_menu = 1
-" COLORSHEME SETTINGS
-
-" let g:gruvbox_sign_column = 'bg0'
-" colorscheme gruvbox
-colorscheme onedark
- " colorscheme tokyonight
-" colorscheme OceanicNext
-" let g:airline_theme='oceanicnext'
 
 if has('gui_running')
   if has("gui_macvim")
@@ -212,6 +208,18 @@ if has('gui_running')
 else
   set termguicolors
 endif
+
+" COLORSHEME SETTINGS
+
+" let g:gruvbox_sign_column = 'bg0'
+" colorscheme gruvbox
+colorscheme onedark
+let g:airline_theme='onedark'
+ " colorscheme tokyonight
+" let g:oceanic_next_terminal_bold = 1
+" let g:oceanic_next_terminal_italic = 1
+" colorscheme OceanicNext
+" let g:airline_theme='oceanicnext'
 
 " Basic setup
 set clipboard=unnamed
@@ -225,20 +233,19 @@ if !has('nvim')
   set ttymouse=xterm2
 endif
 
-set mouse=a                       " automatically enable mouse usage in normal mode.
+set mouse=n                       " automatically enable mouse usage in normal mode.
 set mousehide                     " hide the mouse cursor while typing
 set textwidth=120
 set showcmd                       " display incomplete commands
-set wildmenu                      " visual autocomplete for command menu
 set ttyfast                       " faster redrawing.
 set lazyredraw                    " don't redraw while executing macros (good performance config)
 set showmatch                     " show matching brackets
-set showmode                      " show current mode in command-line.
+set noshowmode                
 set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
 set smartindent
 set display=lastline              " show as much as possible of the last line.
-set scrolloff=8                   " minimum lines to keep above and below cursor
+set scrolloff=10                  " minimum lines to keep above and below cursor
 set hidden                        " switch between buffers without having to save first.
 set foldenable                    " auto fold code
 set pastetoggle=<F2>
@@ -251,6 +258,7 @@ set synmaxcol=256                 " This helps to avoid very slow redrawing for 
 set updatetime=300                " delay time. Useful for showing git sign
 set undodir=~/.vim/undodir
 set undofile
+set number
 " set relativenumber
 
 " Whitespace
@@ -272,7 +280,9 @@ set signcolumn=yes
 " Disable swap files; systems don't crash that often these days
 set updatecount=0
 
+set breakindent
 set showbreak=↪\
+set linebreak
 
 " Searching
 set hlsearch                      " highlight matches
@@ -287,7 +297,8 @@ set ttimeout
 set ttimeoutlen=100
 
 " Tab completion
-set wildmode=list:longest,list:full
+set pumblend=17
+set wildoptions=pum
 
 " Disable output and vcs files
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,tags,.fugitiveblame
@@ -334,7 +345,7 @@ endif
 
 " IndentLine {{
   let g:indentLine_char = '▏'
-  let g:indentLine_fileTypeExclude=['coc-explorer']
+  " let g:indentLine_fileTypeExclude=['NvimTree']
 " }}
 
 " clever-f.vim plugin {{
@@ -386,11 +397,6 @@ let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 " fugitive buffers. This prevents this from becomming an issue:
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
-" coc-css {{
-  "For scss files, you may need use:
-  autocmd FileType scss setl iskeyword+=@-@
-" }}
-
 let g:github_enterprise_urls = ['https://github.com']
 
 " RSpec.vim mappings {{
@@ -402,25 +408,6 @@ let g:github_enterprise_urls = ['https://github.com']
   " let g:rspec_command = "bundle exec rspec {spec}"
   " let g:rspec_runner = "os_x_iterm2"
 " }}
-
-" ale plugin {{
-  let g:ale_linters = {
-        \   'ruby': ['rubocop', 'standardrb'],
-        \   'javascript': ['eslint'],
-        \}
-
-  let g:ale_fixers = {
-        \    'ruby': ['rubocop'],
-        \}
-
-  let g:ale_fix_on_save = 1
-  let g:ale_echo_msg_error_str = 'E'
-  let g:ale_echo_msg_warning_str = 'W'
-  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-" }}
-
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 "Highlight column for 119 characters.
 if exists('+colorcolumn')
@@ -440,9 +427,6 @@ nnoremap n nzz
 nnoremap N Nzz
 
 " FZF settings {{
-  nnoremap <c-b> :Buffers<cr>
-  nnoremap <c-p> :GFiles<cr>
-
   " Project files
   nnoremap <Leader>pf :Files<CR>
 
@@ -453,7 +437,6 @@ nnoremap N Nzz
 
 " Searching {{
   nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
-  nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
 " }}
 
 " mileszs/ack.vim {{
@@ -557,14 +540,13 @@ map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
 
 " In command-line mode, C-a jumps to beginning (to match C-e)
-cnoremap <C-a> <Home>
+cnoremap <C-a> <Home> 
 
-" Exit insert mode without using Esc
-inoremap jj <Esc>
+" Run the last command
+nnoremap <leader><leader>c :<up>
 
 " Easy edit/open commands
 command! EditVim  :edit   ~/.vimrc
-command! EditBash :edit   ~/.bashrc
 
 function! s:setWrapping()
   set wrap
@@ -582,6 +564,13 @@ if has("autocmd")
   " Treat JSON files like JavaScript
   au BufNewFile,BufRead *.json setf javascript
 
+  " Treat all *html.erb and *pdf.erb files like eruby
+  au BufNewFile,BufRead *html.erb set filetype=eruby.html
+  au BufNewFile,BufRead *pdf.erb set filetype=eruby.html
+
+  " Treat all *scss.erb files like scss
+  au BufNewFile,BufRead *scss.erb set filetype=scss.css
+
   " Better commit message
   au Filetype gitcommit setlocal spell textwidth=72
 
@@ -594,66 +583,27 @@ if has("autocmd")
   au FileType javascript set formatprg=prettier\ --stdin
 endif
 
-" Coc.nvim settings {{
-  let g:coc_global_extensions = [
-    \ 'coc-pairs',
-    \ 'coc-emoji',
-    \ 'coc-snippets',
-    \ 'coc-solargraph',
-    \ 'coc-json',
-    \ 'coc-css',
-    \ 'coc-explorer',
-    \ 'coc-tsserver',
-    \ 'coc-html'
-    \ ]
-
-  " space + g + d => definition
-  " space + g + r => references
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gr <Plug>(coc-references)
-
-  " Use K to show documentation in preview window.
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-  function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-      execute 'h '.expand('<cword>')
-    elseif (coc#rpc#ready())
-      call CocActionAsync('doHover')
-    else
-      execute '!' . &keywordprg . " " . expand('<cword>')
-    endif
-  endfunction
-
-  " use <tab> for trigger completion and navigate to the next complete item
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction
-
-  inoremap <silent><expr> <Tab>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<Tab>" :
-        \ coc#refresh()
-
-  " use <c-space>for trigger completion
-  inoremap <silent><expr> <c-space> coc#refresh()
-
-  " use <Tab> and <S-Tab> to navigate the completion list:
-  inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-  " use <cr> to confirm completion
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-  " Coc explorer
+  " nvim-tree {{
   :nmap <Leader>n :NvimTreeToggle<CR>
+  :nmap <Leader>F :NvimTreeFindFile<CR>
+
+  let g:nvim_tree_width = 35
+  let g:nvim_tree_hide_dotfiles = 1
+  " let g:nvim_tree_follow = 1
+  " let g:nvim_tree_highlight_opened_files = 1
+  " let g:nvim_tree_lsp_diagnostics = 1
+  " let g:nvim_tree_show_icons = {
+  "   \ 'git': 1,
+  "   \ 'folders': 1,
+  "   \ 'files': 1,
+  "   \ 'folder_arrows': 1,
+  "   \ }
 " }}
 
 " tpope/vim-endwise {{
   " This is added so that coc.nvim's confirm conpletion will work
   " on clicking  <cr> (enter) key
-  let g:endwise_no_mappings = 1
+  " let g:endwise_no_mappings = 1
 " }}
 
 " any-jump.vim {{
@@ -662,15 +612,11 @@ endif
   let g:any_jump_ignored_files = ['*.tmp', '*.temp', '*.log']
 " }}
 
-" coc-yank {{
-  nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
-" }}
-
 " nvim-telescope/telescope.nvim {{
-  nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-  nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-  nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-  nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+  nnoremap <c-b> <cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_ivy({}))<cr>
+  nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_ivy({}))<cr>
+  nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep(require('telescope.themes').get_ivy({}))<cr>
+  nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags(require('telescope.themes').get_ivy({}))<cr>
 " }}
 
 " voldikss/vim-floaterm {{
@@ -685,13 +631,28 @@ endif
   hi FloatermBorder guibg=#1b2b34 guifg=#d8dee9
 " }}
 
+" barbar.vim {{
+  " nnoremap <silent> <C-s> :BufferPick<CR>
+  " nnoremap <silent> <C-x> :BufferClose<CR>
+" }}
+ 
+" antoinemadec/FixCursorHold.nvim {{
+  let g:cursorhold_updatetime = 100
+" }}
+
+" 'windwp/nvim-spectre' {{
+  nnoremap <leader>S :lua require('spectre').open()<CR>
+
+  "search current word
+  nnoremap <leader>sw :lua require('spectre').open_visual({select_word=true})<CR>
+  vnoremap <leader>s :lua require('spectre').open_visual()<CR>
+  "  search in current file
+  nnoremap <leader>sp viw:lua require('spectre').open_file_search()<cr>
+" }}
+
 source ~/.local_vimrc
 
 lua << EOF
-local neogit = require('neogit')
-
-neogit.setup {}
-
 require'nvim-lastplace'.setup {
   lastplace_ignore_buftype = {"quickfix", "nofile", "help"},
   lastplace_ignore_filetype = {"gitcommit", "gitrebase", "svn", "hgcommit"},
@@ -704,9 +665,9 @@ local cb = require'diffview.config'.diffview_callback
 
 require'diffview'.setup {
   diff_binaries = false,    -- Show diffs for binaries
+  use_icons = true,         -- Requires nvim-web-devicons,
   file_panel = {
     width = 35,
-    use_icons = true      -- Requires nvim-web-devicons
   },
   key_bindings = {
     disable_defaults = false,                   -- Disable the default key bindings
@@ -759,12 +720,135 @@ require'nvim-treesitter.configs'.setup {
   enable = true,              -- mandatory, false will disable the whole extension
   },
 }
+
+require('telescope').setup {
+  defaults = {
+    layout_config = {
+      prompt_position = "top"
+    },
+    sorting_strategy = "ascending",
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case',
+      '--ignore',
+      '--hidden'
+    },
+    file_ignore_patterns = {
+      ".git",
+      "node_modules"
+    }
+  },
+  pickers = {
+    buffers = {
+      sort_mru = true,
+      ignore_current_buffer = true
+    }
+  },
+  extensions = {
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = false, -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+      -- the default case_mode is "smart_case"
+      }
+    }
+  }
+-- To get fzf loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require('telescope').load_extension('fzf')
+require"gitlinker".setup()
+
+vim.opt.listchars = {
+    space = "⋅",
+    eol = "↴",
+}
+
+require'nvim-tree'.setup {}
+
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      -- For `ultisnips` user.
+      vim.fn["UltiSnips#Anon"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = {
+    -- For ultisnips user.
+    { name = 'ultisnips' },
+    { name = 'buffer' },
+  }
+})
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+
+-- Setup lspconfig.
+local nvim_lsp = require('lspconfig')
+local servers = { 'solargraph', 'tsserver', 'cssls', 'html' }
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
 EOF
 
 " FIX CONSTANT SPELLING MISTAKES
 " Copy content from https://raw.githubusercontent.com/moshahmed/vim/master/thesaurus/thesaurii.txt
 " and in this file /Users/yanis/thesaurus/words.txt
-set thesaurus+=/Users/yanis/thesaurus/words.txt
+" set thesaurus+=/Users/yanis/thesaurus/words.txt
 iab Acheive    Achieve
 iab acheive    achieve
 iab Alos       Also
