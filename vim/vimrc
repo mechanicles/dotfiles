@@ -54,8 +54,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'hrsh7th/cmp-buffer'
     Plug 'hrsh7th/nvim-cmp'
     Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+    Plug 'lewis6991/gitsigns.nvim'
   " }}
-  
+
   " PERFORMANCE {{
     Plug 'antoinemadec/FixCursorHold.nvim'
   " }}
@@ -131,7 +132,7 @@ call plug#begin('~/.vim/plugged')
 
   " ENHANCEMENT {{
     if v:version >= 703
-      Plug 'mhinz/vim-signify'
+      " Plug 'mhinz/vim-signify'
     endif
     Plug 'pechorin/any-jump.vim'
     Plug 'wincent/terminus'
@@ -211,15 +212,8 @@ endif
 
 " COLORSHEME SETTINGS
 
-" let g:gruvbox_sign_column = 'bg0'
-" colorscheme gruvbox
 colorscheme onedark
 let g:airline_theme='onedark'
- " colorscheme tokyonight
-" let g:oceanic_next_terminal_bold = 1
-" let g:oceanic_next_terminal_italic = 1
-" colorscheme OceanicNext
-" let g:airline_theme='oceanicnext'
 
 " Basic setup
 set clipboard=unnamed
@@ -240,7 +234,7 @@ set showcmd                       " display incomplete commands
 set ttyfast                       " faster redrawing.
 set lazyredraw                    " don't redraw while executing macros (good performance config)
 set showmatch                     " show matching brackets
-set noshowmode                
+set noshowmode
 set matchtime=2                   " show matching bracket for 0.2 seconds
 set autoindent                    " always set auto indenting on
 set smartindent
@@ -259,7 +253,6 @@ set updatetime=300                " delay time. Useful for showing git sign
 set undodir=~/.vim/undodir
 set undofile
 set number
-" set relativenumber
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -345,7 +338,6 @@ endif
 
 " IndentLine {{
   let g:indentLine_char = '▏'
-  " let g:indentLine_fileTypeExclude=['NvimTree']
 " }}
 
 " clever-f.vim plugin {{
@@ -374,14 +366,7 @@ else
 endif
 
 if has("statusline") && !&cp
-  set laststatus=2              " always show the status bar
-  " Use it when we don't want to use statusline framework {{
-    " set statusline=%f\ %m\ %r     " filename, modified, readonly
-    " set statusline+=%=            " switch to the right side
-    " set statusline+=\ %l/%L[%p%%] " current line/total lines
-    " set statusline+=\ %3v         " current column
-    " set statusline+=\ %Y\ %{FugitiveStatusline()}
-  " }}
+  set laststatus=2 " always show the status bar
 endif
 
 let g:mapleader = ","
@@ -398,16 +383,6 @@ let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
 let g:github_enterprise_urls = ['https://github.com']
-
-" RSpec.vim mappings {{
-  " map <Leader>t :call RunCurrentSpecFile()<CR>
-  " map <Leader>s :call RunNearestSpec()<CR>
-  " map <Leader>l :call RunLastSpec()<CR>
-  " map <Leader>a :call RunAllSpecs()<CR>
-
-  " let g:rspec_command = "bundle exec rspec {spec}"
-  " let g:rspec_runner = "os_x_iterm2"
-" }}
 
 "Highlight column for 119 characters.
 if exists('+colorcolumn')
@@ -430,10 +405,10 @@ nnoremap N Nzz
   " Project files
   nnoremap <Leader>pf :Files<CR>
 
-  " let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
   let g:fzf_layout = { 'down': '~30%' }
   let $FZF_DEFAULT_OPTS='--reverse'
   noremap <leader>gc :GCheckout<CR>
+" }}
 
 " Searching {{
   nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
@@ -540,7 +515,7 @@ map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
 
 " In command-line mode, C-a jumps to beginning (to match C-e)
-cnoremap <C-a> <Home> 
+cnoremap <C-a> <Home>
 
 " Run the last command
 nnoremap <leader><leader>c :<up>
@@ -587,23 +562,7 @@ endif
   :nmap <Leader>n :NvimTreeToggle<CR>
   :nmap <Leader>F :NvimTreeFindFile<CR>
 
-  let g:nvim_tree_width = 35
   let g:nvim_tree_hide_dotfiles = 1
-  " let g:nvim_tree_follow = 1
-  " let g:nvim_tree_highlight_opened_files = 1
-  " let g:nvim_tree_lsp_diagnostics = 1
-  " let g:nvim_tree_show_icons = {
-  "   \ 'git': 1,
-  "   \ 'folders': 1,
-  "   \ 'files': 1,
-  "   \ 'folder_arrows': 1,
-  "   \ }
-" }}
-
-" tpope/vim-endwise {{
-  " This is added so that coc.nvim's confirm conpletion will work
-  " on clicking  <cr> (enter) key
-  " let g:endwise_no_mappings = 1
 " }}
 
 " any-jump.vim {{
@@ -631,11 +590,6 @@ endif
   hi FloatermBorder guibg=#1b2b34 guifg=#d8dee9
 " }}
 
-" barbar.vim {{
-  " nnoremap <silent> <C-s> :BufferPick<CR>
-  " nnoremap <silent> <C-x> :BufferClose<CR>
-" }}
- 
 " antoinemadec/FixCursorHold.nvim {{
   let g:cursorhold_updatetime = 100
 " }}
@@ -650,17 +604,19 @@ endif
   nnoremap <leader>sp viw:lua require('spectre').open_file_search()<cr>
 " }}
 
-source ~/.local_vimrc
-
 lua << EOF
 require'nvim-lastplace'.setup {
   lastplace_ignore_buftype = {"quickfix", "nofile", "help"},
   lastplace_ignore_filetype = {"gitcommit", "gitrebase", "svn", "hgcommit"},
   lastplace_open_folds = true
 }
+EOF
 
+lua << EOF
 require("trouble").setup {}
+EOF
 
+lua << EOF
 local cb = require'diffview.config'.diffview_callback
 
 require'diffview'.setup {
@@ -674,7 +630,7 @@ require'diffview'.setup {
     -- The `view` bindings are active in the diff buffers, only when the current
     -- tabpage is a Diffview.
     view = {
-      ["<tab>"]     = cb("select_next_entry"),  -- Open the diff for the next file 
+      ["<tab>"]     = cb("select_next_entry"),  -- Open the diff for the next file
       ["<s-tab>"]   = cb("select_prev_entry"),  -- Open the diff for the previous file
       ["<leader>e"] = cb("focus_files"),        -- Bring focus to the files panel
       ["<leader>b"] = cb("toggle_files"),       -- Toggle the files panel.
@@ -699,7 +655,9 @@ require'diffview'.setup {
     }
   }
 }
+EOF
 
+lua << EOF
 require'nvim-web-devicons'.setup {
   -- your personnal icons can go here (to override)
   -- DevIcon will be appended to `name`
@@ -714,13 +672,17 @@ require'nvim-web-devicons'.setup {
   -- will get overriden by `get_icons` option
   default = true;
 }
+EOF
 
+lua << EOF
 require'nvim-treesitter.configs'.setup {
   matchup = {
   enable = true,              -- mandatory, false will disable the whole extension
   },
 }
+EOF
 
+lua << EOF
 require('telescope').setup {
   defaults = {
     layout_config = {
@@ -756,21 +718,40 @@ require('telescope').setup {
       override_file_sorter = true,     -- override the file sorter
       case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
       -- the default case_mode is "smart_case"
-      }
     }
   }
+}
+
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
+EOF
+
+lua << EOF
 require"gitlinker".setup()
 
 vim.opt.listchars = {
     space = "⋅",
     eol = "↴",
 }
+EOF
 
-require'nvim-tree'.setup {}
+lua << EOF
+require'nvim-tree'.setup {
+  lsp_diagnostics = true,
+  hijack_cursor = true,
+  view = {
+    width = 35,
+    auto_resize = true
+  }
+}
+EOF
 
+lua << EOF
+require('gitsigns').setup()
+EOF
+
+lua << EOF
 -- Setup nvim-cmp.
 local cmp = require'cmp'
 
@@ -794,7 +775,9 @@ cmp.setup({
     { name = 'buffer' },
   }
 })
+EOF
 
+lua << EOF
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -827,12 +810,16 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
-
 -- Setup lspconfig.
 local nvim_lsp = require('lspconfig')
-local servers = { 'solargraph', 'tsserver', 'cssls', 'html' }
+local servers = { 'solargraph', 'tsserver', 'cssls', 'html', 'vimls' }
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text = false
+  }
+)
 
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
@@ -844,6 +831,8 @@ for _, lsp in ipairs(servers) do
   }
 end
 EOF
+
+source ~/.local_vimrc
 
 " FIX CONSTANT SPELLING MISTAKES
 " Copy content from https://raw.githubusercontent.com/moshahmed/vim/master/thesaurus/thesaurii.txt
