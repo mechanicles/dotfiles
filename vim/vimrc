@@ -53,7 +53,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'hrsh7th/cmp-nvim-lsp'
     Plug 'hrsh7th/cmp-buffer'
     Plug 'hrsh7th/nvim-cmp'
+    Plug 'onsails/lspkind-nvim'
     Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+    Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
     Plug 'lewis6991/gitsigns.nvim'
   " }}
 
@@ -471,7 +473,7 @@ nmap <leader>L mQgewvu`Q
 nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
 " Toggle hlsearch with <leader>hs
-nmap <leader>hs :set hlsearch! hlsearch?<CR>
+nmap <leader>hls :set hlsearch! hlsearch?<CR>
 
 " EasyAlign {{
   " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -753,6 +755,7 @@ EOF
 
 lua << EOF
 -- Setup nvim-cmp.
+local lspkind = require('lspkind')
 local cmp = require'cmp'
 
 cmp.setup({
@@ -770,10 +773,26 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
   sources = {
+    { name = 'nvim_lsp' },
     -- For ultisnips user.
     { name = 'ultisnips' },
+    { name = 'cmp_tabnine' },
     { name = 'buffer' },
+  },
+  formatting = {
+    format = lspkind.cmp_format({with_text = false, maxwidth = 50})
   }
+})
+EOF
+
+lua << EOF
+local tabnine = require('cmp_tabnine.config')
+tabnine:setup({
+        max_lines = 1000;
+        max_num_results = 20;
+        sort = true;
+	      run_on_every_keystroke = true;
+	      snippet_placeholder = '..';
 })
 EOF
 
@@ -813,8 +832,8 @@ end
 -- Setup lspconfig.
 local nvim_lsp = require('lspconfig')
 local servers = { 'solargraph', 'tsserver', 'cssls', 'html', 'vimls' }
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
       virtual_text = false
@@ -824,7 +843,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     flags = {
       debounce_text_changes = 150,
     }
