@@ -776,8 +776,8 @@ cmp.setup({
     { name = 'nvim_lsp' },
     -- For ultisnips user.
     { name = 'ultisnips' },
-    { name = 'cmp_tabnine' },
-    { name = 'buffer' },
+    { name = 'buffer', keyword_length = 4, max_item_count = 5 },
+    { name = 'cmp_tabnine', keyword_length = 2, max_item_count = 5 }
   },
   formatting = {
     format = lspkind.cmp_format({with_text = false, maxwidth = 50})
