@@ -740,11 +740,13 @@ EOF
 
 lua << EOF
 require'nvim-tree'.setup {
-  lsp_diagnostics = true,
   hijack_cursor = true,
   view = {
     width = 35,
     auto_resize = true
+  },
+  diagnostics = {
+    enable = true
   }
 }
 EOF
