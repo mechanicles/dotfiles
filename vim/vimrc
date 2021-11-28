@@ -140,7 +140,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'pechorin/any-jump.vim'
     Plug 'wincent/terminus'
     Plug 'thinca/vim-quickrun' " Ruby code runnner
-    Plug 'vim-airline/vim-airline'
+    Plug 'nvim-lualine/lualine.nvim'
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
     Plug 'machakann/vim-highlightedyank'
     Plug 'folke/trouble.nvim' " May be we don't need it
@@ -217,7 +217,6 @@ endif
 " COLORSHEME SETTINGS
 
 colorscheme onedark
-let g:airline_theme='onedark'
 
 " Basic setup
 set clipboard=unnamed
@@ -761,6 +760,10 @@ EOF
 lua << EOF
 require('gitsigns').setup()
 EOF
+
+lua << END
+require'lualine'.setup()
+END
 
 lua << EOF
 -- Setup nvim-cmp.
