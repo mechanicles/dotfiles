@@ -143,6 +143,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
     Plug 'machakann/vim-highlightedyank'
     Plug 'folke/trouble.nvim' " May be we don't need it
+    Plug 'mattn/calendar-vim'
   " }}
 
   " EXTRA {{
