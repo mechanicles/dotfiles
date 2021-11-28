@@ -38,6 +38,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'voldikss/vim-floaterm'
     Plug 'SirVer/ultisnips'
+    Plug 'github/copilot.vim'
 
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
@@ -605,6 +606,11 @@ endif
   vnoremap <leader>s :lua require('spectre').open_visual()<CR>
   "  search in current file
   nnoremap <leader>sp viw:lua require('spectre').open_file_search()<cr>
+" }}
+
+" github/copilot.vim {{
+  imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+  let g:copilot_no_tab_map = v:true
 " }}
 
 lua << EOF
