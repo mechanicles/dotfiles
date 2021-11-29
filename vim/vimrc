@@ -564,8 +564,6 @@ endif
   " nvim-tree {{
   :nmap <Leader>n :NvimTreeToggle<CR>
   :nmap <Leader>F :NvimTreeFindFile<CR>
-
-  let g:nvim_tree_hide_dotfiles = 1
 " }}
 
 " any-jump.vim {{
@@ -753,6 +751,9 @@ require'nvim-tree'.setup {
   },
   diagnostics = {
     enable = true
+  },
+  filters = {
+    dotfiles = true,
   }
 }
 EOF
@@ -773,7 +774,6 @@ local cmp = require'cmp'
 cmp.setup({
   snippet = {
     expand = function(args)
-      -- For `ultisnips` user.
       vim.fn["UltiSnips#Anon"](args.body)
     end,
   },
@@ -786,7 +786,6 @@ cmp.setup({
   },
   sources = {
     { name = 'nvim_lsp' },
-    -- For ultisnips user.
     { name = 'ultisnips' },
     { name = 'buffer', keyword_length = 4, max_item_count = 5 },
     { name = 'cmp_tabnine', keyword_length = 2, max_item_count = 5 }
