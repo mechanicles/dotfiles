@@ -125,7 +125,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'jonathanfilip/vim-lucius'
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'romgrk/github-light.vim'
-    Plug 'chriskempson/base16-vim'
     Plug 'jaywilliams/vim-vwilight'
     Plug 'tpope/vim-vividchalk'
     Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
