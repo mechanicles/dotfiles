@@ -39,7 +39,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'voldikss/vim-floaterm'
     Plug 'SirVer/ultisnips'
     Plug 'github/copilot.vim'
-
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
@@ -68,7 +67,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'antoinemadec/FixCursorHold.nvim'
   " }}
 
-
   " Method lookup/snippets {{
     Plug 'honza/vim-snippets'
   " }}
@@ -92,7 +90,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-rake'
     Plug 'tpope/vim-rails'
     Plug 'tpope/vim-dispatch'
-    Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-dadbod'
   " }}
 
@@ -169,7 +166,7 @@ call plug#end()
 set completeopt=menu,menuone,noselect
 
 " keep this at the top {{
-  syntax on
+  syntax enable
 " }}
 
 " Exit from Terminal {{
