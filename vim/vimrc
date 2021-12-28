@@ -132,6 +132,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'mhartington/oceanic-next'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
     Plug 'ackyshake/Spacegray.vim'
+    Plug 'dracula/vim'
+    Plug 'rebelot/kanagawa.nvim'
+    Plug 'romgrk/doom-one.vim'
   " }}
 
   " ENHANCEMENT {{
@@ -163,6 +166,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'ryanoasis/vim-devicons'
   Plug 'kyazdani42/nvim-web-devicons'
 call plug#end()
+
+packadd! dracula_pro " ~/.local/share/nvim/site/pack/themes/start/dracula_pro/
 
 set completeopt=menu,menuone,noselect
 
@@ -216,8 +221,9 @@ else
 endif
 
 " COLORSHEME SETTINGS
-
-colorscheme onedark
+" let g:dracula_colorterm = 0
+colorscheme dracula
+" colorscheme kanagawa
 
 " Basic setup
 set clipboard=unnamed
