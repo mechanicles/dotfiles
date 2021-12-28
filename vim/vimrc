@@ -15,7 +15,7 @@ endif
 " VIM-PLUG
 call plug#begin('~/.vim/plugged')
   " PRODUCTIVITY {{
-    Plug 'Yggdroot/indentLine'
+    Plug 'lukas-reineke/indent-blankline.nvim'
     Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }
     Plug 'easymotion/vim-easymotion'
     Plug 'szw/vim-maximizer'
@@ -341,10 +341,6 @@ if &diff
   set diffopt-=internal
   set diffopt+=vertical
 endif
-
-" IndentLine {{
-  let g:indentLine_char = '▏'
-" }}
 
 " clever-f.vim plugin {{
   let g:clever_f_ignore_case = 1
@@ -742,6 +738,11 @@ require"gitlinker".setup()
 vim.opt.listchars = {
     space = "⋅",
     eol = "↴",
+}
+
+require("indent_blankline").setup {
+    show_end_of_line = true,
+    space_char_blankline = " ",
 }
 EOF
 
