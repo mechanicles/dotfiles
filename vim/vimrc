@@ -148,7 +148,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
     Plug 'machakann/vim-highlightedyank'
     Plug 'folke/trouble.nvim' " May be we don't need it
-    Plug 'mattn/calendar-vim'
+    Plug 'itchyny/calendar.vim'
+    Plug 'stevearc/dressing.nvim'
+    Plug 'p00f/nvim-ts-rainbow'
   " }}
 
   " EXTRA {{
@@ -690,6 +692,14 @@ require'nvim-treesitter.configs'.setup {
   indent = {
     enable = true
   },
+  rainbow = {
+    enable = true,
+    -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+    extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+    max_file_lines = nil, -- Do not enable for files with more than n lines, int
+    -- colors = {}, -- table of hex strings
+    -- termcolors = {} -- table of colour name strings
+  }
 }
 EOF
 
@@ -740,7 +750,9 @@ EOF
 
 lua << EOF
 require"gitlinker".setup()
+EOF
 
+lua << EOF
 vim.opt.listchars = {
     space = "⋅",
     eol = "↴",
