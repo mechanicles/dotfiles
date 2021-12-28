@@ -772,7 +772,8 @@ local cmp = require'cmp'
 cmp.setup({
   snippet = {
     expand = function(args)
-      require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
   },
   mapping = {
@@ -784,7 +785,8 @@ cmp.setup({
   },
   sources = {
     { name = 'nvim_lsp' },
-    { name = 'snippy' },
+    { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' },
     { name = 'buffer', keyword_length = 4, max_item_count = 5 },
     { name = 'cmp_tabnine', keyword_length = 2, max_item_count = 5 }
   },
