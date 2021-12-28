@@ -816,7 +816,8 @@ cmp.setup({
     { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' },
     { name = 'buffer', keyword_length = 4, max_item_count = 5 },
-    { name = 'cmp_tabnine', keyword_length = 2, max_item_count = 5 }
+    { name = 'cmp_tabnine', keyword_length = 2, max_item_count = 5 },
+    { name = 'path' }
   },
   formatting = {
     format = lspkind.cmp_format({ with_text = false, maxwidth = 50 })
