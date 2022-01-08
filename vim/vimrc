@@ -20,7 +20,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'easymotion/vim-easymotion'
     Plug 'szw/vim-maximizer'
     Plug 'junegunn/vim-easy-align'
-    Plug 'maxbrunsfeld/vim-yankstack'
     Plug 'rhysd/clever-f.vim'
     Plug 'mileszs/ack.vim'
     Plug 'wellle/targets.vim'
