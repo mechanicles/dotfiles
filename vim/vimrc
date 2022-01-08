@@ -98,7 +98,6 @@ call plug#begin('~/.vim/plugged')
 
   " JAVASCRIPT {{
     Plug 'pangloss/vim-javascript'
-    Plug 'kchmck/vim-coffee-script'
     Plug 'prettier/vim-prettier', {
           \ 'do': 'yarn install',
           \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
