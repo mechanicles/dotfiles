@@ -111,27 +111,22 @@ call plug#begin('~/.vim/plugged')
     Plug 'w0ng/vim-hybrid'
     Plug 'nanotech/jellybeans.vim'
     Plug 'tomasr/molokai'
-    Plug 'joshdick/onedark.vim'
+    Plug 'navarasu/onedark.nvim'
     Plug 'gruvbox-community/gruvbox'
     Plug 'danilo-augusto/vim-afterglow'
-    Plug 'kreeger/benlight' " Twilight kind of theme
     Plug 'cocopon/iceberg.vim'
     Plug 'doums/darcula'
     Plug 'rakr/vim-one'
     Plug 'sonph/onehalf'
-    Plug 'jonathanfilip/vim-lucius'
     Plug 'NLKNguyen/papercolor-theme'
-    Plug 'romgrk/github-light.vim'
-    Plug 'jaywilliams/vim-vwilight'
-    Plug 'tpope/vim-vividchalk'
-    Plug 'https://gitlab.com/yorickpeterse/vim-paper.git'
-    Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
     Plug 'mhartington/oceanic-next'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
     Plug 'ackyshake/Spacegray.vim'
     Plug 'dracula/vim'
     Plug 'rebelot/kanagawa.nvim'
     Plug 'romgrk/doom-one.vim'
+    Plug 'EdenEast/nightfox.nvim'
+    Plug 'Mofiqul/vscode.nvim'
   " }}
 
   " ENHANCEMENT {{
