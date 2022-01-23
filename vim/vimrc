@@ -17,7 +17,7 @@ call plug#begin('~/.vim/plugged')
   " PRODUCTIVITY {{
     Plug 'lukas-reineke/indent-blankline.nvim'
     Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }
-    Plug 'easymotion/vim-easymotion'
+    Plug 'phaazon/hop.nvim'
     Plug 'szw/vim-maximizer'
     Plug 'junegunn/vim-easy-align'
     Plug 'rhysd/clever-f.vim'
@@ -776,6 +776,12 @@ EOF
 lua << EOF
 require('gitsigns').setup()
 EOF
+
+lua << END
+require'hop'.setup()
+vim.api.nvim_set_keymap('n', '<leader><leader>w', ':HopWordAC<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader><leader>b', ':HopWordBC<CR>', { noremap = true, silent = true })
+END
 
 lua << END
 require'lualine'.setup()
