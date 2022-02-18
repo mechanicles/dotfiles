@@ -485,17 +485,6 @@ map <Leader>= <C-w>=
 
 " Tagbar {{
   nnoremap <Leader>rt :TagbarToggle<CR>
-  let g:tagbar_autofocus = 1
-  let g:tagbar_type_ruby = {
-      \ 'kinds' : [
-          \ 'm:modules',
-          \ 'c:classes',
-          \ 'd:describes',
-          \ 'C:contexts',
-          \ 'f:methods',
-          \ 'F:singleton methods'
-      \ ]
-  \ }
 " }}
 
 " disable cursor keys in normal mode
