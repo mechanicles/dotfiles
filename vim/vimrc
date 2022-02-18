@@ -62,6 +62,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'romgrk/barbar.nvim'
     Plug 'tanvirtin/vgit.nvim'
     Plug 'RRethy/nvim-treesitter-endwise'
+    Plug 'pechorin/any-jump.vim'
   " }}
 
   " PERFORMANCE {{
@@ -98,9 +99,7 @@ call plug#begin('~/.vim/plugged')
 
   " JAVASCRIPT {{
     Plug 'pangloss/vim-javascript'
-    Plug 'prettier/vim-prettier', {
-          \ 'do': 'yarn install',
-          \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+    Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
   " }}
 
   " TEMPLATES {{
@@ -113,27 +112,22 @@ call plug#begin('~/.vim/plugged')
     Plug 'tomasr/molokai'
     Plug 'navarasu/onedark.nvim'
     Plug 'gruvbox-community/gruvbox'
-    Plug 'danilo-augusto/vim-afterglow'
     Plug 'cocopon/iceberg.vim'
     Plug 'doums/darcula'
     Plug 'rakr/vim-one'
-    Plug 'sonph/onehalf'
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'mhartington/oceanic-next'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
     Plug 'ackyshake/Spacegray.vim'
     Plug 'dracula/vim'
     Plug 'rebelot/kanagawa.nvim'
-    Plug 'romgrk/doom-one.vim'
     Plug 'EdenEast/nightfox.nvim'
-    Plug 'Mofiqul/vscode.nvim'
   " }}
 
   " ENHANCEMENT {{
     if v:version >= 703
       " Plug 'mhinz/vim-signify'
     endif
-    Plug 'pechorin/any-jump.vim'
     Plug 'wincent/terminus'
     Plug 'thinca/vim-quickrun' " Ruby code runnner
     Plug 'nvim-lualine/lualine.nvim'
@@ -141,7 +135,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'machakann/vim-highlightedyank'
     Plug 'folke/trouble.nvim' " May be we don't need it
     Plug 'itchyny/calendar.vim'
-    Plug 'stevearc/dressing.nvim'
     Plug 'p00f/nvim-ts-rainbow'
   " }}
 
