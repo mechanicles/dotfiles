@@ -699,8 +699,8 @@ require('telescope').setup {
       '--hidden'
     },
     file_ignore_patterns = {
-      ".git",
-      "node_modules"
+      '.git',
+      'node_modules'
     }
   },
   pickers = {
@@ -714,8 +714,8 @@ require('telescope').setup {
       fuzzy = true,                    -- false will only do exact matching
       override_generic_sorter = true,  -- override the generic sorter
       override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-      -- the default case_mode is "smart_case"
+      case_mode = 'smart_case',        -- or "ignore_case" or "respect_case"
+                                       -- the default case_mode is "smart_case"
     }
   }
 }
@@ -735,10 +735,8 @@ vim.opt.listchars:append("space:⋅")
 vim.opt.listchars:append("eol:↴")
 
 require("indent_blankline").setup {
-    show_end_of_line = true,
-    space_char_blankline = " ",
-    show_current_context = true,
-    show_current_context_start = true,
+  show_end_of_line = true,
+  space_char_blankline = " ",
 }
 EOF
 
