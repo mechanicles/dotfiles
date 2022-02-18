@@ -42,7 +42,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-    Plug 'ethanholz/nvim-lastplace'
     Plug 'sindrets/diffview.nvim'
     Plug 'kyazdani42/nvim-tree.lua'
     Plug 'kevinhwang91/nvim-bqf' " Important pugin for quickfix
@@ -601,14 +600,6 @@ endif
   imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
   let g:copilot_no_tab_map = v:true
 " }}
-
-lua << EOF
-require'nvim-lastplace'.setup {
-  lastplace_ignore_buftype = {"quickfix", "nofile", "help"},
-  lastplace_ignore_filetype = {"gitcommit", "gitrebase", "svn", "hgcommit"},
-  lastplace_open_folds = true
-}
-EOF
 
 lua << EOF
 require("trouble").setup {}
