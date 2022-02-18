@@ -779,11 +779,6 @@ require'nvim-tree'.setup {
 EOF
 
 lua << EOF
-require("neo-tree").setup()
-vim.cmd([[nnoremap \ :lua require("neo-tree").show()<cr>]])
-EOF
-
-lua << EOF
 require('vgit').setup({
   keymaps = {
     ['n <C-[>'] = 'hunk_up',
