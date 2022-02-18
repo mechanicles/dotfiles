@@ -141,8 +141,6 @@ call plug#begin('~/.vim/plugged')
   " EXTRA {{
     Plug 'lifepillar/vim-cheat40'
     Plug 'chrisbra/csv.vim'
-    Plug 'AndrewRadev/quickpeek.vim'
-    Plug 'kristijanhusak/vim-carbon-now-sh'
     Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'airblade/vim-localorie'
     Plug 'rhysd/git-messenger.vim'
@@ -150,7 +148,7 @@ call plug#begin('~/.vim/plugged')
   " }}
 
   " Load this as the very last one
-  Plug 'ryanoasis/vim-devicons'
+  " Plug 'ryanoasis/vim-devicons'
   Plug 'kyazdani42/nvim-web-devicons'
 call plug#end()
 
@@ -343,10 +341,6 @@ endif
 
 " make test commands execute using dispatch.vim {{
   let test#strategy = "neovim"
-" }}
-
-" Setting for AndrewRadev/quickpeek.vim {{
-  let g:quickpeek_auto = v:true
 " }}
 
 set tags+=.git/tags
