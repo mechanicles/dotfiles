@@ -63,6 +63,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tanvirtin/vgit.nvim'
     Plug 'RRethy/nvim-treesitter-endwise'
     Plug 'pechorin/any-jump.vim'
+    Plug 'liuchengxu/vim-which-key'
   " }}
 
   " PERFORMANCE {{
@@ -280,9 +281,9 @@ set smartcase                     " unless they contain at least one capital let
 set gdefault                      " have :s///g flag by default on
 
 " Time out on key codes but not mappings. basically this makes terminal vim work sanely.
-set notimeout
 set ttimeout
 set ttimeoutlen=100
+set timeoutlen=500
 
 " Tab completion
 set pumblend=17
@@ -578,7 +579,13 @@ endif
   let g:copilot_filetypes = {
         \ 'TelescopePrompt': v:false,
         \ }
+" }}
 
+" /liuchengxu/vim-which-key {{
+  let g:which_key_map = {}
+  call which_key#register(',', "g:which_key_map")
+  nnoremap <silent> <leader>      :<c-u>WhichKey ','<CR>
+  nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 " }}
 
 lua << EOF
