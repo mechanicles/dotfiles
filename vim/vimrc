@@ -111,7 +111,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'w0ng/vim-hybrid'
     Plug 'nanotech/jellybeans.vim'
     Plug 'tomasr/molokai'
-    Plug 'navarasu/onedark.nvim'
+    Plug 'ful1e5/onedark.nvim'
     Plug 'gruvbox-community/gruvbox'
     Plug 'cocopon/iceberg.vim'
     Plug 'doums/darcula'
@@ -208,8 +208,23 @@ endif
 
 " COLORSHEME SETTINGS
 " let g:dracula_colorterm = 0
-colorscheme dracula
+" colorscheme dracula
 " colorscheme kanagawa
+
+" Example config in VimScript
+" configuration needs to be set BEFORE loading the color scheme with `colorscheme` command
+" let g:onedark_function_style = "italic"
+let g:onedark_sidebars = ["qf", "vista_kind", "terminal", "packer"]
+let g:dark_sidebar = 'false'
+
+" Change the "hint" color to the "orange0" color, and make the "error" color bright red
+let g:onedark_colors = {
+  \ 'hint': 'orange0',
+  \ 'error': '#ff0000'
+\ }
+
+" Load the colorscheme
+colorscheme onedark
 
 " Basic setup
 set clipboard=unnamed
@@ -556,7 +571,7 @@ endif
   " These GUI colors for background and foreground are set based on the
   " OceanicNext colorscheme. We can change these colors based on the
   " colorscheme using ':hi Normal' comand in Vim
-  hi FloatermBorder guibg=#1b2b34 guifg=#d8dee9
+  hi FloatermBorder guibg=#282c34 guifg=#abb2bf
 " }}
 
 " antoinemadec/FixCursorHold.nvim {{
@@ -783,7 +798,12 @@ vim.api.nvim_set_keymap('n', '<leader><leader>b', ':HopWordBC<CR>', { noremap = 
 EOF
 
 lua << EOF
-require'lualine'.setup()
+require'lualine'.setup {
+  options = {
+    theme = 'onedark',
+    -- ... your lualine config
+  }
+}
 EOF
 
 lua << EOF
