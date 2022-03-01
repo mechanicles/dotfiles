@@ -541,9 +541,13 @@ if has("autocmd")
   au FileType markdown setlocal spell
 
   au FileType javascript set formatprg=prettier\ --stdin
+
+  " Every time you save your file(s), they'll attempt to format using the registered LSP,
+  " and if none exist, it'll be a no-op.
+  au BufWritePre * lua vim.lsp.buf.formatting_sync()
 endif
 
-  " nvim-tree {{
+" nvim-tree {{
   :nmap <Leader>n :NvimTreeToggle<CR>
   :nmap <Leader>F :NvimTreeFindFile<CR>
 " }}
