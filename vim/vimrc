@@ -136,7 +136,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'machakann/vim-highlightedyank'
     Plug 'folke/trouble.nvim' " May be we don't need it
     Plug 'itchyny/calendar.vim'
-    Plug 'p00f/nvim-ts-rainbow'
   " }}
 
   " EXTRA {{
@@ -677,14 +676,6 @@ require'nvim-treesitter.configs'.setup {
   },
   indent = {
     enable = true
-  },
-  rainbow = {
-    enable = true,
-    -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
-    extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-    max_file_lines = nil, -- Do not enable for files with more than n lines, int
-    -- colors = {}, -- table of hex strings
-    -- termcolors = {} -- table of colour name strings
   },
   -- This endwise is a part of 'RRethy/nvim-treesitter-endwise'
   endwise = {
