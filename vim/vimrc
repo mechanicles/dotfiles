@@ -30,12 +30,13 @@ call plug#begin('~/.vim/plugged')
     Plug 'rhysd/committia.vim'
     Plug 'AndrewRadev/tagalong.vim'
     Plug 'AaronLasseigne/yank-code'
-    Plug 'rizzatti/dash.vim'
+    Plug 'mrjones2014/dash.nvim', { 'do': 'make install' }
     Plug 'janko-m/vim-test'
     Plug 'skywind3000/asyncrun.vim'
     Plug 'dbeniamine/cheat.sh-vim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'voldikss/vim-floaterm'
+    Plug 'akinsho/toggleterm.nvim'
     Plug 'SirVer/ultisnips'
     Plug 'github/copilot.vim'
     Plug 'nvim-lua/popup.nvim'
@@ -59,11 +60,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/cmp-path'
     Plug 'numToStr/Comment.nvim'
-    Plug 'romgrk/barbar.nvim'
     Plug 'lewis6991/gitsigns.nvim'
     Plug 'RRethy/nvim-treesitter-endwise'
     Plug 'pechorin/any-jump.vim'
     Plug 'liuchengxu/vim-which-key'
+    Plug 'ThePrimeagen/harpoon'
+    Plug 'wincent/command-t', {
+      \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
+      \ }
   " }}
 
   " PERFORMANCE {{
@@ -87,11 +91,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-git'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-rhubarb'
-    Plug 'tpope/vim-bundler'
     Plug 'tpope/vim-rake'
     Plug 'tpope/vim-rails'
     Plug 'tpope/vim-dispatch'
     Plug 'tpope/vim-dadbod'
+    Plug 'tpope/vim-abolish'
   " }}
 
   " More git plugins dependent on 'tpope/vim-fugitive' {{
@@ -120,9 +124,12 @@ call plug#begin('~/.vim/plugged')
     Plug 'mhartington/oceanic-next'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
     Plug 'ackyshake/Spacegray.vim'
-    Plug 'dracula/vim'
+    Plug 'dracula/vim', { 'as': 'dracula' }
     Plug 'rebelot/kanagawa.nvim'
     Plug 'EdenEast/nightfox.nvim'
+    Plug 'olimorris/onedarkpro.nvim'
+    Plug 'Mofiqul/vscode.nvim'
+    Plug 'catppuccin/nvim', {'as': 'catppuccin'}
   " }}
 
   " ENHANCEMENT {{
@@ -136,12 +143,12 @@ call plug#begin('~/.vim/plugged')
     Plug 'machakann/vim-highlightedyank'
     Plug 'folke/trouble.nvim' " May be we don't need it
     Plug 'itchyny/calendar.vim'
+    Plug 'AndrewRadev/whatif.vim'
   " }}
 
   " EXTRA {{
     Plug 'lifepillar/vim-cheat40'
     Plug 'chrisbra/csv.vim'
-    Plug 'nvim-treesitter/nvim-treesitter'
     Plug 'airblade/vim-localorie'
     Plug 'rhysd/git-messenger.vim'
     Plug 'ruifm/gitlinker.nvim'
@@ -152,13 +159,13 @@ call plug#begin('~/.vim/plugged')
   Plug 'kyazdani42/nvim-web-devicons'
 call plug#end()
 
-packadd! dracula_pro " ~/.local/share/nvim/site/pack/themes/start/dracula_pro/
-
-set completeopt=menu,menuone,noselect
-
 " keep this at the top {{
   syntax enable
 " }}
+
+packadd! dracula_pro " ~/.local/share/nvim/site/pack/themes/start/dracula_pro/
+
+set completeopt=menu,menuone,noselect
 
 " Exit from Terminal {{
   tnoremap <Esc> <C-\><C-n>
@@ -213,17 +220,26 @@ endif
 " Example config in VimScript
 " configuration needs to be set BEFORE loading the color scheme with `colorscheme` command
 " let g:onedark_function_style = "italic"
-let g:onedark_sidebars = ["qf", "vista_kind", "terminal", "packer"]
-let g:dark_sidebar = 'false'
+" let g:onedark_sidebars = ["qf", "vista_kind", "terminal", "packer"]
+" let g:dark_sidebar = 'false'
 
 " Change the "hint" color to the "orange0" color, and make the "error" color bright red
-let g:onedark_colors = {
-  \ 'hint': 'orange0',
-  \ 'error': '#ff0000'
-\ }
+" let g:onedark_colors = {
+"   \ 'hint': 'orange0',
+"   \ 'error': '#ff0000'
+" \ }
 
 " Load the colorscheme
-colorscheme onedark
+
+" vscode color setting
+let g:vscode_style = "dark"
+" Enable transparent background
+let g:vscode_transparency = 1
+" Enable italic comment
+let g:vscode_italic_comment = 1
+" Disable nvim-tree background color
+let g:vscode_disable_nvimtree_bg = v:true
+colorscheme vscode
 
 " Basic setup
 set clipboard=unnamed
@@ -370,6 +386,8 @@ endif
 if has("statusline") && !&cp
   set laststatus=2 " always show the status bar
 endif
+
+set winbar=%=%m\ %f " new feature
 
 let g:mapleader = ","
 
@@ -544,7 +562,7 @@ if has("autocmd")
 
   " Every time you save your file(s), they'll attempt to format using the registered LSP,
   " and if none exist, it'll be a no-op.
-  au BufWritePre * lua vim.lsp.buf.formatting_sync()
+  " au BufWritePre * lua vim.lsp.buf.formatting_sync()
 endif
 
 " nvim-tree {{
@@ -565,16 +583,35 @@ endif
   nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags(require('telescope.themes').get_ivy({}))<cr>
 " }}
 
+
+" mrjones2014/dash.nvim {{
+  nnoremap <leader>D <cmd>:DashWord<cr>
+" }}
+
 " voldikss/vim-floaterm {{
-  let g:floaterm_keymap_new = '<Leader>ft'
-  let g:floaterm_keymap_toggle = '<Leader>tt'
-  let g:floaterm_width = 0.9
-  let g:floaterm_height = 0.9
+  " let g:floaterm_keymap_new = '<Leader>ft'
+  " let g:floaterm_keymap_toggle = '<Leader>tt'
+  " let g:floaterm_width = 0.9
+  " let g:floaterm_height = 0.9
 
   " These GUI colors for background and foreground are set based on the
   " OceanicNext colorscheme. We can change these colors based on the
   " colorscheme using ':hi Normal' comand in Vim
-  hi FloatermBorder guibg=#282c34 guifg=#abb2bf
+  " hi FloatermBorder guibg=#282c34 guifg=#abb2bf
+" }}
+
+" akinsho/toggleterm.nvim {{
+   " set
+  let g:toggleterm_terminal_mapping = '<Leader>tt'
+  " or manually...
+  autocmd TermEnter term://*toggleterm#*
+        \ tnoremap <silent><Leader>tt <Cmd>exe v:count1 . "ToggleTerm"<CR>
+
+  " By applying the mappings this way you can pass a count to your
+  " mapping to open a specific window.
+  " For example: 2<C-t> will open terminal 2
+  nnoremap <silent><Leader>tt <Cmd>exe v:count1 . "ToggleTerm"<CR>
+  inoremap <silent><Leader>tt <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 " }}
 
 " antoinemadec/FixCursorHold.nvim {{
@@ -617,7 +654,11 @@ require'diffview'.setup {
   diff_binaries = false,    -- Show diffs for binaries
   use_icons = true,         -- Requires nvim-web-devicons,
   file_panel = {
-    width = 35,
+    win_config = {
+      position = "left",
+      width = 35,
+      height = 16,
+    },
   },
   key_bindings = {
     disable_defaults = false,                   -- Disable the default key bindings
@@ -670,9 +711,10 @@ EOF
 
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
+  ensure_installed = "all",
   highlight = {
     enable = true,
+    disable = { 'ruby' },
     additional_vim_regex_highlighting = true,
   },
   matchup = {
@@ -724,6 +766,11 @@ require('telescope').setup {
       override_file_sorter = true,     -- override the file sorter
       case_mode = 'smart_case',        -- or "ignore_case" or "respect_case"
                                        -- the default case_mode is "smart_case"
+    },
+    dash = {
+      file_type_keywords = {
+        ruby = { 'ruby', 'rails' }
+      }
     }
   }
 }
@@ -738,13 +785,13 @@ require"gitlinker".setup()
 EOF
 
 lua << EOF
-vim.opt.list = true
-vim.opt.listchars:append("space:⋅")
-vim.opt.listchars:append("eol:↴")
+-- vim.opt.list = true
+-- vim.opt.listchars:append("space:⋅")
+-- vim.opt.listchars:append("eol:↴")
 
 require("indent_blankline").setup {
   show_end_of_line = true,
-  space_char_blankline = " ",
+  -- space_char_blankline = " ",
 }
 EOF
 
@@ -769,6 +816,12 @@ require('gitsigns').setup()
 EOF
 
 lua << EOF
+require("harpoon").setup()
+vim.api.nvim_set_keymap('n', '<leader>ha', ':lua require("harpoon.mark").add_file()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ht', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, silent = true })
+EOF
+
+lua << EOF
 require'hop'.setup()
 vim.api.nvim_set_keymap('n', '<leader><leader>w', ':HopWordAC<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader><leader>b', ':HopWordBC<CR>', { noremap = true, silent = true })
@@ -777,7 +830,11 @@ EOF
 lua << EOF
 require'lualine'.setup {
   options = {
-    theme = 'onedark',
+    -- theme = 'onedark',
+    globalstatus = true,
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {}
     -- ... your lualine config
   }
 }
@@ -785,6 +842,10 @@ EOF
 
 lua << EOF
 require('Comment').setup()
+EOF
+
+lua << EOF
+require("toggleterm").setup{}
 EOF
 
 lua << EOF
@@ -799,21 +860,25 @@ cmp.setup({
       vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
   },
-  mapping = {
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-  },
-  sources = {
+  }),
+  sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' },
     { name = 'buffer', keyword_length = 4, max_item_count = 5 },
     { name = 'cmp_tabnine', keyword_length = 2, max_item_count = 5 },
     { name = 'path' }
-  },
+  }),
   formatting = {
     format = lspkind.cmp_format({ with_text = false, maxwidth = 50 })
   }
@@ -821,6 +886,7 @@ cmp.setup({
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = {
     { name = 'buffer' }
   }
@@ -828,6 +894,7 @@ cmp.setup.cmdline('/', {
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = 'path' }
   }, {
@@ -873,7 +940,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
@@ -935,3 +1002,4 @@ iab bindign    binding
 iab attachemnts attachments
 iab attachemnt attachment
 iab udpate     update
+iab beybug     byebug
