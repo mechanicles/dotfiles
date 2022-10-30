@@ -723,7 +723,7 @@ require'nvim-treesitter.configs'.setup {
     enable = true, -- mandatory, false will disable the whole extension
   },
   indent = {
-    enable = true
+    enable = false -- Set to false to disable it as it causes an issue with nvim-cmp
   },
   -- This endwise is a part of 'RRethy/nvim-treesitter-endwise'
   endwise = {
