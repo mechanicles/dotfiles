@@ -57,6 +57,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'quangnguyen30192/cmp-nvim-ultisnips'
     Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
     Plug 'onsails/lspkind-nvim'
+    Plug 'jose-elias-alvarez/null-ls.nvim'
     Plug 'dcampos/nvim-snippy'
     Plug 'dcampos/cmp-snippy'
     Plug 'hrsh7th/cmp-cmdline'
@@ -146,6 +147,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'folke/trouble.nvim' " May be we don't need it
     Plug 'itchyny/calendar.vim'
     Plug 'AndrewRadev/whatif.vim'
+    Plug 'RRethy/vim-illuminate'
+    Plug 'rcarriga/nvim-notify'
+    Plug 'j-hui/fidget.nvim'
   " }}
 
   " EXTRA {{
@@ -850,6 +854,34 @@ EOF
 
 lua << EOF
 require("toggleterm").setup{}
+EOF
+
+lua << EOF
+require"fidget".setup{}
+EOF
+
+lua << EOF
+require("null-ls").setup({
+  sources = {
+    -- require("null-ls").builtins.diagnostics.eslint,
+    require("null-ls").builtins.hover.dictionary,
+    require("null-ls").builtins.completion.spell,
+    require("null-ls").builtins.code_actions.gitsigns,
+    -- require("null-ls").builtins.diagnostics.rubocop,
+    -- require("null-ls").builtins.formatting.rubocop,
+    -- require("null-ls").builtins.diagnostics.semgrep,
+    -- require("null-ls").builtins.formatting.erb_lint,
+    -- require("null-ls").builtins.diagnostics.erb_lint.with({
+    --  filetypes = { "eruby", "eruby.html" },
+    -- })
+  },
+})
+EOF
+
+lua << EOF
+vim.g.Illuminate_ftblacklist = {'NvimTree'}
+vim.api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', {noremap=true})
+vim.api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', {noremap=true})
 EOF
 
 lua << EOF
