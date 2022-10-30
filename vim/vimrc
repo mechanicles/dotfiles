@@ -812,16 +812,25 @@ EOF
 
 lua << EOF
 require'nvim-tree'.setup {
+  sort_by = "case_sensitive",
   hijack_cursor = true,
   view = {
     width = 35,
-    auto_resize = true
+    adaptive_size = true
   },
   diagnostics = {
     enable = true
   },
+  renderer = {
+    group_empty = true,
+  },
   filters = {
     dotfiles = true,
+  },
+  actions = {
+    open_file = {
+      resize_window = true,
+    }
   }
 }
 EOF
