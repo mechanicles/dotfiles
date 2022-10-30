@@ -68,9 +68,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'pechorin/any-jump.vim'
     Plug 'liuchengxu/vim-which-key'
     Plug 'ThePrimeagen/harpoon'
-    Plug 'wincent/command-t', {
-      \   'do': 'cd ruby/command-t/ext/command-t && ruby extconf.rb && make'
-      \ }
   " }}
 
   " PERFORMANCE {{
@@ -133,6 +130,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'olimorris/onedarkpro.nvim'
     Plug 'Mofiqul/vscode.nvim'
     Plug 'catppuccin/nvim', {'as': 'catppuccin'}
+    Plug 'projekt0n/github-nvim-theme'
   " }}
 
   " ENHANCEMENT {{
@@ -158,10 +156,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'airblade/vim-localorie'
     Plug 'rhysd/git-messenger.vim'
     Plug 'ruifm/gitlinker.nvim'
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
   " }}
 
   " Load this as the very last one
-  " Plug 'ryanoasis/vim-devicons'
   Plug 'kyazdani42/nvim-web-devicons'
 call plug#end()
 
@@ -837,6 +835,34 @@ vim.api.nvim_set_keymap('n', '<leader><leader>b', ':HopWordBC<CR>', { noremap = 
 EOF
 
 lua << EOF
+vim.o.background = 'dark'
+
+local c = require('vscode.colors')
+require('vscode').setup({
+    -- Enable transparent background
+    transparent = false,
+
+    -- Enable italic comment
+    italic_comments = true,
+
+    -- Disable nvim-tree background color
+    disable_nvimtree_bg = true,
+
+    -- Override colors (see ./lua/vscode/colors.lua)
+    -- color_overrides = {
+    --   vscLineNumber = '#FFFFFF'
+    -- },
+
+    -- Override highlight groups (see ./lua/vscode/theme.lua)
+    color_overrides = {
+        -- this supports the same val table as vim.api.nvim_set_hl
+        -- use colors from this colorscheme by requiring vscode.colors!
+      Cursor = { fg=c.vscDarkBlue, bg=c.vscLightGreen, bold=true },
+    }
+})
+EOF
+
+lua << EOF
 require'lualine'.setup {
   options = {
     globalstatus = true,
@@ -892,8 +918,8 @@ local cmp = require'cmp'
 cmp.setup({
   snippet = {
     expand = function(args)
-      -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
   },
   window = {
@@ -909,10 +935,11 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'ultisnips' }, -- For ultisnips users.
-    -- { name = 'snippy' },
-    { name = 'buffer', keyword_length = 4, max_item_count = 5 },
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    { name = 'snippy' },
+    { name = 'buffer', keyword_length = 2, max_item_count = 5 },
     { name = 'cmp_tabnine', keyword_length = 2, max_item_count = 5 },
+    { name = "git" },
     { name = 'path' }
   }),
   formatting = {
@@ -980,12 +1007,14 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+
+  require 'illuminate'.on_attach(client)
 end
 
 -- Setup lspconfig.
 local nvim_lsp = require('lspconfig')
-local servers = { 'solargraph', 'tsserver', 'cssls', 'html', 'vimls' }
+local servers = { 'solargraph', 'tsserver', 'eslint', 'cssls', 'html', 'vimls' }
 -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
