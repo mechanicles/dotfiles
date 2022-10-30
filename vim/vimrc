@@ -208,40 +208,12 @@ let no_buffers_menu = 1
 if has('gui_running')
   if has("gui_macvim")
     set macligatures
-    set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h18
   endif
 else
   set termguicolors
 endif
 
-" COLORSHEME SETTINGS
-" let g:dracula_colorterm = 0
-" colorscheme dracula
-" colorscheme kanagawa
-
-" Example config in VimScript
-" configuration needs to be set BEFORE loading the color scheme with `colorscheme` command
-" let g:onedark_function_style = "italic"
-" let g:onedark_sidebars = ["qf", "vista_kind", "terminal", "packer"]
-" let g:dark_sidebar = 'false'
-
-" Change the "hint" color to the "orange0" color, and make the "error" color bright red
-" let g:onedark_colors = {
-"   \ 'hint': 'orange0',
-"   \ 'error': '#ff0000'
-" \ }
-
-" Load the colorscheme
-
-" vscode color setting
-let g:vscode_style = "dark"
-" Enable transparent background
-let g:vscode_transparency = 1
-" Enable italic comment
-let g:vscode_italic_comment = 1
-" Disable nvim-tree background color
-let g:vscode_disable_nvimtree_bg = v:true
-colorscheme vscode
+set guifont=JetBrainsMono\ Nerd\ Font\ Mono:h14
 
 " Basic setup
 set clipboard=unnamed
@@ -281,6 +253,7 @@ set updatetime=300                " delay time. Useful for showing git sign
 set undodir=~/.vim/undodir
 set undofile
 set number
+set relativenumber
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -534,6 +507,12 @@ function! s:setWrapping()
   set textwidth=80
 endfunction
 
+function! RubocopAutocorrect()
+  execute "!rubocop -a " . bufname("%")
+endfunction
+
+map <silent> <Leader>cop :call RubocopAutocorrect()<cr>
+
 if has("autocmd")
   " In Makefiles, use real tabs, not tabs expanded to spaces
   au FileType {make,gitconfig} set noexpandtab
@@ -716,7 +695,6 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",
   highlight = {
     enable = true,
-    disable = { 'ruby' },
     additional_vim_regex_highlighting = true,
   },
   matchup = {
@@ -744,6 +722,9 @@ EOF
 lua << EOF
 require('telescope').setup {
   defaults = {
+    prompt_prefix = " ",
+    selection_caret = " ",
+    entry_prefix = " ",
     layout_config = {
       prompt_position = "top"
     },
@@ -802,7 +783,7 @@ lua << EOF
 
 require("indent_blankline").setup {
   show_end_of_line = true,
-  -- space_char_blankline = " ",
+  indent_blankline_use_treesitter = true,
 }
 EOF
 
@@ -854,7 +835,6 @@ EOF
 lua << EOF
 require'lualine'.setup {
   options = {
-    -- theme = 'onedark',
     globalstatus = true,
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
@@ -1027,3 +1007,4 @@ iab attachemnts attachments
 iab attachemnt attachment
 iab udpate     update
 iab beybug     byebug
+iab comit      commit
