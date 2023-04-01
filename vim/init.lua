@@ -273,6 +273,16 @@ vim.o.completeopt = 'menu,menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+vim.o.relativenumber = true
+
+vim.o.laststatus = 3
+
+-- Treat dash separated words as a word text object"
+vim.opt.iskeyword:append("-")
+
+-- " new feature
+vim.opt.winbar:append("%=%m %f")
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
@@ -285,6 +295,15 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 -- Exit from Terminal
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
+
+-- Do not register deleted character
+vim.keymap.set("n", "x", '"_x')
+
+
+vim.keymap.set('n', '<C-j>', '<C-w>j', {noremap = true})
+vim.keymap.set('n', '<C-k>', '<C-w>k', {noremap = true})
+vim.keymap.set('n', '<C-h>', '<C-w>h', {noremap = true})
+vim.keymap.set('n', '<C-l>', '<C-w>l', {noremap = true})
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
