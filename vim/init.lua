@@ -178,8 +178,8 @@ require('lazy').setup({
       'nvim-tree/nvim-web-devicons',
     },
     config = function()
-      vim.api.nvim_set_keymap('n', '<leader>n', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-      vim.api.nvim_set_keymap('n', '<leader>F', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+      vim.keymap.set('n', '<leader>F', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
 
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
