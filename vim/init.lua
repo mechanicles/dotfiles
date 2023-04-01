@@ -280,7 +280,7 @@ vim.o.laststatus = 3
 -- Treat dash separated words as a word text object"
 vim.opt.iskeyword:append("-")
 
--- " new feature
+-- " Title for each butter on the top
 vim.opt.winbar:append("%=%m %f")
 
 -- [[ Basic Keymaps ]]
@@ -299,11 +299,27 @@ vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 -- Do not register deleted character
 vim.keymap.set("n", "x", '"_x')
 
+-- Quicker window movement
+vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true })
+vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true })
 
-vim.keymap.set('n', '<C-j>', '<C-w>j', {noremap = true})
-vim.keymap.set('n', '<C-k>', '<C-w>k', {noremap = true})
-vim.keymap.set('n', '<C-h>', '<C-w>h', {noremap = true})
-vim.keymap.set('n', '<C-l>', '<C-w>l', {noremap = true})
+-- Show next matched string at the center of screen
+vim.keymap.set('n', 'n', 'nzz', { noremap = true })
+vim.keymap.set('n', 'N', 'Nzz', { noremap = true })
+
+-- Quit current buffer
+vim.keymap.set('n', '<leader>q', ':q<CR>', { noremap = true })
+
+-- Toggle relative line numbers
+vim.keymap.set('n', '<leader>rn', ':set relativenumber!<CR>', { noremap = true })
+
+-- Go to start of the line
+vim.keymap.set('n', '<leader>hh', '^', { noremap = true })
+
+-- Go to end of the line
+vim.keymap.set('n', '<leader>ll', '$', { noremap = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -419,7 +435,7 @@ require('nvim-treesitter.configs').setup {
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
@@ -438,7 +454,7 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+  nmap('<Space>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
