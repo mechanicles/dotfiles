@@ -172,6 +172,49 @@ require('lazy').setup({
     end,
   },
 
+  { -- A file explorer tree for neovim written in lua
+    'nvim-tree/nvim-tree.lua',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      vim.api.nvim_set_keymap('n', '<leader>n', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<leader>F', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
+
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+      -- set termguicolors to enable highlight groups
+      vim.opt.termguicolors = true
+
+      -- empty setup using defaults
+      require("nvim-tree").setup()
+
+      -- OR setup with some options
+      require("nvim-tree").setup({
+        sort_by = "case_sensitive",
+        hijack_cursor = true,
+        view = {
+          width = 35,
+          adaptive_size = true,
+        },
+        diagnostics = {
+          enable = true
+        },
+        renderer = {
+          group_empty = true,
+        },
+        filters = {
+          dotfiles = true,
+        },
+        actions = {
+          open_file = {
+            resize_window = true,
+          }
+        }
+      })
+    end,
+  },
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
