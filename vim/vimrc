@@ -46,7 +46,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-    Plug 'sindrets/diffview.nvim'
     Plug 'nvim-tree/nvim-tree.lua'
     Plug 'kevinhwang91/nvim-bqf' " Important pugin for quickfix
     Plug 'andymass/vim-matchup'
@@ -140,8 +139,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'mhartington/oceanic-next'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
-    Plug 'ackyshake/Spacegray.vim'
-    Plug 'dracula/vim', { 'as': 'dracula' }
+    Plug 'Mofiqul/dracula.nvim'
     Plug 'rebelot/kanagawa.nvim'
     Plug 'EdenEast/nightfox.nvim'
     Plug 'olimorris/onedarkpro.nvim'
@@ -434,6 +432,22 @@ nnoremap N Nzz
   nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
 " }}
 
+" Quit current buffer {{
+  nnoremap <leader>q :q<CR>
+" }}
+
+" Toggle relative line numbers {{
+  nnoremap <leader>rn :set relativenumber!<CR>
+" }}
+
+" Go to start of the line {{
+  nnoremap <leader>hh ^
+" }}
+
+" Go to end of the line {{
+  nnoremap <leader>ll $
+" }}
+
 " mileszs/ack.vim {{
   if executable('ag')
     let g:ackprg = 'ag --vimgrep'
@@ -665,51 +679,6 @@ require("trouble").setup {}
 EOF
 
 lua << EOF
-local cb = require'diffview.config'.diffview_callback
-
-require'diffview'.setup {
-  diff_binaries = false,    -- Show diffs for binaries
-  use_icons = true,         -- Requires nvim-web-devicons,
-  file_panel = {
-    win_config = {
-      position = "left",
-      width = 35,
-      height = 16,
-    },
-  },
-  key_bindings = {
-    disable_defaults = false,                   -- Disable the default key bindings
-    -- The `view` bindings are active in the diff buffers, only when the current
-    -- tabpage is a Diffview.
-    view = {
-      ["<tab>"]     = cb("select_next_entry"),  -- Open the diff for the next file
-      ["<s-tab>"]   = cb("select_prev_entry"),  -- Open the diff for the previous file
-      ["<leader>e"] = cb("focus_files"),        -- Bring focus to the files panel
-      ["<leader>b"] = cb("toggle_files"),       -- Toggle the files panel.
-    },
-    file_panel = {
-      ["j"]             = cb("next_entry"),         -- Bring the cursor to the next file entry
-      ["<down>"]        = cb("next_entry"),
-      ["k"]             = cb("prev_entry"),         -- Bring the cursor to the previous file entry.
-      ["<up>"]          = cb("prev_entry"),
-      ["<cr>"]          = cb("select_entry"),       -- Open the diff for the selected entry.
-      ["o"]             = cb("select_entry"),
-      ["<2-LeftMouse>"] = cb("select_entry"),
-      ["-"]             = cb("toggle_stage_entry"), -- Stage / unstage the selected entry.
-      ["S"]             = cb("stage_all"),          -- Stage all entries.
-      ["U"]             = cb("unstage_all"),        -- Unstage all entries.
-      ["X"]             = cb("restore_entry"),      -- Restore entry to the state on the left side.
-      ["R"]             = cb("refresh_files"),      -- Update stats and entries in the file list.
-      ["<tab>"]         = cb("select_next_entry"),
-      ["<s-tab>"]       = cb("select_prev_entry"),
-      ["<leader>e"]     = cb("focus_files"),
-      ["<leader>b"]     = cb("toggle_files"),
-    }
-  }
-}
-EOF
-
-lua << EOF
 require'nvim-web-devicons'.setup {
   -- your personnal icons can go here (to override)
   -- DevIcon will be appended to `name`
@@ -740,6 +709,7 @@ require'nvim-treesitter.configs'.setup {
 
   highlight = {
     enable = true,
+    disable = { "ruby" },
     additional_vim_regex_highlighting = true,
   },
   matchup = {
@@ -902,11 +872,12 @@ EOF
 
 lua << EOF
 require("harpoon").setup()
-vim.api.nvim_set_keymap('n', '<leader>ha', ':lua require("harpoon.mark").add_file()<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>ht', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ca', ':lua require("harpoon.mark").add_file()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ct', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, silent = true })
 EOF
 
 " colorscheme settings
+colorscheme dracula_pro_blade
 lua << EOF
 -- vim.o.background = 'dark'
 --
@@ -934,7 +905,7 @@ lua << EOF
 --     }
 -- })
 
-require('onedark').load()
+-- require('onedark').load()
 EOF
 
 lua << EOF
@@ -1074,7 +1045,6 @@ lsp.ensure_installed({
   'cssls',
   'html',
   'vimls',
-  'sumneko_lua'
 })
 
 lsp.on_attach(function(client, bufnr)
@@ -1197,3 +1167,4 @@ iab attachemnt attachment
 iab udpate     update
 iab beybug     byebug
 iab comit      commit
+iab bharain    bharain
