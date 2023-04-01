@@ -417,6 +417,9 @@ local servers = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
+      diagnostics = {
+        globals = { "vim" }, -- Fixes https://github.com/nvim-lua/kickstart.nvim/issues/228
+      },
     },
   },
 }
