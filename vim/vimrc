@@ -38,7 +38,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'nvim-treesitter/playground'
     Plug 'p00f/nvim-ts-rainbow'
-    Plug 'voldikss/vim-floaterm'
     Plug 'akinsho/toggleterm.nvim'
     Plug 'SirVer/ultisnips'
     Plug 'github/copilot.vim'
@@ -74,7 +73,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
     " EXTRA LSP Stuff
-    " Plug 'onsails/lspkind-nvim'
     Plug 'jose-elias-alvarez/null-ls.nvim'
     Plug 'VonHeikemen/lsp-zero.nvim'
 
@@ -150,9 +148,6 @@ call plug#begin('~/.vim/plugged')
   " }}
 
   " ENHANCEMENT {{
-    if v:version >= 703
-      " Plug 'mhinz/vim-signify'
-    endif
     Plug 'wincent/terminus'
     Plug 'thinca/vim-quickrun' " Ruby code runnner
     Plug 'nvim-lualine/lualine.nvim'
@@ -501,7 +496,7 @@ nmap <leader>L mQgewvu`Q
 " find Git merge conflict markers
 nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
-" Toggle hlsearch with <leader>hs
+" Toggle hlsearch with <leader>hls
 nmap <leader>hls :set hlsearch! hlsearch?<CR>
 
 " EasyAlign {{
@@ -541,7 +536,7 @@ cnoremap <C-a> <Home>
 nnoremap <leader><leader>c :<up>
 
 " Easy edit/open commands
-command! EditVim  :edit   ~/.vimrc
+command! EditVim  :edit ~/.vimrc
 
 function! s:setWrapping()
   set wrap
@@ -585,6 +580,7 @@ if has("autocmd")
 
   " Every time you save your file(s), they'll attempt to format using the registered LSP,
   " and if none exist, it'll be a no-op.
+  " TODO: FIX ME
   " au BufWritePre * lua vim.lsp.buf.formatting_sync()
 endif
 
@@ -614,21 +610,8 @@ endif
   nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags(require('telescope.themes').get_ivy({}))<cr>
 " }}
 
-
 " mrjones2014/dash.nvim {{
   nnoremap <leader>D <cmd>:DashWord<cr>
-" }}
-
-" voldikss/vim-floaterm {{
-  " let g:floaterm_keymap_new = '<Leader>ft'
-  " let g:floaterm_keymap_toggle = '<Leader>tt'
-  " let g:floaterm_width = 0.9
-  " let g:floaterm_height = 0.9
-
-  " These GUI colors for background and foreground are set based on the
-  " OceanicNext colorscheme. We can change these colors based on the
-  " colorscheme using ':hi Normal' comand in Vim
-  " hi FloatermBorder guibg=#282c34 guifg=#abb2bf
 " }}
 
 " akinsho/toggleterm.nvim {{
@@ -792,10 +775,6 @@ require"gitlinker".setup()
 EOF
 
 lua << EOF
--- vim.opt.list = true
--- vim.opt.listchars:append("space:⋅")
--- vim.opt.listchars:append("eol:↴")
-
 require("indent_blankline").setup {
   char = '┊',
   show_end_of_line = true,
@@ -971,14 +950,12 @@ EOF
 
 lua << EOF
 -- Setup nvim-cmp.
--- local lspkind = require('lspkind')
 local cmp = require'cmp'
 
 cmp.setup({
   snippet = {
     expand = function(args)
       require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
   },
   window = {
@@ -999,9 +976,6 @@ cmp.setup({
     }, {
      { name = 'buffer' },
     }),
-  -- formatting = {
-  --   format = lspkind.cmp_format({ with_text = false, maxwidth = 50, ellipsis_char = '…' }),
-  -- }
 })
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
@@ -1075,61 +1049,8 @@ lsp.on_attach(function(client, bufnr)
 
   require 'illuminate'.on_attach(client)
 end)
+
 lsp.setup()
-EOF
-
-lua << EOF
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
--- local on_attach = function(client, bufnr)
---   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
---   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
---
---   -- Enable completion triggered by <c-x><c-o>
---   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
---
---   -- Mappings.
---   local opts = { noremap=true, silent=true }
---
---   -- See `:help vim.lsp.*` for documentation on any of the below functions
---   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
---   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
---   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
---   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
---   buf_set_keymap('n', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
---   buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
---   buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
---   buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
---   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
---   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
---   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
---   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
---   buf_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
---   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
---   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
---   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
---   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
---
---   require 'illuminate'.on_attach(client)
--- end
-
--- Setup lspconfig.
--- local nvim_lsp = require('lspconfig')
--- local servers = { 'solargraph', 'tsserver', 'eslint', 'cssls', 'html', 'vimls' }
-
--- vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
---   vim.lsp.diagnostic.on_publish_diagnostics, {
---       virtual_text = false
---   }
--- )
-
--- local capabilities = require('cmp_nvim_lsp').default_capabilities()
--- for _, lsp in ipairs(servers) do
---   nvim_lsp[lsp].setup {
---     on_attach = on_attach,
---     capabilities = capabilities
---   }
--- end
 EOF
 
 source ~/.local_vimrc
