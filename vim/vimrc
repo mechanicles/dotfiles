@@ -25,8 +25,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'rhysd/clever-f.vim'
     Plug 'mileszs/ack.vim'
     Plug 'wellle/targets.vim'
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim'
+    Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
     Plug 'mbbill/undotree'
     Plug 'rhysd/committia.vim'
     Plug 'AndrewRadev/tagalong.vim'
@@ -53,7 +52,7 @@ call plug#begin('~/.vim/plugged')
     Plug 's1n7ax/nvim-window-picker'
     Plug 'nvim-neo-tree/neo-tree.nvim'
     Plug 'lvimuser/lsp-inlayhints.nvim'
-    Plug 'axkirillov/hbac.nvim'
+    Plug 'stevearc/oil.nvim'
 
     " LSP Support
     Plug 'neovim/nvim-lspconfig'
@@ -151,6 +150,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'projekt0n/github-nvim-theme'
     Plug 'rose-pine/neovim'
     Plug 'sainnhe/gruvbox-material'
+    Plug 'oxfist/night-owl.nvim'
   " }}
 
   " ENHANCEMENT {{
@@ -164,7 +164,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'AndrewRadev/whatif.vim'
     Plug 'RRethy/vim-illuminate'
     Plug 'rcarriga/nvim-notify'
-    Plug 'j-hui/fidget.nvim'
+    Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
     Plug 'dnlhc/glance.nvim'
     Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
   " }}
@@ -363,7 +363,8 @@ if &diff
   set difopt+=vertical
 endif
 
-set iskeyword+=- " treat dash separated words as a word text object"
+" treat dash separated words as a word text object
+set iskeyword+=-
 
 lua << EOF
 vim.keymap.set("n", "x", '"_x') -- do not register deleted character
@@ -427,11 +428,11 @@ nnoremap N Nzz
 
 " FZF settings {{
   " Project files
-  nnoremap <Leader>pf :Files<CR>
-
-  let g:fzf_layout = { 'down': '~30%' }
-  let $FZF_DEFAULT_OPTS='--reverse'
-  noremap <leader>gc :GCheckout<CR>
+  " nnoremap <Leader>pf :Files<CR>
+  "
+  " let g:fzf_layout = { 'down': '~30%' }
+  " let $FZF_DEFAULT_OPTS='--reverse'
+  " noremap <leader>gc :GCheckout<CR>
 " }}
 
 " Searching {{
@@ -620,6 +621,7 @@ endif
 " nvim-telescope/telescope.nvim {{
   nnoremap <c-b> <cmd>lua require('telescope.builtin').buffers()<cr>
   nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+  nnoremap <c-c> <cmd>lua require('telescope.builtin').git_status()<cr>
   nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
   nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " }}
@@ -695,7 +697,17 @@ EOF
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "ruby", "help", "javascript", "typescript", "c", "lua", "html", "css" },
+  ensure_installed = { 
+    'ruby',
+    'javascript',
+    'typescript',
+    'c',
+    'lua',
+    'html',
+    'css',
+    'scss',
+    'vim',
+  },
 
   -- Automatically install missing parsers when entering buffer
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
@@ -793,6 +805,11 @@ require('telescope').setup {
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require('telescope').load_extension('fzf')
+
+require('fzf-lua').setup('')
+vim.keymap.set({ "n", "v", "i" }, "<C-x><C-f>",
+  function() require("fzf-lua").complete_path() end,
+  { silent = true, desc = "Fuzzy complete path" })
 EOF
 
 lua << EOF
@@ -881,9 +898,13 @@ vim.api.nvim_set_keymap('n', '<leader>ca', ':lua require("harpoon.mark").add_fil
 vim.api.nvim_set_keymap('n', '<leader>ct', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, silent = true })
 EOF
 
+lua << EOF
+vim.cmd.colorscheme("night-owl")
+EOF
+
 " colorscheme settings
 " colorscheme dracula_pro_blade
-colorscheme onedark
+" colorscheme onedark
 " colorscheme catppuccin-macchiato
 " colorscheme OceanicNext
 " lua << EOF
@@ -933,7 +954,7 @@ end
 require'lualine'.setup {
   options = {
     globalstatus = true,
-    theme = 'onedark',
+    theme = 'night-owl',
     icons_enabled = false,
     component_separators = '│',
     section_separators = '',
@@ -947,15 +968,6 @@ require'lualine'.setup {
     },
     lualine_c = {
       { "filename", path = 1 },
-      -- hbac settings
-      {
-          function()
-          local cur_buf = vim.api.nvim_get_current_buf()
-          return require("hbac.state").is_pinned(cur_buf) and "📍" or ""
-          -- tip: nerd fonts have pinned/unpinned icons!
-          end,
-          color = { fg = "#ef5f6b", gui = "bold" },
-      }
     },
   },
 }
@@ -985,6 +997,11 @@ EOF
 
 lua << EOF
 require 'window-picker'.setup()
+EOF
+
+lua << EOF
+require("oil").setup()
+vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 EOF
 
 lua << EOF
@@ -1021,10 +1038,6 @@ EOF
 
 lua << EOF
 require("lsp-inlayhints").setup()
-EOF
-
-lua << EOF
-  require("hbac").setup()
 EOF
 
 lua << EOF
