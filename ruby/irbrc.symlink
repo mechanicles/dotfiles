@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require "irb/completion"
-require "irb/ext/save-history"
+require 'irb/completion'
+require 'irb/ext/save-history'
 
 # irb history
 IRB.conf[:SAVE_HISTORY] = 1000
@@ -14,31 +14,21 @@ IRB.conf[:AUTO_INDENT] = true
 
 # interactive editor: use vim from within irb
 begin
-  require "rubygems"
-  require "interactive_editor"
-rescue LoadError => err
-  warn "Couldn't load interactive_editor: #{err}"
+  require 'rubygems'
+  require 'interactive_editor'
+rescue LoadError => e
+  warn "Couldn't load interactive_editor: #{e}"
 end
-
-# awesome print
-begin
-  require 'awesome_print'
-  AwesomePrint.irb!
-rescue LoadError => err
-  warn "Couldn't load awesome_print: #{err}"
-end
-
 
 # load .irbrc_rails in rails environments
 railsrc_path = File.expand_path('~/.irbrc_rails')
-if ( ENV['RAILS_ENV'] || defined? Rails ) && File.exist?( railsrc_path )
+if (ENV['RAILS_ENV'] || defined? Rails) && File.exist?(railsrc_path)
   begin
     load railsrc_path
   rescue Exception
-    warn "Could not load: #{ railsrc_path } because of #{$!.message}"
+    warn "Could not load: #{railsrc_path} because of #{$!.message}"
   end
 end
-
 
 def y(obj)
   puts obj.to_yaml
@@ -52,7 +42,7 @@ end
 # clipboard (if you're on macOS).
 def cop
   last_value = IRB.CurrentContext.last_value
-  %x[echo '#{last_value}' | pbcopy]
+  `echo '#{last_value}' | pbcopy`
   "copied \`#{last_value}' to your clipboard"
 end
 
@@ -67,24 +57,28 @@ class Object
   end
 end
 
-if !defined? Rails
-  require 'rubygems' unless defined? Gem
-  require 'wirb'
-  Wirb.start
-
-  require 'fancy_irb'
-  FancyIrb.start
+# awesome print
+begin
+  require 'awesome_print'
+  AwesomePrint.irb!
+rescue LoadError => e
+  warn "Couldn't load awesome_print: #{e}"
 end
 
+# e.g. 1
+# log_to(STDOUT) => This is useful for debugging in Rails console
+# User.first
+#
+# e.g. 2
+# buffer = StringIO.new
+# log_to buffer
+# User.first
+# puts buffer.string
+
 if defined? Rails
-  begin
-    require 'rubygems' unless defined? Gem
-    require 'wirb'
-    Wirb.start
-
-    require 'fancy_irb'
-    FancyIrb.start
-
-  rescue LoadError
+  def log_to(stream, colorize = true)
+    ActiveRecord::Base.logger = Logger.new(stream)
+    ActiveRecord::Base.clear_active_connections!
+    ActiveSupport::LogSubscriber.colorize_logging = colorize
   end
 end
