@@ -17,11 +17,8 @@ call plug#begin('~/.vim/plugged')
   " PRODUCTIVITY {{
     Plug 'lukas-reineke/indent-blankline.nvim'
     Plug 'windwp/nvim-autopairs'
-    Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }
     Plug 'phaazon/hop.nvim'
     Plug 'szw/vim-maximizer'
-    Plug 'junegunn/vim-easy-align'
-    Plug 'maxbrunsfeld/vim-yankstack'
     Plug 'rhysd/clever-f.vim'
     Plug 'mileszs/ack.vim'
     Plug 'wellle/targets.vim'
@@ -32,14 +29,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'AaronLasseigne/yank-code'
     Plug 'mrjones2014/dash.nvim', { 'do': 'make install' }
     Plug 'janko-m/vim-test'
-    Plug 'skywind3000/asyncrun.vim'
     Plug 'dbeniamine/cheat.sh-vim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
     Plug 'nvim-treesitter/nvim-treesitter-textobjects'
-    Plug 'nvim-treesitter/playground'
     Plug 'akinsho/toggleterm.nvim'
     Plug 'SirVer/ultisnips'
-    Plug 'nvim-lua/popup.nvim'
     Plug 'MunifTanjim/nui.nvim',
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
@@ -86,10 +80,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'ThePrimeagen/harpoon'
   " }}
 
-  " PERFORMANCE {{
-    Plug 'antoinemadec/FixCursorHold.nvim'
-  " }}
-
   " Method lookup/snippets {{
     Plug 'honza/vim-snippets'
   " }}
@@ -114,40 +104,17 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-abolish'
   " }}
 
-  " More git plugins dependent on 'tpope/vim-fugitive' {{
-    Plug 'junegunn/gv.vim'
-  " }}
-
-  " JAVASCRIPT {{
-    Plug 'pangloss/vim-javascript'
-    Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
-  " }}
-
-  " TEMPLATES {{
-    Plug 'slim-template/vim-slim'
-  " }}
-
   " COLORSCHEME {{
-    Plug 'w0ng/vim-hybrid'
-    Plug 'nanotech/jellybeans.vim'
-    Plug 'tomasr/molokai'
     Plug 'navarasu/onedark.nvim'
     Plug 'gruvbox-community/gruvbox'
     Plug 'cocopon/iceberg.vim'
-    Plug 'doums/darcula'
-    Plug 'rakr/vim-one'
-    Plug 'NLKNguyen/papercolor-theme'
     Plug 'mhartington/oceanic-next'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
     Plug 'Mofiqul/dracula.nvim'
-    Plug 'rebelot/kanagawa.nvim'
-    Plug 'EdenEast/nightfox.nvim'
     Plug 'olimorris/onedarkpro.nvim'
     Plug 'Mofiqul/vscode.nvim'
     Plug 'catppuccin/nvim', {'as': 'catppuccin'}
-    Plug 'projekt0n/github-nvim-theme'
     Plug 'rose-pine/neovim'
-    Plug 'sainnhe/gruvbox-material'
     Plug 'oxfist/night-owl.nvim'
     Plug 'projekt0n/caret.nvim'
   " }}
@@ -159,10 +126,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'kristijanhusak/vim-dadbod-ui' " depend on tpope/vim-dadbod
     Plug 'machakann/vim-highlightedyank'
     Plug 'folke/trouble.nvim' " May be we don't need it
-    Plug 'itchyny/calendar.vim'
-    Plug 'AndrewRadev/whatif.vim'
     Plug 'RRethy/vim-illuminate'
-    Plug 'rcarriga/nvim-notify'
     Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
     Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
   " }}
@@ -170,16 +134,13 @@ call plug#begin('~/.vim/plugged')
   " EXTRA {{
     Plug 'lifepillar/vim-cheat40'
     Plug 'chrisbra/csv.vim'
-    Plug 'airblade/vim-localorie'
-    Plug 'rhysd/git-messenger.vim'
+    " Plug 'airblade/vim-localorie'
     Plug 'ruifm/gitlinker.nvim'
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-    Plug 'DougBeney/pickachu'
   " }}
 
   " AI {{
     Plug 'github/copilot.vim'
-    Plug 'jackMort/ChatGPT.nvim'
   " }}
 
   " Load this as the very last one
@@ -202,8 +163,8 @@ set completeopt=menu,menuone,noselect
 let g:plug_timeout = 100
 
 " airblade/vim-localorie {{
-  nnoremap <silent> <leader>lt :call localorie#translate()<CR>
-  nnoremap <silent> <leader>le :echo localorie#expand_key()<CR>
+  " nnoremap <silent> <leader>lt :call localorie#translate()<CR>
+  " nnoremap <silent> <leader>le :echo localorie#expand_key()<CR>
 " }}
 
 " Disable python2 provider
@@ -509,13 +470,6 @@ nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 " Toggle hlsearch with <leader>hls
 nmap <leader>hls :set hlsearch! hlsearch?<CR>
 
-" EasyAlign {{
-  " Start interactive EasyAlign in visual mode (e.g. vipga)
-  xmap ga <Plug>(EasyAlign)
-  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-  nmap ga <Plug>(EasyAlign)
-" }}
-
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
@@ -526,10 +480,6 @@ map <Leader>= <C-w>=
   nmap <silent> ./ :nohlsearch<CR>
   vnoremap <Leader>zw :MaximizerToggle<CR>gv
   inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
-" }}
-
-" Tagbar {{
-  nnoremap <Leader>rt :TagbarToggle<CR>
 " }}
 
 " disable cursor keys in normal mode
@@ -640,10 +590,6 @@ endif
   " For example: 2<C-t> will open terminal 2
   nnoremap <silent><Leader>tt <Cmd>exe v:count1 . "ToggleTerm"<CR>
   inoremap <silent><Leader>tt <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
-" }}
-
-" antoinemadec/FixCursorHold.nvim {{
-  let g:cursorhold_updatetime = 100
 " }}
 
 " 'windwp/nvim-spectre' {{
@@ -975,10 +921,6 @@ EOF
 
 lua << EOF
 require"fidget".setup{}
-EOF
-
-lua << EOF
-require("chatgpt").setup()
 EOF
 
 lua << EOF
