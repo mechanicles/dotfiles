@@ -50,7 +50,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'windwp/nvim-spectre'
     Plug 's1n7ax/nvim-window-picker'
     Plug 'nvim-neo-tree/neo-tree.nvim'
-    Plug 'lvimuser/lsp-inlayhints.nvim'
     Plug 'stevearc/oil.nvim'
 
     " LSP Support
@@ -1025,10 +1024,6 @@ require("neo-tree").setup({
 EOF
 
 lua << EOF
-require("lsp-inlayhints").setup()
-EOF
-
-lua << EOF
 require('glance').setup()
 vim.keymap.set('n', 'gD', '<CMD>Glance definitions<CR>')
 vim.keymap.set('n', 'gR', '<CMD>Glance references<CR>')
@@ -1158,9 +1153,6 @@ lsp.on_attach(function(client, bufnr)
   bind('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   bind('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   bind('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-
-  require 'illuminate'.on_attach(client)
-  require("lsp-inlayhints").on_attach(client, bufnr)
 end)
 
 lsp.setup()
