@@ -164,7 +164,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'RRethy/vim-illuminate'
     Plug 'rcarriga/nvim-notify'
     Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
-    Plug 'dnlhc/glance.nvim'
     Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
   " }}
 
@@ -1021,14 +1020,6 @@ require("neo-tree").setup({
     statusline = false
   }
 })
-EOF
-
-lua << EOF
-require('glance').setup()
-vim.keymap.set('n', 'gD', '<CMD>Glance definitions<CR>')
-vim.keymap.set('n', 'gR', '<CMD>Glance references<CR>')
-vim.keymap.set('n', 'gY', '<CMD>Glance type_definitions<CR>')
-vim.keymap.set('n', 'gM', '<CMD>Glance implementations<CR>')
 EOF
 
 lua << EOF
