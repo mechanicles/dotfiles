@@ -18,7 +18,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'lukas-reineke/indent-blankline.nvim'
     Plug 'windwp/nvim-autopairs'
     Plug 'phaazon/hop.nvim'
-    Plug 'szw/vim-maximizer'
     Plug 'rhysd/clever-f.vim'
     Plug 'mileszs/ack.vim'
     Plug 'wellle/targets.vim'
@@ -50,6 +49,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'neovim/nvim-lspconfig'
     Plug 'williamboman/mason.nvim'
     Plug 'williamboman/mason-lspconfig.nvim'
+    Plug 'folke/neodev.nvim'
 
     " Autocompletion
     Plug 'hrsh7th/nvim-cmp'
@@ -63,10 +63,6 @@ call plug#begin('~/.vim/plugged')
     " Snippets
     Plug 'L3MON4D3/LuaSnip'
     Plug 'rafamadriz/friendly-snippets'
-    Plug 'dcampos/nvim-snippy'
-    Plug 'dcampos/cmp-snippy'
-    Plug 'quangnguyen30192/cmp-nvim-ultisnips'
-    Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
     " EXTRA LSP Stuff
     Plug 'jose-elias-alvarez/null-ls.nvim'
@@ -76,12 +72,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'lewis6991/gitsigns.nvim'
     Plug 'RRethy/nvim-treesitter-endwise'
     Plug 'pechorin/any-jump.vim'
-    Plug 'liuchengxu/vim-which-key'
+    Plug 'folke/which-key.nvim'
     Plug 'ThePrimeagen/harpoon'
-  " }}
-
-  " Method lookup/snippets {{
-    Plug 'honza/vim-snippets'
   " }}
 
   " RUBY {{
@@ -116,7 +108,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'catppuccin/nvim', {'as': 'catppuccin'}
     Plug 'rose-pine/neovim'
     Plug 'oxfist/night-owl.nvim'
-    Plug 'projekt0n/caret.nvim'
   " }}
 
   " ENHANCEMENT {{
@@ -473,15 +464,6 @@ nmap <leader>hls :set hlsearch! hlsearch?<CR>
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
-" vim-maximizer (Zoom) {{
-  noremap <Leader>zw :MaximizerToggle<CR>
-  nmap <silent> ./ :nohlsearch<CR>
-  nmap <silent> ./ :nohlsearch<CR>
-  nmap <silent> ./ :nohlsearch<CR>
-  vnoremap <Leader>zw :MaximizerToggle<CR>gv
-  inoremap <Leader>zw <C-o>:MaximizerToggle<CR>
-" }}
-
 " disable cursor keys in normal mode
 map <Left>  :echoe "Use h"<cr>
 map <Right> :echoe "Use l"<cr>
@@ -610,13 +592,6 @@ endif
         \ }
 " }}
 
-" /liuchengxu/vim-which-key {{
-  let g:which_key_map = {}
-  call which_key#register(',', "g:which_key_map")
-  nnoremap <silent> <leader>      :<c-u>WhichKey ','<CR>
-  nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-" }}
-
 lua << EOF
 require("trouble").setup {}
 EOF
@@ -664,7 +639,7 @@ require'nvim-treesitter.configs'.setup {
     enable = true, -- mandatory, false will disable the whole extension
   },
   indent = {
-    enable = true -- Set to false to disable it as it causes an issue with nvim-cmp
+    enable = false -- [IMPORTANT] Set to false to disable it as it causes an issue with nvim-cmp
   },
   -- This endwise is a part of 'RRethy/nvim-treesitter-endwise'
   endwise = {
@@ -830,13 +805,9 @@ vim.api.nvim_set_keymap('n', '<leader>ca', ':lua require("harpoon.mark").add_fil
 vim.api.nvim_set_keymap('n', '<leader>ct', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, silent = true })
 EOF
 
-lua << EOF
-vim.cmd.colorscheme("night-owl")
-EOF
-
 " colorscheme settings
 " colorscheme dracula_pro_blade
-" colorscheme onedark
+colorscheme onedark
 " colorscheme catppuccin-macchiato
 " colorscheme OceanicNext
 " lua << EOF
@@ -886,7 +857,7 @@ end
 require'lualine'.setup {
   options = {
     globalstatus = true,
-    theme = 'night-owl',
+    theme = 'onedark',
     icons_enabled = false,
     component_separators = '│',
     section_separators = '',
@@ -989,41 +960,54 @@ vim.api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_referen
 EOF
 
 lua << EOF
-local tabnine = require('cmp_tabnine.config')
-tabnine:setup({
-        max_lines = 1000;
-        max_num_results = 20;
-        sort = true;
-	      run_on_every_keystroke = true;
-	      snippet_placeholder = '..';
-})
-EOF
-
-lua << EOF
 -- Setup nvim-cmp.
 local cmp = require'cmp'
+local luasnip = require 'luasnip'
+require('luasnip.loaders.from_vscode').lazy_load()
+luasnip.config.setup {}
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      luasnip.lsp_expand(args.body)
     end,
   },
   window = {
     -- completion = cmp.config.window.bordered(),
     -- documentation = cmp.config.window.bordered(),
   },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-[>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-]>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.abort(),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true })
-  }),
+  mapping = cmp.mapping.preset.insert {
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete {},
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    { name = 'snippy' },
-    { name = 'cmp_tabnine' },
+    { name = 'luasnip' },
     }, {
      { name = 'buffer' },
   }),
@@ -1049,46 +1033,115 @@ cmp.setup.cmdline(':', {
 EOF
 
 lua << EOF
-local lsp = require('lsp-zero')
-lsp.preset('recommended')
+-- [[ Configure LSP ]]
+--  This function gets run when an LSP connects to a particular buffer.
+local on_attach = function(_, bufnr)
+  -- NOTE: Remember that lua is a real programming language, and as such it is possible
+  -- to define small helper and utility functions so you don't have to repeat yourself
+  -- many times.
+  --
+  -- In this case, we create a function that lets us more easily define mappings specific
+  -- for LSP related items. It sets the mode, buffer and description for us each time.
+  local nmap = function(keys, func, desc)
+    if desc then
+      desc = 'LSP: ' .. desc
+    end
 
-lsp.ensure_installed({ 
-  'solargraph',
-  'tsserver',
-  'eslint',
-  'cssls',
-  'html',
-  'vimls',
-})
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+  end
 
-lsp.on_attach(function(client, bufnr)
-  local noremap = {buffer = bufnr, remap = false}
-  local bind = vim.keymap.set
+  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  -- LSP actions
-  bind('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  bind('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  bind('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  bind('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  bind('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  bind('n', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  bind('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  bind('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  bind('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  bind('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  bind('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  bind('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  bind('n', '<space>rca', '<cmd>lua vim.lsp.buf.range_code_action()<CR>', opts)
-  bind('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  bind('n', '<space>f', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+  nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+  nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
-  -- Diagnostics
-  bind('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-  bind('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  bind('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-end)
+  -- See `:help K` for why this keymap
+  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
-lsp.setup()
+  -- Lesser used LSP functionality
+  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  nmap('<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, '[W]orkspace [L]ist Folders')
+
+  -- Create a command `:Format` local to the LSP buffer
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+    vim.lsp.buf.format()
+  end, { desc = 'Format current buffer with LSP' })
+end
+
+-- document existing key chains
+require('which-key').register {
+  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+  ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
+  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+}
+
+-- mason-lspconfig requires that these setup functions are called in this order
+-- before setting up the servers.
+require('mason').setup()
+require('mason-lspconfig').setup()
+
+-- Enable the following language servers
+--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+--
+--  Add any additional override configuration in the following tables. They will be passed to
+--  the `settings` field of the server config. You must look up that documentation yourself.
+--
+--  If you want to override the default filetypes that your language server will attach to you can
+--  define the property 'filetypes' to the map in question.
+local servers = {
+  solargraph = {},
+  ruby_ls = {},
+  cssls = {},
+  html = { filetypes = { 'html', 'erb', 'hbs'} },
+  tsserver = {},
+  lua_ls = {},
+
+  lua_ls = {
+    Lua = {
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
+    },
+  },
+}
+
+-- Setup neovim lua configuration
+require('neodev').setup()
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+-- Ensure the servers above are installed
+local mason_lspconfig = require 'mason-lspconfig'
+
+mason_lspconfig.setup {
+  ensure_installed = vim.tbl_keys(servers),
+}
+
+mason_lspconfig.setup_handlers {
+  function(server_name)
+    require('lspconfig')[server_name].setup {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = servers[server_name],
+      filetypes = (servers[server_name] or {}).filetypes,
+    }
+  end,
+}
 EOF
 
 lua << EOF
