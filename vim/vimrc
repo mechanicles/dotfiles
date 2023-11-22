@@ -25,6 +25,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'mbbill/undotree'
     Plug 'rhysd/committia.vim'
     Plug 'AndrewRadev/tagalong.vim'
+    Plug 'maxbrunsfeld/vim-yankstack'
     Plug 'AaronLasseigne/yank-code'
     Plug 'mrjones2014/dash.nvim', { 'do': 'make install' }
     Plug 'janko-m/vim-test'
@@ -111,6 +112,7 @@ call plug#begin('~/.vim/plugged')
   " }}
 
   " ENHANCEMENT {{
+    Plug 'sheerun/vim-polyglot'
     Plug 'wincent/terminus'
     Plug 'thinca/vim-quickrun' " Ruby code runnner
     Plug 'nvim-lualine/lualine.nvim'
@@ -551,7 +553,7 @@ endif
 " nvim-telescope/telescope.nvim {{
   nnoremap <c-b> <cmd>lua require('telescope.builtin').buffers()<cr>
   nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
-  nnoremap <c-c> <cmd>lua require('telescope.builtin').git_status()<cr>
+  nnoremap <leader>gs <cmd>lua require('telescope.builtin').git_status()<cr>
   nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
   nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " }}
@@ -979,8 +981,8 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-[>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-]>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
@@ -1104,11 +1106,15 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   solargraph = {},
-  ruby_ls = {},
+  -- ruby_ls = {},
   cssls = {},
   html = { filetypes = { 'html', 'erb', 'hbs'} },
   tsserver = {},
   lua_ls = {},
+  tailwindcss = {},
+  vimls = {},
+  eslint = {},
+  cssls = {},
 
   lua_ls = {
     Lua = {
