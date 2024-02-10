@@ -144,7 +144,7 @@ call plug#end()
   syntax enable
 " }}
 
-packadd! dracula_pro " ~/.local/share/nvim/site/pack/themes/start/dracula_pro/
+" packadd! dracula_pro " ~/.local/share/nvim/site/pack/themes/start/dracula_pro/
 
 set completeopt=menu,menuone,noselect
 
@@ -636,6 +636,7 @@ require'nvim-treesitter.configs'.setup {
 
   highlight = {
     enable = true,
+    use_languagetree = true, -- Use this to enable language injection (this is very unstable)
   },
   matchup = {
     enable = true, -- mandatory, false will disable the whole extension
@@ -728,53 +729,106 @@ lua << EOF
 require"gitlinker".setup()
 EOF
 
+" indent-blankline.nvim {{
 lua << EOF
-local hooks = require "ibl.hooks"
-hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
-
 require("ibl").setup()
 EOF
+" }}
 
 lua << EOF
 require("nvim-autopairs").setup {}
 EOF
 
 lua << EOF
-vim.g.loaded_netrw = 2 -- nvim-tree recommended setting
-vim.g.loaded_netrwPlugin = 1 -- nvim-tree recommended setting
+-- vim.g.loaded_netrw = 2 -- nvim-tree recommended setting
+-- vim.g.loaded_netrwPlugin = 1 -- nvim-tree recommended setting
 
-require'nvim-tree'.setup {
-  sort_by = "case_sensitive",
-  hijack_cursor = true,
-  view = {
-    width = 35,
-    adaptive_size = true,
-  },
-  diagnostics = {
-    enable = true
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  },
-  actions = {
-    open_file = {
-      resize_window = true,
-    }
-  }
-}
+-- require'nvim-tree'.setup {
+--   filters = {
+--     dotfiles = true,
+--     exclude = { vim.fn.stdpath "config" .. "/lua/custom" },
+--   },
+--   disable_netrw = true,
+--   hijack_netrw = true,
+--   hijack_cursor = true,
+--   hijack_unnamed_buffer_when_opening = false,
+--   sync_root_with_cwd = true,
+--   update_focused_file = {
+--     enable = true,
+--     update_root = false,
+--   },
+--   view = {
+--     adaptive_size = false,
+--     side = "left",
+--     width = 30,
+--     preserve_window_proportions = true,
+--   },
+--   git = {
+--     enable = false,
+--     ignore = true,
+--   },
+--   filesystem_watchers = {
+--     enable = true,
+--   },
+--   actions = {
+--     open_file = {
+--       resize_window = false,
+--     },
+--   },
+--   renderer = {
+--     root_folder_label = "t",
+--     highlight_git = false,
+--     highlight_opened_files = "none",
+--
+--     indent_markers = {
+--       enable = false,
+--     },
+--
+--     icons = {
+--       show = {
+--         file = true,
+--         folder = true,
+--         folder_arrow = true,
+--         git = false,
+--       },
+--
+--       glyphs = {
+--         default = "󰈚",
+--         symlink = "",
+--         folder = {
+--           default = "",
+--           empty = "",
+--           empty_open = "",
+--           open = "",
+--           symlink = "",
+--           symlink_open = "",
+--           arrow_open = "",
+--           arrow_closed = "",
+--         },
+--         git = {
+--           unstaged = "✗",
+--           staged = "✓",
+--           unmerged = "",
+--           renamed = "➜",
+--           untracked = "★",
+--           deleted = "",
+--           ignored = "◌",
+--         },
+--       },
+--     },
+--   },
+-- }
 EOF
 
 lua << EOF
 require('gitsigns').setup {
   signs = {
-    add = { text = '+' },
-    change = { text = '~' },
-    delete = { text = '_' },
-    topdelete = { text = '‾' },
-    changedelete = { text = '~' },
+    add = { text = "│" },
+    change = { text = "│" },
+    delete = { text = "󰍵" },
+    topdelete = { text = "‾" },
+    changedelete = { text = "~" },
+    untracked = { text = "│" },
   },
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
@@ -926,6 +980,7 @@ require("neo-tree").setup({
       mappings = {
         ["<F5>"] = "refresh",
         ["o"] = "open",
+        ["q"] = "close_window"
       },
       width = 35,
     }
@@ -965,8 +1020,22 @@ lua << EOF
 -- Setup nvim-cmp.
 local cmp = require'cmp'
 local luasnip = require 'luasnip'
+
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
+
+local function border(hl_name)
+  return {
+    { "╭", hl_name },
+    { "─", hl_name },
+    { "╮", hl_name },
+    { "│", hl_name },
+    { "╯", hl_name },
+    { "─", hl_name },
+    { "╰", hl_name },
+    { "│", hl_name },
+  }
+end
 
 cmp.setup({
   snippet = {
@@ -974,9 +1043,13 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
+
   window = {
     -- completion = cmp.config.window.bordered(),
-    -- documentation = cmp.config.window.bordered(),
+    documentation = {
+      border = border "CmpDocBorder",
+      winhighlight = "Normal:CmpDoc",
+    }
   },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -1064,7 +1137,7 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -1111,7 +1184,7 @@ local servers = {
   html = { filetypes = { 'html', 'erb', 'hbs'} },
   tsserver = {},
   lua_ls = {},
-  tailwindcss = {},
+  tailwindcss = { filetypes = { 'html', 'erb', 'html.erb', 'css', 'scss', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' } },
   vimls = {},
   eslint = {},
   cssls = {},

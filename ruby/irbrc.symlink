@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'irb/completion'
-require 'irb/ext/save-history'
+# require 'irb/ext/save-history'
 
 # irb history
 IRB.conf[:SAVE_HISTORY] = 1000
