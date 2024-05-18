@@ -45,6 +45,8 @@ call plug#begin('~/.vim/plugged')
     Plug 's1n7ax/nvim-window-picker'
     Plug 'nvim-neo-tree/neo-tree.nvim'
     Plug 'stevearc/oil.nvim'
+    Plug 'kdheepak/lazygit.nvim'
+    Plug 'troydm/zoomwintab.vim'
 
     " LSP Support
     Plug 'neovim/nvim-lspconfig'
@@ -69,7 +71,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'jose-elias-alvarez/null-ls.nvim'
     Plug 'VonHeikemen/lsp-zero.nvim'
 
-    Plug 'numToStr/Comment.nvim'
     Plug 'lewis6991/gitsigns.nvim'
     Plug 'RRethy/nvim-treesitter-endwise'
     Plug 'pechorin/any-jump.vim'
@@ -109,6 +110,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'catppuccin/nvim', {'as': 'catppuccin'}
     Plug 'rose-pine/neovim'
     Plug 'oxfist/night-owl.nvim'
+    Plug 'askfiy/visual_studio_code'
+    Plug 'EdenEast/nightfox.nvim'
   " }}
 
   " ENHANCEMENT {{
@@ -121,7 +124,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'folke/trouble.nvim' " May be we don't need it
     Plug 'RRethy/vim-illuminate'
     Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
-    Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+    Plug 'akinsho/bufferline.nvim'
+    " Plug 'dgagn/diagflow.nvim'
   " }}
 
   " EXTRA {{
@@ -130,10 +134,12 @@ call plug#begin('~/.vim/plugged')
     " Plug 'airblade/vim-localorie'
     Plug 'ruifm/gitlinker.nvim'
     Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+    Plug 'eandrju/cellular-automaton.nvim'
   " }}
 
   " AI {{
     Plug 'github/copilot.vim'
+    Plug 'jackMort/ChatGPT.nvim'
   " }}
 
   " Load this as the very last one
@@ -231,7 +237,7 @@ set updatetime=300                " delay time. Useful for showing git sign
 set undodir=~/.vim/undodir
 set undofile
 set number
-set relativenumber
+" set relativenumber
 
 " Whitespace
 set nowrap                        " don't wrap text
@@ -457,8 +463,10 @@ nmap <leader>l mQviwu`Q
 nmap <leader>U mQgewvU`Q
 nmap <leader>L mQgewvu`Q
 
+" Git operations
 " find Git merge conflict markers
 nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
+nmap <silent> <leader>gr :Gread<CR>
 
 " Toggle hlsearch with <leader>hls
 nmap <leader>hls :set hlsearch! hlsearch?<CR>
@@ -540,8 +548,8 @@ endif
 " }}
 
 " nvim-tree {{
-  :nmap <Leader>n :NeoTreeShowToggle<CR>
-  :nmap <Leader>F :NeoTreeReveal<CR>
+  :nmap <Leader>n :Neotree toggle<CR>
+  :nmap <Leader>F :Neotree reveal<CR>
 " }}
 
 " any-jump.vim {{
@@ -731,7 +739,9 @@ EOF
 
 " indent-blankline.nvim {{
 lua << EOF
-require("ibl").setup()
+require("ibl").setup{
+  indent = { char = "│" },
+}
 EOF
 " }}
 
@@ -863,7 +873,7 @@ EOF
 
 " colorscheme settings
 " colorscheme dracula_pro_blade
-colorscheme onedark
+colorscheme vscode
 " colorscheme catppuccin-macchiato
 " colorscheme OceanicNext
 " lua << EOF
@@ -913,10 +923,13 @@ end
 require'lualine'.setup {
   options = {
     globalstatus = true,
-    theme = 'onedark',
-    icons_enabled = false,
-    component_separators = '│',
-    section_separators = '',
+    icons_enabled = true,
+    component_separators = { left = "", right = "" },
+    section_separators = { left = "", right = "" },
+    disabled_filetypes = {},
+    refresh = {
+      statusline = 100,
+    },
   },
   sections = {
     lualine_b = {
@@ -939,10 +952,6 @@ vim.api.nvim_set_keymap('n', '<leader><leader>b', ':HopWordBC<CR>', { noremap = 
 EOF
 
 lua << EOF
-require('Comment').setup()
-EOF
-
-lua << EOF
 require("toggleterm").setup{}
 EOF
 
@@ -955,8 +964,17 @@ require 'window-picker'.setup()
 EOF
 
 lua << EOF
+local home = vim.fn.expand("$HOME")
+require("chatgpt").setup()
+EOF
+
+lua << EOF
 require("oil").setup()
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+EOF
+
+lua << EOF
+-- require('diagflow').setup()
 EOF
 
 lua << EOF
