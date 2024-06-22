@@ -47,6 +47,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'stevearc/oil.nvim'
     Plug 'kdheepak/lazygit.nvim'
     Plug 'troydm/zoomwintab.vim'
+    Plug 'johmsalas/text-case.nvim'
 
     " LSP Support
     Plug 'neovim/nvim-lspconfig'
@@ -70,7 +71,6 @@ call plug#begin('~/.vim/plugged')
     " EXTRA LSP Stuff
     Plug 'jose-elias-alvarez/null-ls.nvim'
     Plug 'VonHeikemen/lsp-zero.nvim'
-
     Plug 'lewis6991/gitsigns.nvim'
     Plug 'RRethy/nvim-treesitter-endwise'
     Plug 'pechorin/any-jump.vim'
@@ -100,18 +100,22 @@ call plug#begin('~/.vim/plugged')
 
   " COLORSCHEME {{
     Plug 'navarasu/onedark.nvim'
-    Plug 'gruvbox-community/gruvbox'
     Plug 'cocopon/iceberg.vim'
+    Plug 'ellisonleao/gruvbox.nvim'
     Plug 'mhartington/oceanic-next'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
-    Plug 'Mofiqul/dracula.nvim'
     Plug 'olimorris/onedarkpro.nvim'
+    Plug 'Mofiqul/dracula.nvim'
     Plug 'Mofiqul/vscode.nvim'
+    Plug 'Mofiqul/adwaita.nvim'
     Plug 'catppuccin/nvim', {'as': 'catppuccin'}
     Plug 'rose-pine/neovim'
     Plug 'oxfist/night-owl.nvim'
     Plug 'askfiy/visual_studio_code'
     Plug 'EdenEast/nightfox.nvim'
+    Plug 'craftzdog/solarized-osaka.nvim'
+    Plug 'tjdevries/colorbuddy.vim'
+    Plug 'svrana/neosolarized.nvim'
   " }}
 
   " ENHANCEMENT {{
@@ -125,7 +129,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'RRethy/vim-illuminate'
     Plug 'j-hui/fidget.nvim', { 'tag': 'legacy' }
     Plug 'akinsho/bufferline.nvim'
-    " Plug 'dgagn/diagflow.nvim'
+    Plug 'SmiteshP/nvim-navic'
+    Plug 'utilyre/barbecue.nvim'
   " }}
 
   " EXTRA {{
@@ -467,6 +472,7 @@ nmap <leader>L mQgewvu`Q
 " find Git merge conflict markers
 nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 nmap <silent> <leader>gr :Gread<CR>
+nmap <silent> <leader>gb :Git blame<CR>
 
 " Toggle hlsearch with <leader>hls
 nmap <leader>hls :set hlsearch! hlsearch?<CR>
@@ -594,6 +600,29 @@ endif
   nnoremap <leader>sp viw:lua require('spectre').open_file_search()<cr>
 " }}
 
+" colorscheme settings
+" colorscheme dracula_pro_blade
+colorscheme vscode
+" colorscheme catppuccin-macchiato
+" colorscheme OceanicNext
+" lua << EOF
+"  vim.o.background = 'dark'
+"
+"  local c = require('vscode.colors')
+"  require('vscode').setup({
+"      -- Enable transparent background
+"      transparent = false,
+"
+"      -- Enable italic comment
+"      italic_comments = true,
+"
+"      -- Disable nvim-tree background color
+"      disable_nvimtree_bg = true,
+"  })
+"
+"  require('vscode').load()
+" EOF
+
 " github/copilot.vim {{
   imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
   let g:copilot_no_tab_map = v:true
@@ -644,13 +673,14 @@ require'nvim-treesitter.configs'.setup {
 
   highlight = {
     enable = true,
-    use_languagetree = true, -- Use this to enable language injection (this is very unstable)
+    -- disable = { 'ruby' }
   },
   matchup = {
     enable = true, -- mandatory, false will disable the whole extension
   },
   indent = {
-    enable = false -- [IMPORTANT] Set to false to disable it as it causes an issue with nvim-cmp
+    enable = true,
+    disable = { 'ruby' }, -- [IMPORTANT] Set to false to disable it as it causes an issue with nvim-cmp
   },
   -- This endwise is a part of 'RRethy/nvim-treesitter-endwise'
   endwise = {
@@ -871,29 +901,6 @@ vim.api.nvim_set_keymap('n', '<leader>ca', ':lua require("harpoon.mark").add_fil
 vim.api.nvim_set_keymap('n', '<leader>ct', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true, silent = true })
 EOF
 
-" colorscheme settings
-" colorscheme dracula_pro_blade
-colorscheme vscode
-" colorscheme catppuccin-macchiato
-" colorscheme OceanicNext
-" lua << EOF
-"  vim.o.background = 'dark'
-"
-"  local c = require('vscode.colors')
-"  require('vscode').setup({
-"      -- Enable transparent background
-"      transparent = false,
-"
-"      -- Enable italic comment
-"      italic_comments = true,
-"
-"      -- Disable nvim-tree background color
-"      disable_nvimtree_bg = true,
-"  })
-"
-"  require('vscode').load()
-" EOF
-
 lua << EOF
 local function truncate_branch_name(branch)
 	if not branch or branch == "" then
@@ -974,7 +981,7 @@ vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" }
 EOF
 
 lua << EOF
--- require('diagflow').setup()
+require("barbecue").setup()
 EOF
 
 lua << EOF
@@ -1038,7 +1045,6 @@ lua << EOF
 -- Setup nvim-cmp.
 local cmp = require'cmp'
 local luasnip = require 'luasnip'
-
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
@@ -1061,7 +1067,6 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
-
   window = {
     -- completion = cmp.config.window.bordered(),
     documentation = {
@@ -1197,7 +1202,6 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   solargraph = {},
-  -- ruby_ls = {},
   cssls = {},
   html = { filetypes = { 'html', 'erb', 'hbs'} },
   tsserver = {},
@@ -1239,6 +1243,17 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+
+-- Show diagnostics in a hover window
+-- More info https://stackoverflow.com/questions/69290794/nvim-lsp-change-lspconfig-diagnostic-message-location
+-- First we need to disable the virtual text
+vim.diagnostic.config({
+  virtual_text = false
+})
+
+-- Second show line diagnostics automatically in hover window
+vim.o.updatetime = 250
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
 EOF
 
 lua << EOF
@@ -1257,6 +1272,44 @@ Map("v", "K", ":m '<-2<CR>gv=gv")
 Map("v", "<", "<gv", opts)
 Map("v", ">", ">gv", opts)
 EOF
+
+" johmsalas/text-case.nvim {{
+nnoremap gau :lua require('textcase').current_word('to_upper_case')<CR>
+nnoremap gal :lua require('textcase').current_word('to_lower_case')<CR>
+nnoremap gas :lua require('textcase').current_word('to_snake_case')<CR>
+nnoremap gad :lua require('textcase').current_word('to_dash_case')<CR>
+nnoremap gan :lua require('textcase').current_word('to_constant_case')<CR>
+nnoremap gad :lua require('textcase').current_word('to_dot_case')<CR>
+nnoremap gaa :lua require('textcase').current_word('to_phrase_case')<CR>
+nnoremap gac :lua require('textcase').current_word('to_camel_case')<CR>
+nnoremap gap :lua require('textcase').current_word('to_pascal_case')<CR>
+nnoremap gat :lua require('textcase').current_word('to_title_case')<CR>
+nnoremap gaf :lua require('textcase').current_word('to_path_case')<CR>
+
+nnoremap gaU :lua require('textcase').lsp_rename('to_upper_case')<CR>
+nnoremap gaL :lua require('textcase').lsp_rename('to_lower_case')<CR>
+nnoremap gaS :lua require('textcase').lsp_rename('to_snake_case')<CR>
+nnoremap gaD :lua require('textcase').lsp_rename('to_dash_case')<CR>
+nnoremap gaN :lua require('textcase').lsp_rename('to_constant_case')<CR>
+nnoremap gaD :lua require('textcase').lsp_rename('to_dot_case')<CR>
+nnoremap gaA :lua require('textcase').lsp_rename('to_phrase_case')<CR>
+nnoremap gaC :lua require('textcase').lsp_rename('to_camel_case')<CR>
+nnoremap gaP :lua require('textcase').lsp_rename('to_pascal_case')<CR>
+nnoremap gaT :lua require('textcase').lsp_rename('to_title_case')<CR>
+nnoremap gaF :lua require('textcase').lsp_rename('to_path_case')<CR>
+
+nnoremap geu :lua require('textcase').operator('to_upper_case')<CR>
+nnoremap gel :lua require('textcase').operator('to_lower_case')<CR>
+nnoremap ges :lua require('textcase').operator('to_snake_case')<CR>
+nnoremap ged :lua require('textcase').operator('to_dash_case')<CR>
+nnoremap gen :lua require('textcase').operator('to_constant_case')<CR>
+nnoremap ged :lua require('textcase').operator('to_dot_case')<CR>
+nnoremap gea :lua require('textcase').operator('to_phrase_case')<CR>
+nnoremap gec :lua require('textcase').operator('to_camel_case')<CR>
+nnoremap gep :lua require('textcase').operator('to_pascal_case')<CR>
+nnoremap get :lua require('textcase').operator('to_title_case')<CR>
+nnoremap gef :lua require('textcase').operator('to_path_case')<CR>
+"}}
 
 source ~/.local_vimrc
 
